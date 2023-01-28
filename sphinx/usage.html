@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; autofonce z-2023-01-28-documentation
+ (b9fa019
+) (2023/01/28 17:15) documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Sub-commands and Arguments" href="commands.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> autofonce
+          </a>
+              <div class="version">
+                z-2023-01-28-documentation
+ (b9fa019
+)
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://ocamlpro.github.io/autofonce">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#running-autofonce">Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Sub-commands and Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compat.html">Compatibility with Autoconf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ocamlpro/autofonce">Devel and Issues on Github</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">autofonce</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h1>
+<section id="running-autofonce">
+<h2>Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code><a class="headerlink" href="#running-autofonce" title="Permalink to this headline"></a></h2>
+<p>Before running tests, you will need to create a file <code class="code docutils literal notranslate"><span class="pre">autofonce.env</span></code>
+in your project (if it does not exist yet).</p>
+<p>This file is used by <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> for two purposes:</p>
+<ul class="simple">
+<li><p>It is used to set the environment variables to run each test. You can
+typically use parts of <code class="code docutils literal notranslate"><span class="pre">atconfig</span></code> and <code class="code docutils literal notranslate"><span class="pre">atlocal</span></code> from
+your project (as these files are used by GNU Autoconf to run the tests).</p></li>
+<li><p>It is use as an anchor, to create in the
+same directory the directory <code class="code docutils literal notranslate"><span class="pre">_autotest</span></code>, where <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code>
+will run the tests. This allows <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> to be called from
+any sub-directory of that directory and still run the tests in the
+same directory.</p></li>
+</ul>
+<p>To create this file, you can use the following command:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="n">init</span>
+</pre></div>
+</div>
+<p>Using this command makes <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> try to autodetect the
+project, in which case it can generate a good example. This will only
+work for <em>known</em> projects, currently only <code class="code docutils literal notranslate"><span class="pre">gnucobol</span></code>. For
+autodetection to work, the name of a directory in the path should
+match the name of the known project.</p>
+<p>Once this file has been generated, you should check its content to
+verify that it matches your own setting. It typically contains
+configuration options, such as the sub-directory were the binaries
+have been built, and options detected by <code class="code docutils literal notranslate"><span class="pre">./configure</span></code>, that you
+should update.</p>
+<p>Once you have a working <code class="code docutils literal notranslate"><span class="pre">autofonce.env</span></code>, you can try to read the
+testsuite using:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="kt">list</span>
+</pre></div>
+</div>
+<p>This command should display the list of tests it was able to read, or
+errors if it could not read the testsuite.</p>
+<p>Typically, <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> tries to locate
+<code class="code docutils literal notranslate"><span class="pre">tests/testsuite.at</span></code> in the upper directories. You can change
+this default using for example:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="kt">list</span> <span class="o">--</span><span class="n">testsuite</span> <span class="n">test</span><span class="o">/</span><span class="n">mytests</span><span class="o">.</span><span class="n">at</span>
+</pre></div>
+</div>
+<p>Once you are able to read the testsuite, you can run the tests with:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="n">run</span>
+</pre></div>
+</div>
+<p>If a failure appends, you can check the directory
+<code class="code docutils literal notranslate"><span class="pre">_autotest/NNNN/</span></code> where <code class="code docutils literal notranslate"><span class="pre">NNNN</span></code> is the test numeric
+identifier.</p>
+<p>For skipped test, you can check the file <code class="code docutils literal notranslate"><span class="pre">_autotest/results.log</span></code>.</p>
+<p>Unless you use the arguments <code class="code docutils literal notranslate"><span class="pre">--keep-more</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keep-all</span></code>,
+test sub-directories are not kept if the tests are skipped, or if they
+succeed.</p>
+<p>Within a test sub-directory, you should find:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">env_autofonce.sh</span></code>: the script used to initialize the environment
+for the test. It contains the content of the file <code class="code docutils literal notranslate"><span class="pre">autofonce.env</span></code>.
+If you want to call commands in this directory with the same env as the
+tests, you should use:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">.</span> <span class="o">./</span><span class="n">env_autofonce</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">00_CHECK.sh</span></code>: the shell script to run the first check of the test</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">00_CHECK.out</span></code>: the stdout output of the test</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">00_CHECK.err</span></code>: the stderr output of the test</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">00_CHECK.???.expected</span></code>: if the comparison between the outputs
+failed, this file contains what was expected by the test</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">CHECK</span></code> files are numbered, with nested numbering for nested checks</p></li>
+<li><p>other files are either files created by <code class="code docutils literal notranslate"><span class="pre">AT_DATA</span></code> macros, or files
+generated by checks</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="commands.html" class="btn btn-neutral float-right" title="Sub-commands and Arguments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright OCamlPro SAS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -13,7 +13,9 @@ Welcome to autofonce
    Home <https://ocamlpro.github.io/autofonce>
    about
    install
-   API doc <https://ocamlpro.github.io/autofonce/doc>
+   usage
+   commands
+   compat
    license
 
    Devel and Issues on Github <https://github.com/ocamlpro/autofonce>

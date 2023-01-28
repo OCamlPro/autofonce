@@ -1,5 +1,19 @@
-How to install
-==============
+Installation
+============
+
+Install from binaries
+---------------------
+
+We try to provide portable Linux executables on x86_64.
+Such binaries are available from the Release page at:
+
+https://github.com/OCamlPro/autofonce/releases
+
+To use them, you can use for example::
+
+  wget https://github.com/OCamlPro/autofonce/releases/download/v0.1.0/autofonce-v0.1.linux-x86_66.bin
+  chmod +x autofonce-v0.1.linux-x86_66.bin
+  sudo mv autofonce-v0.1.linux-x86_66.bin /usr/local/bin/autofonce
 
 Install with :code:`opam`
 -------------------------

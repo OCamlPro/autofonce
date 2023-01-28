@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sub-commands and Arguments &mdash; autofonce z-2023-01-28-documentation
+ (b9fa019
+) (2023/01/28 17:15) documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Compatibility with Autoconf" href="compat.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> autofonce
+          </a>
+              <div class="version">
+                z-2023-01-28-documentation
+ (b9fa019
+)
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://ocamlpro.github.io/autofonce">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sub-commands and Arguments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#autofonce-init">autofonce init</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#autofonce-list">autofonce list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#autofonce-run">autofonce run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compat.html">Compatibility with Autoconf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ocamlpro/autofonce">Devel and Issues on Github</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">autofonce</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Sub-commands and Arguments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/commands.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sub-commands-and-arguments">
+<h1>Sub-commands and Arguments<a class="headerlink" href="#sub-commands-and-arguments" title="Permalink to this headline"></a></h1>
+<p>Common arguments to all sub-commands:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">-q</span></code> or <code class="code docutils literal notranslate"><span class="pre">--quiet</span></code>   Set verbosity level to 0</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-v</span></code> or <code class="code docutils literal notranslate"><span class="pre">--verbose</span></code>   Increase verbosity level</p></li>
+</ul>
+<p>Overview of sub-commands:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">init</span>
+  <span class="nc">Initialize</span> <span class="n">project</span> <span class="k">to</span> <span class="n">run</span> <span class="n">the</span> <span class="n">testsuite</span> <span class="k">with</span> <span class="n">autofonce</span>
+
+<span class="kt">list</span>
+  <span class="nc">Print</span> <span class="n">testsuite</span> <span class="k">of</span> <span class="n">the</span> <span class="n">current</span> <span class="n">project</span>
+
+<span class="n">run</span>
+  <span class="nc">Run</span> <span class="n">testsuite</span> <span class="k">of</span> <span class="n">the</span> <span class="n">current</span> <span class="n">project</span>
+</pre></div>
+</div>
+<section id="autofonce-init">
+<h2>autofonce init<a class="headerlink" href="#autofonce-init" title="Permalink to this headline"></a></h2>
+<p>Initialize project to run the testsuite with autofonce</p>
+<p><strong>DESCRIPTION</strong></p>
+<p>To run tests with <strong>autofonce</strong>, tests typically require
+some environment variables to be set. For that, <strong>autofonce</strong> uses a
+file named <strong>autofonce.env</strong> in the project. <strong>autofonce</strong> will also
+use this file to create a directory <strong>_autotest/</strong> where tests are
+run and results are kept.</p>
+<p>This command can be used to create the file <strong>autofonce.env</strong>
+in the current directory. By default, the file is empty, and you will
+need to fill it from inspecting files in the project, such as <strong>atconfig</strong>
+and <strong>atlocal</strong>, typically used by GNU Autoconf testsuites.</p>
+<p>Yet, in some cases, <strong>autofonce</strong> knows the project in which
+you are and can provide you will an example of <strong>autofonce.env</strong> for that
+particular project.</p>
+<p>You can use the following command to list known projects:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="n">init</span> <span class="o">--</span><span class="kt">list</span>
+</pre></div>
+</div>
+<p>You can then select the project using:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="n">init</span> <span class="o">-</span><span class="n">p</span> <span class="n">gnucobol</span>
+</pre></div>
+</div>
+<p><strong>autofonce</strong> will also inspect the path to see if it
+recognize the name of a project it knows. In such cases, you won’t need
+to provide the project name, as it is automatically detected.</p>
+<p><strong>USAGE</strong></p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">autofonce</span> <span class="n">init</span> <span class="o">[</span><span class="nc">OPTIONS</span><span class="o">]</span>
+</pre></div>
+</div>
+<p>Where options are:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">-f</span></code> or <code class="code docutils literal notranslate"><span class="pre">--force-update</span></code>   Force update of the environment file</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-l</span></code> or <code class="code docutils literal notranslate"><span class="pre">--list-known</span></code>   List known projects with environment files</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-p</span> <span class="pre">PROJECT</span></code> or <code class="code docutils literal notranslate"><span class="pre">--project</span> <span class="pre">PROJECT</span></code>   Use environment file from known project</p></li>
+</ul>
+</section>
+<section id="autofonce-list">
+<h2>autofonce list<a class="headerlink" href="#autofonce-list" title="Permalink to this headline"></a></h2>
+<p>Print testsuite of the current project</p>
+<p><strong>DESCRIPTION</strong></p>
+<p>List the tests, with their numeric identifier, their name and their location in the testsuite files.</p>
+<p><strong>USAGE</strong></p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">autofonce</span> <span class="kt">list</span> <span class="nc">ID</span> <span class="o">[</span><span class="nc">OPTIONS</span><span class="o">]</span>
+</pre></div>
+</div>
+<p>Where options are:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">ID</span></code>   Exec ending at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--after</span> <span class="pre">ID</span></code>   Exec starting at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--before</span> <span class="pre">ID</span></code>   Exec ending at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-k</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keywords</span> <span class="pre">KEYWORD</span></code>   Run only tests matching KEYWORD</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">FILE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">FILE</span></code>   File to lookup (default to ‘tests/testsuite.at’)</p></li>
+</ul>
+</section>
+<section id="autofonce-run">
+<h2>autofonce run<a class="headerlink" href="#autofonce-run" title="Permalink to this headline"></a></h2>
+<p>Run testsuite of the current project</p>
+<p><strong>DESCRIPTION</strong></p>
+<p>Run the testsuite.</p>
+<p><strong>autofonce</strong> expects the existence of two files: <strong>autofonce.env</strong> and <strong>tests/testsuite.at</strong>.</p>
+<p><strong>autofonce.env</strong> is required to configure the tests that will be run. Check the following command for more information:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="n">init</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p><strong>tests/testsuite.at</strong> contains the descriptions of the tests, as expected by the GNU Autoconf testsuite. Check the following command for more information:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="kt">list</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>To run tests, <strong>autofonce</strong> will create a directory <strong>_autotest/</strong> in the directory containing the file <strong>autofonce.env</strong>.</p>
+<p>Every test is run independantly in a test directory with its number in the <strong>_autotest/</strong> directory. The test directory is removed if the test does not fail, or if it was expected to fail. Use the <strong>–keep-more</strong> argument to keep directories of tests that have been skipped or were expected to fail. Use the <strong>–keep-all</strong> argument to keep all directories.</p>
+<p>You can select which tests to run, by selecting a range of tests using <strong>–after TEST</strong> or <strong>–before TEST</strong>, by selecting individual tests identifiers using <strong>–id NUM</strong> or by selecting keywords using <strong>–keyword KEYWORD</strong>.</p>
+<p><strong>autofonce</strong> will only display failed tests on its output. You can use the argument <strong>–print-all</strong> to display all tests that were not OK, or just read the generated file <strong>_autotests/results.log</strong>.</p>
+<p><strong>USAGE</strong></p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">autofonce</span> <span class="n">run</span> <span class="nc">ID</span> <span class="o">[</span><span class="nc">OPTIONS</span><span class="o">]</span>
+</pre></div>
+</div>
+<p>Where options are:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">ID</span></code>   Exec ending at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-S</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keep-all</span></code>   Keep all directories of tests</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--after</span> <span class="pre">ID</span></code>   Exec starting at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--before</span> <span class="pre">ID</span></code>   Exec ending at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-e</span></code> or <code class="code docutils literal notranslate"><span class="pre">--stop-on-failure</span></code>   Stop on first failure</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-j</span> <span class="pre">NJOBS</span></code>   Set maximal parallelism</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--j1</span></code>   Use Sequential scheduling of tests</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-k</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keywords</span> <span class="pre">KEYWORD</span></code>   Run only tests matching KEYWORD</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--no-clean</span></code>   Do not clean _autotest/ dir on startup</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--print-all</span></code>   Print also expected failures</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-s</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keep-more</span></code>   Keep directories of skipped and expected failed</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">FILE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">FILE</span></code>   File to lookup (default to ‘tests/testsuite.at’)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="compat.html" class="btn btn-neutral float-right" title="Compatibility with Autoconf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright OCamlPro SAS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
