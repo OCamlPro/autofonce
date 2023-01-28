@@ -16,6 +16,9 @@ Overview of sub-commands::
   list
     Print testsuite of the current project
   
+  new
+    Create a new test by running a command
+  
   run
     Run testsuite of the current project
 
@@ -107,6 +110,40 @@ Where options are:
 * :code:`-k KEYWORD` or :code:`--keywords KEYWORD`   Run only tests matching KEYWORD
 
 * :code:`-t FILE` or :code:`--testsuite FILE`   File to lookup (default to 'tests/testsuite.at')
+
+
+autofonce new
+~~~~~~~~~~~~~~~
+
+Create a new test by running a command
+
+
+
+**DESCRIPTION**
+
+
+Runs the command, captures its retcode, stdout and stderr
+and generates the corresponding autoconf testsuite file.
+
+**USAGE**
+::
+  
+  autofonce new ARGUMENTS [OPTIONS]
+
+Where options are:
+
+
+* :code:`ARGUMENTS`   List of arguments
+
+* :code:`-c FILE`   Capture file in AT_CAPTURE_FILE(...)
+
+* :code:`-f FILE`   Store file in AT_DATA(...)
+
+* :code:`-k KEYWORD`   Store keyword in AT_KEYWORDS(...)
+
+* :code:`--name NAME`   Store name in AT_SETUP(...)
+
+* :code:`-o FILE` or :code:`--output FILE`   Name of generated file
 
 
 autofonce run
