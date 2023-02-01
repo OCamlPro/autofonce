@@ -41,12 +41,18 @@ The following macros are understood within a test (after :code:`AT_SETUP`):
   always skip such tests to avoid running the condition.
 * :code:`AT_DATA([file-name], [file-content])`: create the corresponding file
 * :code:`AT_CAPTURE_FILE([file-name])`: capture file in case of failure
-* :code:`AT_CHECK([shell-command], [retcode], [stdout], [stderr], run-if-fail, run-if-pass)`: all arguments are optionals except the first one.
-  *run-if-fail* and *run-if-pass* should not be specified within brackets.
+* :code:`AT_CHECK([shell-command], [retcode], [stdout], [stderr], [run-if-fail], [run-if-pass])`: all arguments are optional except for the first one.
+  *run-if-fail* and *run-if-pass* should always be specified within brackets
+  (as otherwise, brackets will be removed).
 * :code:`AT_CLEANUP`: end of test
 
 Advices to port testsuites to :code:`autofonce`
 -----------------------------------------------
+
+In general, using shell outside of macros should be
+avoided. :code:`autofonce` has some support for single line shell
+commands, and :code:`if ... ; then` / :code:`else` / :code:`fi`
+on different lines.
 
 * Toplevel shell commands: such commands should be completely avoided
 
@@ -81,43 +87,3 @@ Advices to port testsuites to :code:`autofonce`
   Pay attention to the fact that the order of fail/pass is the opposite
   for :code:`if-then-else` and :code:`AT_CHECK`, so we have to expect
   a result of :code:`[1]` (failed :code:`test`) to keep the same order.
-
-* Macros within brackets. :code:`autofonce` expects brackets to be used
-  for strings, not the macros.
-
-  So, for example::
-
-    AT_CHECK([...], [0], [], [],
-    [     # run-if-fail
-      AT_CHECK(...)
-      AT_CHECK(...)
-    ], [  # run-if-pass
-      AT_CHECK(...)
-      AT_CHECK(...)
-      ]
-    )
-
-  should be translated into::
-
-    AT_CHECK([...], [0], [], [],
-       # run-if-fail
-      AT_CHECK(...)
-      AT_CHECK(...)
-    ,   # run-if-pass
-      AT_CHECK(...)
-      AT_CHECK(...)
-    )
-
-* :code:`AT_SKIP_IF(shell-conditions)`: these conditions are currently not
-  executed, and the following tests will be skipped. A possibility is
-  to use :code:`AT_CHECK` to test the condition:
-
-  For example::
-
-    AT_SKIP_IF([shell-condition])
-
-  should be translated into::
-
-    AT_CHECK([shell-condition], [1], [], [],
-      AT_SKIP_IF([true])
-    )

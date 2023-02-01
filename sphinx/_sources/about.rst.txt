@@ -1,8 +1,9 @@
 About
 =====
 
-autoconf is a modern runner for GNU Autoconf Testsuites:
-autoconf has a limited understanding of m4 macros that appear in testsuites
+:code:`autofonce` is a modern runner for GNU Autoconf Testsuites:
+      
+:code:`autofonce` has a limited understanding of m4 macros that appear in testsuites
 written for the GNU Autoconf testsuites, and can run such tests in a modern
 way:
 

@@ -101,6 +101,8 @@ Where options are:
 
 * :code:`ID`   Exec ending at test ID
 
+* :code:`-N KEYWORD` or :code:`--not KEYWORD`   Skip tests matching KEYWORD
+
 * :code:`--after ID`   Exec starting at test ID
 
 * :code:`--before ID`   Exec ending at test ID
@@ -189,6 +191,8 @@ Where options are:
 
 
 * :code:`ID`   Exec ending at test ID
+
+* :code:`-N KEYWORD` or :code:`--not KEYWORD`   Skip tests matching KEYWORD
 
 * :code:`-S` or :code:`--keep-all`   Keep all directories of tests
 
