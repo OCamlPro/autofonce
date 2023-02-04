@@ -14,7 +14,7 @@ This file is used by :code:`autofonce` for two purposes:
   your project (as these files are used by GNU Autoconf to run the tests).
 
 * It is use as an anchor, to create in the
-  same directory the directory :code:`_autotest`, where :code:`autofonce`
+  same directory the directory :code:`_autofonce`, where :code:`autofonce`
   will run the tests. This allows :code:`autofonce` to be called from
   any sub-directory of that directory and still run the tests in the
   same directory.
@@ -54,10 +54,10 @@ Once you are able to read the testsuite, you can run the tests with::
   $ autofonce run
 
 If a failure appends, you can check the directory
-:code:`_autotest/NNNN/` where :code:`NNNN` is the test numeric
+:code:`_autofonce/NNNN/` where :code:`NNNN` is the test numeric
 identifier.
 
-For skipped test, you can check the file :code:`_autotest/results.log`.
+For skipped test, you can check the file :code:`_autofonce/results.log`.
 
 Unless you use the arguments :code:`--keep-more` or :code:`--keep-all`,
 test sub-directories are not kept if the tests are skipped, or if they
