@@ -5,8 +5,8 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Installation &mdash; autofonce master
- (d7fc50b
-) (2023/02/04 08:11) documentation</title>
+ (e520c62
+) (2023/02/05 21:53) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
@@ -19,7 +19,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="next" title="Running autofonce" href="usage.html" />
     <link rel="prev" title="About" href="about.html" /> 
 </head>
 
@@ -32,7 +32,7 @@
           </a>
               <div class="version">
                 master
- (d7fc50b
+ (e520c62
 )
               </div>
 <div role="search">
@@ -49,12 +49,12 @@
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-from-binaries">Install from binaries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#install-with-opam">Install with <code class="code docutils literal notranslate"><span class="pre">opam</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#build-and-install-with-dune">Build and install with <code class="code docutils literal notranslate"><span class="pre">dune</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="commands.html">Sub-commands and Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html">Project Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compat.html">Compatibility with Autoconf</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">Copyright and License</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/ocamlpro/autofonce">Devel and Issues on Github</a></li>
@@ -92,25 +92,19 @@
 Such binaries are available from the Release page at:</p>
 <p><a class="reference external" href="https://github.com/OCamlPro/autofonce/releases">https://github.com/OCamlPro/autofonce/releases</a></p>
 <p>To use them, you can use for example:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="o">://</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="nc">OCamlPro</span><span class="o">/</span><span class="n">autofonce</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">v0</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">autofonce</span><span class="o">-</span><span class="n">v0</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">x86_66</span><span class="o">.</span><span class="n">bin</span>
-<span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">autofonce</span><span class="o">-</span><span class="n">v0</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">x86_66</span><span class="o">.</span><span class="n">bin</span>
-<span class="n">sudo</span> <span class="n">mv</span> <span class="n">autofonce</span><span class="o">-</span><span class="n">v0</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">x86_66</span><span class="o">.</span><span class="n">bin</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">autofonce</span>
-</pre></div>
-</div>
-</section>
-<section id="install-with-opam">
-<h2>Install with <code class="code docutils literal notranslate"><span class="pre">opam</span></code><a class="headerlink" href="#install-with-opam" title="Permalink to this headline"></a></h2>
-<p>If <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> is available in your opam repository, you can just call:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">opam</span> <span class="n">install</span> <span class="n">autofonce</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="o">://</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="nc">OCamlPro</span><span class="o">/</span><span class="n">autofonce</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">v0</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">autofonce</span><span class="o">-</span><span class="n">v0</span><span class="o">.</span><span class="mi">6</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">x86_64</span><span class="o">.</span><span class="n">bin</span>
+<span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">autofonce</span><span class="o">-</span><span class="n">v0</span><span class="o">.</span><span class="mi">6</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">x86_64</span><span class="o">.</span><span class="n">bin</span>
+<span class="n">sudo</span> <span class="n">mv</span> <span class="n">autofonce</span><span class="o">-</span><span class="n">v0</span><span class="o">.</span><span class="mi">6</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">x86_64</span><span class="o">.</span><span class="n">bin</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">autofonce</span>
+<span class="n">autofonce</span> <span class="o">--</span><span class="n">help</span>
 </pre></div>
 </div>
 </section>
 <section id="build-and-install-with-dune">
 <h2>Build and install with <code class="code docutils literal notranslate"><span class="pre">dune</span></code><a class="headerlink" href="#build-and-install-with-dune" title="Permalink to this headline"></a></h2>
 <p>Checkout the sources of <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> in a directory.</p>
-<p>You need a switch with at least version <code class="code docutils literal notranslate"><span class="pre">4.07.0</span></code> of OCaml,
+<p>You need a switch with at least version <code class="code docutils literal notranslate"><span class="pre">4.10.0</span></code> of OCaml,
 you can for example create it with:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">opam</span> <span class="n">switch</span> <span class="n">create</span> <span class="mi">4</span><span class="o">.</span><span class="mi">10</span><span class="o">.</span><span class="mi">0</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">opam</span> <span class="n">switch</span> <span class="n">create</span> <span class="mi">4</span><span class="o">.</span><span class="mi">13</span><span class="o">.</span><span class="mi">0</span>
 </pre></div>
 </div>
 <p>Then, you need to install all the dependencies:</p>
@@ -144,7 +138,7 @@ targets:</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="about.html" class="btn btn-neutral float-left" title="About" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Running autofonce" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

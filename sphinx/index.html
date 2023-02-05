@@ -5,8 +5,8 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome to autofonce &mdash; autofonce master
- (d7fc50b
-) (2023/02/04 08:11) documentation</title>
+ (e520c62
+) (2023/02/05 21:53) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
@@ -31,7 +31,7 @@
           </a>
               <div class="version">
                 master
- (d7fc50b
+ (e520c62
 )
               </div>
 <div role="search">
@@ -47,8 +47,9 @@
 <li class="toctree-l1"><a class="reference external" href="https://ocamlpro.github.io/autofonce">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="commands.html">Sub-commands and Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html">Project Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compat.html">Compatibility with Autoconf</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">Copyright and License</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/ocamlpro/autofonce">Devel and Issues on Github</a></li>
@@ -90,12 +91,16 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="install.html#install-from-binaries">Install from binaries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#install-with-opam">Install with <code class="code docutils literal notranslate"><span class="pre">opam</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#build-and-install-with-dune">Build and install with <code class="code docutils literal notranslate"><span class="pre">dune</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#running-autofonce">Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#project-initialization">Project Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#listing-all-tests">Listing all tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#running-all-tests">Running all tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#selecting-tests">Selecting Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#promoting-tests">Promoting tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#working-with-multiple-testsuites">Working with multiple testsuites</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="commands.html">Sub-commands and Arguments</a><ul>
@@ -104,6 +109,12 @@
 <li class="toctree-l2"><a class="reference internal" href="commands.html#autofonce-new">autofonce new</a></li>
 <li class="toctree-l2"><a class="reference internal" href="commands.html#autofonce-promote">autofonce promote</a></li>
 <li class="toctree-l2"><a class="reference internal" href="commands.html#autofonce-run">autofonce run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="project.html">Project Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="project.html#general-variables">General Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project.html#testsuite-descriptions">Testsuite Descriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project.html#environment-descriptions">Environment Descriptions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="compat.html">Compatibility with Autoconf</a><ul>

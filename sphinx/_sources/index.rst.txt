@@ -15,6 +15,7 @@ Welcome to autofonce
    install
    usage
    commands
+   project
    compat
    license
 

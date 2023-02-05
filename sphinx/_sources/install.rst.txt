@@ -11,26 +11,20 @@ https://github.com/OCamlPro/autofonce/releases
 
 To use them, you can use for example::
 
-  wget https://github.com/OCamlPro/autofonce/releases/download/v0.1.0/autofonce-v0.1.linux-x86_66.bin
-  chmod +x autofonce-v0.1.linux-x86_66.bin
-  sudo mv autofonce-v0.1.linux-x86_66.bin /usr/local/bin/autofonce
-
-Install with :code:`opam`
--------------------------
-
-If :code:`autofonce` is available in your opam repository, you can just call::
-
-  opam install autofonce
+  wget https://github.com/OCamlPro/autofonce/releases/download/v0.1.0/autofonce-v0.6.linux-x86_64.bin
+  chmod +x autofonce-v0.6.linux-x86_64.bin
+  sudo mv autofonce-v0.6.linux-x86_64.bin /usr/local/bin/autofonce
+  autofonce --help
 
 Build and install with :code:`dune`
 -----------------------------------
 
 Checkout the sources of :code:`autofonce` in a directory.
 
-You need a switch with at least version :code:`4.07.0` of OCaml,
+You need a switch with at least version :code:`4.10.0` of OCaml,
 you can for example create it with::
 
-  opam switch create 4.10.0
+  opam switch create 4.13.0
 
 Then, you need to install all the dependencies::
 

@@ -5,8 +5,8 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sub-commands and Arguments &mdash; autofonce master
- (d7fc50b
-) (2023/02/04 08:11) documentation</title>
+ (e520c62
+) (2023/02/05 21:53) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
@@ -19,8 +19,8 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Compatibility with Autoconf" href="compat.html" />
-    <link rel="prev" title="Usage" href="usage.html" /> 
+    <link rel="next" title="Project Configuration" href="project.html" />
+    <link rel="prev" title="Running autofonce" href="usage.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -32,7 +32,7 @@
           </a>
               <div class="version">
                 master
- (d7fc50b
+ (e520c62
 )
               </div>
 <div role="search">
@@ -48,7 +48,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://ocamlpro.github.io/autofonce">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Sub-commands and Arguments</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#autofonce-init">autofonce init</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#autofonce-list">autofonce list</a></li>
@@ -57,6 +57,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#autofonce-run">autofonce run</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="project.html">Project Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compat.html">Compatibility with Autoconf</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">Copyright and License</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/ocamlpro/autofonce">Devel and Issues on Github</a></li>
@@ -116,15 +117,13 @@
 <p><strong>DESCRIPTION</strong></p>
 <p>To run tests with <strong>autofonce</strong>, tests typically require
 some environment variables to be set. For that, <strong>autofonce</strong> uses a
-file named <strong>autofonce.env</strong> in the project. <strong>autofonce</strong> will also
-use this file to create a directory <strong>_autofonce/</strong> where tests are
-run and results are kept.</p>
-<p>This command can be used to create the file <strong>autofonce.env</strong>
-in the current directory. By default, the file is empty, and you will
-need to fill it from inspecting files in the project, such as <strong>atconfig</strong>
-and <strong>atlocal</strong>, typically used by GNU Autoconf testsuites.</p>
+file named <strong>autofonce.toml</strong> in the project (or <strong>.autofonce</strong>).
+<strong>autofonce</strong> will also use this file to create a directory <strong>_autofonce/</strong>
+where tests are run and results are kept.</p>
+<p>This command can be used to create the file <strong>autofonce.toml</strong>
+in the current directory.</p>
 <p>Yet, in some cases, <strong>autofonce</strong> knows the project in which
-you are and can provide you will an example of <strong>autofonce.env</strong> for that
+you are and can provide you with an example of <strong>autofonce.toml</strong> for that
 particular project.</p>
 <p>You can use the following command to list known projects:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="n">init</span> <span class="o">--</span><span class="kt">list</span>
@@ -143,10 +142,9 @@ to provide the project name, as it is automatically detected.</p>
 </div>
 <p>Where options are:</p>
 <ul class="simple">
-<li><p><code class="code docutils literal notranslate"><span class="pre">-f</span></code> or <code class="code docutils literal notranslate"><span class="pre">--force-update</span></code>   Force update of the environment file</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-f</span></code> or <code class="code docutils literal notranslate"><span class="pre">--force-update</span></code>   Force creation/update if file already exists</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-l</span></code> or <code class="code docutils literal notranslate"><span class="pre">--list-known</span></code>   List known projects with environment files</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-p</span> <span class="pre">PROJECT</span></code> or <code class="code docutils literal notranslate"><span class="pre">--project</span> <span class="pre">PROJECT</span></code>   Use environment file from known project</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">--project-config</span></code>   Create a project config template .autofonce</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-p</span> <span class="pre">PROJECT</span></code> or <code class="code docutils literal notranslate"><span class="pre">--project</span> <span class="pre">PROJECT</span></code>   Set project name to infer config</p></li>
 </ul>
 </section>
 <section id="autofonce-list">
@@ -165,9 +163,9 @@ to provide the project name, as it is automatically detected.</p>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--after</span> <span class="pre">ID</span></code>   Exec starting at test ID</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--before</span> <span class="pre">ID</span></code>   Exec ending at test ID</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--failed</span></code>   Run only previously failed tests (among selected tests)</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-i</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-k</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keywords</span> <span class="pre">KEYWORD</span></code>   Run only tests matching KEYWORD</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">FILE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">FILE</span></code>   File to lookup (default to ‘tests/testsuite.at’)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">TESTSUITE</span></code>   Name of the testsuite to run (as specified in ‘autofonce.toml’)</p></li>
 </ul>
 </section>
 <section id="autofonce-new">
@@ -209,10 +207,10 @@ and generates the corresponding autoconf testsuite file.</p>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--diff</span></code>   Diff promotion (default)</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--failed</span></code>   Run only previously failed tests (among selected tests)</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--fake</span> <span class="pre">.EXT</span></code>   Apply promotion to create new files with extension .EXT</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-i</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-k</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keywords</span> <span class="pre">KEYWORD</span></code>   Run only tests matching KEYWORD</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--no-comment</span></code>   Do not add a comment with the promotion date</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">FILE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">FILE</span></code>   File to lookup (default to ‘tests/testsuite.at’)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">TESTSUITE</span></code>   Name of the testsuite to run (as specified in ‘autofonce.toml’)</p></li>
 </ul>
 </section>
 <section id="autofonce-run">
@@ -220,12 +218,12 @@ and generates the corresponding autoconf testsuite file.</p>
 <p>Run testsuite of the current project</p>
 <p><strong>DESCRIPTION</strong></p>
 <p>Run the testsuite.</p>
-<p><strong>autofonce</strong> expects the existence of two files: <strong>autofonce.env</strong> and <strong>tests/testsuite.at</strong>.</p>
-<p><strong>autofonce.env</strong> is required to configure the tests that will be run. Check the following command for more information:</p>
+<p><strong>autofonce</strong> expects the existence of either <strong>autofonce.toml</strong> or <strong>.autofonce</strong>.</p>
+<p><strong>autofonce.toml</strong> is required to configure the tests that will be run, depending on the project. Check the following command for more information:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="n">init</span> <span class="o">--</span><span class="n">help</span>
 </pre></div>
 </div>
-<p><strong>tests/testsuite.at</strong> contains the descriptions of the tests, as expected by the GNU Autoconf testsuite. Check the following command for more information:</p>
+<p>Before running the tests, you may want to list the test in the current testsuite with:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="kt">list</span> <span class="o">--</span><span class="n">help</span>
 </pre></div>
 </div>
@@ -246,14 +244,14 @@ and generates the corresponding autoconf testsuite file.</p>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--before</span> <span class="pre">ID</span></code>   Exec ending at test ID</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-e</span></code> or <code class="code docutils literal notranslate"><span class="pre">--stop-on-failure</span></code>   Stop on first failure</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--failed</span></code>   Run only previously failed tests (among selected tests)</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-i</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-j</span> <span class="pre">NJOBS</span></code>   Set maximal parallelism</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--j1</span></code>   Use Sequential scheduling of tests</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-k</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keywords</span> <span class="pre">KEYWORD</span></code>   Run only tests matching KEYWORD</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--no-clean</span></code>   Do not clean _autofonce/ dir on startup</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--print-all</span></code>   Print also expected failures</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-s</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keep-more</span></code>   Keep directories of skipped and expected failed</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">FILE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">FILE</span></code>   File to lookup (default to ‘tests/testsuite.at’)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">TESTSUITE</span></code>   Name of the testsuite to run (as specified in ‘autofonce.toml’)</p></li>
 </ul>
 </section>
 </section>
@@ -262,8 +260,8 @@ and generates the corresponding autoconf testsuite file.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="compat.html" class="btn btn-neutral float-right" title="Compatibility with Autoconf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="usage.html" class="btn btn-neutral float-left" title="Running autofonce" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="project.html" class="btn btn-neutral float-right" title="Project Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

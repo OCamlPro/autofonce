@@ -11,8 +11,7 @@ of known builtin M4 macros with a simpler syntax.
 
 For the syntax, :code:`autofonce` has the following limitations:
 
-* Macros should never appear inside brackets. Indeed, data within
-  brackets is interpreted as a string.
+* Macros should appear at toplevel, or within brackets inside other macros.
 
 * Scripts commands are only accepted within a test sequence (i.e. after
   :code:`AT_SETUP` and before :code:`AT_CLEANUP`), and should never
@@ -43,7 +42,7 @@ The following macros are understood within a test (after :code:`AT_SETUP`):
 * :code:`AT_CAPTURE_FILE([file-name])`: capture file in case of failure
 * :code:`AT_CHECK([shell-command], [retcode], [stdout], [stderr], [run-if-fail], [run-if-pass])`: all arguments are optional except for the first one.
   *run-if-fail* and *run-if-pass* should always be specified within brackets
-  (as otherwise, brackets will be removed).
+  (as otherwise, brackets within them would be removed).
 * :code:`AT_CLEANUP`: end of test
 
 Advices to port testsuites to :code:`autofonce`
@@ -78,11 +77,11 @@ on different lines.
 
   should be translated into::
 
-    AT_CHECK([test "x" != "y"], [1], [], [],
+    AT_CHECK([test "x" != "y"], [1], [], [], [
       ...THEN_MACROS...
-    ,
+    ] , [
       ...ELSE_MACROS...
-    )
+    ])
 
   Pay attention to the fact that the order of fail/pass is the opposite
   for :code:`if-then-else` and :code:`AT_CHECK`, so we have to expect

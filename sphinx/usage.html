@@ -4,9 +4,9 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Usage &mdash; autofonce master
- (d7fc50b
-) (2023/02/04 08:11) documentation</title>
+  <title>Running autofonce &mdash; autofonce master
+ (e520c62
+) (2023/02/05 21:53) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
@@ -32,7 +32,7 @@
           </a>
               <div class="version">
                 master
- (d7fc50b
+ (e520c62
 )
               </div>
 <div role="search">
@@ -48,11 +48,17 @@
 <li class="toctree-l1"><a class="reference external" href="https://ocamlpro.github.io/autofonce">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#running-autofonce">Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#project-initialization">Project Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#listing-all-tests">Listing all tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-all-tests">Running all tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#selecting-tests">Selecting Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#promoting-tests">Promoting tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-multiple-testsuites">Working with multiple testsuites</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="commands.html">Sub-commands and Arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html">Project Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compat.html">Compatibility with Autoconf</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">Copyright and License</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/ocamlpro/autofonce">Devel and Issues on Github</a></li>
@@ -72,7 +78,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Usage</li>
+      <li>Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -82,50 +88,46 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h1>
-<section id="running-autofonce">
-<h2>Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code><a class="headerlink" href="#running-autofonce" title="Permalink to this headline"></a></h2>
-<p>Before running tests, you will need to create a file <code class="code docutils literal notranslate"><span class="pre">autofonce.env</span></code>
-in your project (if it does not exist yet).</p>
-<p>This file is used by <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> for two purposes:</p>
-<ul class="simple">
-<li><p>It is used to set the environment variables to run each test. You can
-typically use parts of <code class="code docutils literal notranslate"><span class="pre">atconfig</span></code> and <code class="code docutils literal notranslate"><span class="pre">atlocal</span></code> from
-your project (as these files are used by GNU Autoconf to run the tests).</p></li>
-<li><p>It is use as an anchor, to create in the
-same directory the directory <code class="code docutils literal notranslate"><span class="pre">_autofonce</span></code>, where <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code>
-will run the tests. This allows <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> to be called from
-any sub-directory of that directory and still run the tests in the
-same directory.</p></li>
-</ul>
-<p>To create this file, you can use the following command:</p>
+  <section id="running-autofonce">
+<h1>Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code><a class="headerlink" href="#running-autofonce" title="Permalink to this headline"></a></h1>
+<section id="project-initialization">
+<h2>Project Initialization<a class="headerlink" href="#project-initialization" title="Permalink to this headline"></a></h2>
+<p>Before running tests, you will need to configure the project to run
+<code class="code docutils literal notranslate"><span class="pre">autofonce</span></code>. Some projects may come (in the future) with a
+predefined configuration, with the presence of a <code class="code docutils literal notranslate"><span class="pre">.autofonce</span></code>
+file. Otherwise, you will need to create a file <code class="code docutils literal notranslate"><span class="pre">autofonce.toml</span></code>.</p>
+<p>If you need to create this <code class="code docutils literal notranslate"><span class="pre">autofonce.toml</span></code>, you can use:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="n">init</span>
 </pre></div>
 </div>
 <p>Using this command makes <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> try to autodetect the
-project, in which case it can generate a good example. This will only
-work for <em>known</em> projects, currently only <code class="code docutils literal notranslate"><span class="pre">gnucobol</span></code>. For
-autodetection to work, the name of a directory in the path should
-match the name of the known project.</p>
+project, in which case it can generate a good example. Autodetection
+will only work for <em>known</em> projects, currently only
+<code class="code docutils literal notranslate"><span class="pre">gnucobol</span></code>. For autodetection to work, the name of a directory
+in the path should match the name of the known project.</p>
 <p>Once this file has been generated, you should check its content to
-verify that it matches your own setting. It typically contains
-configuration options, such as the sub-directory were the binaries
-have been built, and options detected by <code class="code docutils literal notranslate"><span class="pre">./configure</span></code>, that you
-should update.</p>
-<p>Once you have a working <code class="code docutils literal notranslate"><span class="pre">autofonce.env</span></code>, you can try to read the
+verify that it matches your own setting. See the
+<a class="reference internal" href="project.html#project-configuration"><span class="std std-ref">Project Configuration</span></a> section for more information.</p>
+<p>In the presence of a <code class="code docutils literal notranslate"><span class="pre">autofonce.toml</span></code> file, <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code>
+will run the tests from the directory containing this file, within a
+sub-directory <code class="code docutils literal notranslate"><span class="pre">_autofonce/</span></code>.</p>
+<p>If <code class="code docutils literal notranslate"><span class="pre">autofonce.toml</span></code> is absent and the <code class="code docutils literal notranslate"><span class="pre">.autofonce</span></code> project
+file is used, then <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> will use the build directory
+detected by the <code class="code docutils literal notranslate"><span class="pre">build_anchors</span></code> as the directory where to create
+the <code class="code docutils literal notranslate"><span class="pre">_autofonce/</span></code> directory.</p>
+</section>
+<section id="listing-all-tests">
+<h2>Listing all tests<a class="headerlink" href="#listing-all-tests" title="Permalink to this headline"></a></h2>
+<p>Once you have a working project configuration, you can try to read the
 testsuite using:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="kt">list</span>
 </pre></div>
 </div>
 <p>This command should display the list of tests it was able to read, or
 errors if it could not read the testsuite.</p>
-<p>Typically, <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> tries to locate
-<code class="code docutils literal notranslate"><span class="pre">tests/testsuite.at</span></code> in the upper directories. You can change
-this default using for example:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="kt">list</span> <span class="o">--</span><span class="n">testsuite</span> <span class="n">test</span><span class="o">/</span><span class="n">mytests</span><span class="o">.</span><span class="n">at</span>
-</pre></div>
-</div>
+</section>
+<section id="running-all-tests">
+<h2>Running all tests<a class="headerlink" href="#running-all-tests" title="Permalink to this headline"></a></h2>
 <p>Once you are able to read the testsuite, you can run the tests with:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">autofonce</span> <span class="n">run</span>
 </pre></div>
@@ -156,6 +158,74 @@ failed, this file contains what was expected by the test</p></li>
 <li><p>other files are either files created by <code class="code docutils literal notranslate"><span class="pre">AT_DATA</span></code> macros, or files
 generated by checks</p></li>
 </ul>
+</section>
+<section id="selecting-tests">
+<h2>Selecting Tests<a class="headerlink" href="#selecting-tests" title="Permalink to this headline"></a></h2>
+<p>When you are working on tests, you sometimes want to select only a few
+of them, instead of running the whole testsuite that will take a lot
+of time.</p>
+<p>You can use the following options to select tests, or a combination of
+them:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">--before</span> <span class="pre">N</span></code>: run selected tests before <code class="code docutils literal notranslate"><span class="pre">N</span></code> included</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--after</span> <span class="pre">N</span></code>: run selected tests after <code class="code docutils literal notranslate"><span class="pre">N</span></code> included</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">'N1</span> <span class="pre">N2</span> <span class="pre">N3'</span></code>: run tests <code class="code docutils literal notranslate"><span class="pre">N1</span></code>, <code class="code docutils literal notranslate"><span class="pre">N2</span></code> and <code class="code docutils literal notranslate"><span class="pre">N3</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-k</span> <span class="pre">KEYWORD</span></code>: run tests matching <code class="code docutils literal notranslate"><span class="pre">KEYWORD</span></code>, as specified by
+the <code class="code docutils literal notranslate"><span class="pre">AT_KEYWORD(...)</span></code> macro</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--not</span> <span class="pre">'K1</span> <span class="pre">K2'</span></code>: do not run selected tests that match keywords
+<code class="code docutils literal notranslate"><span class="pre">K1</span></code> or <code class="code docutils literal notranslate"><span class="pre">K2</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--failed</span></code>: run only selected tests that failed during previous run</p></li>
+</ul>
+</section>
+<section id="promoting-tests">
+<h2>Promoting tests<a class="headerlink" href="#promoting-tests" title="Permalink to this headline"></a></h2>
+<p>Sometimes, you change the behavior of your tool, and some tests need
+to be updated to match the new behavior. Such a work can be
+cumbersome, especially when the expected stdout/stderr of the tests
+are specified.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> can help you be promoting the outputs of failed
+tests directly inside the corresponding tests files.</p>
+<p>Here is the processus:</p>
+<ul>
+<li><p>Run the tests:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">autofonce</span> <span class="n">run</span>
+</pre></div>
+</div>
+</li>
+<li><p>Check all the failed tests and verify that their reasons for failing is
+ok. A way to do that is to use this command:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">autofonce</span> <span class="n">promote</span>
+</pre></div>
+</div>
+<p>The command will display a diff of what it would do to <em>patch</em> the
+tests, i.e. show the difference between the output and what was
+expected.</p>
+</li>
+<li><p>Once you think the new output of the tests is ok, you can ask
+<code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> to update the files:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">autofonce</span> <span class="n">promote</span> <span class="o">--</span><span class="n">apply</span>
+</pre></div>
+</div>
+</li>
+<li><p>It is still a good idea to check the results, for example using
+<code class="code docutils literal notranslate"><span class="pre">git</span> <span class="pre">diff</span></code> or a similar tool.</p></li>
+</ul>
+<p>Note that <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> will add a comment <code class="code docutils literal notranslate"><span class="pre">#</span> <span class="pre">promoted</span> <span class="pre">on</span>
+<span class="pre">&lt;DATE&gt;</span></code> to every updated test. You may remove this comment using the
+option <code class="code docutils literal notranslate"><span class="pre">--no-comment</span></code>.</p>
+</section>
+<section id="working-with-multiple-testsuites">
+<h2>Working with multiple testsuites<a class="headerlink" href="#working-with-multiple-testsuites" title="Permalink to this headline"></a></h2>
+<p>If your project contains several testsuites, or if you want to be able
+to run the same testsuites with different settings (for example,
+before installation and after installation), you may define several
+such testsuites in <code class="code docutils literal notranslate"><span class="pre">autofonce.toml</span></code> or <code class="code docutils literal notranslate"><span class="pre">.autofonce</span></code>.</p>
+<p>You can then use the <code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">TESTSUITE</span></code> option to run a different
+testsuite than the default one (i.e. the first defined one):</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">autofonce</span> <span class="n">run</span> <span class="o">-</span><span class="n">t</span> <span class="n">installed</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="project.html#testsuite-descriptions"><span class="std std-ref">Testsuite Descriptions</span></a> for more information.</p>
 </section>
 </section>
 

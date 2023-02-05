@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Configuration &mdash; autofonce master
+ (e520c62
+) (2023/02/05 21:53) documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Compatibility with Autoconf" href="compat.html" />
+    <link rel="prev" title="Sub-commands and Arguments" href="commands.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> autofonce
+          </a>
+              <div class="version">
+                master
+ (e520c62
+)
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://ocamlpro.github.io/autofonce">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Sub-commands and Arguments</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Project Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-variables">General Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testsuite-descriptions">Testsuite Descriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-descriptions">Environment Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compat.html">Compatibility with Autoconf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ocamlpro/autofonce">Devel and Issues on Github</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">autofonce</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Project Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/project.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="project-configuration">
+<span id="id1"></span><h1>Project Configuration<a class="headerlink" href="#project-configuration" title="Permalink to this headline"></a></h1>
+<p>There are actually three parts in the project configuration:</p>
+<ul class="simple">
+<li><p>General variables, such as anchors to detect source and
+build directories</p></li>
+<li><p>Testsuites, describing the testsuites that are available
+in the project</p></li>
+<li><p>Environments, i.e. scripts parts to build the environment
+in which tests are executed</p></li>
+</ul>
+<section id="general-variables">
+<h2>General Variables<a class="headerlink" href="#general-variables" title="Permalink to this headline"></a></h2>
+<p>The general variables are:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">project.name</span></code>: the name of the project. This name is not
+currently used, but <em>known</em> projects come with this name, and the
+name is used to autodetect that the project should use this
+configuration.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">project.source_anchors</span></code>: a list of files. <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code>
+uses this list to try to detect the source directory of the project
+(i.e. the project root or topdir), from where it is run. The source
+directory is the first directory found that contains the file while
+moving to upper directories. If no directory is found for the first
+anchor, the second anchor is used, and so on. Finally, either a
+<code class="code docutils literal notranslate"><span class="pre">&quot;!&quot;</span></code> anchor is used and triggers a failure, or the current
+directory is used. <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> creates a variable
+<code class="code docutils literal notranslate"><span class="pre">AUTOFONCE_SOURCE_DIR</span></code> before the test environment with the
+value found for this directory.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">project.build_anchors</span></code>: a list of files. <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code>
+must always be run from within the build directory or a
+sub-directory. It uses this variable similarly to
+<code class="code docutils literal notranslate"><span class="pre">source_anchors</span></code>.  <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> creates a variable
+<code class="code docutils literal notranslate"><span class="pre">AUTOFONCE_BUILD_DIR</span></code> before the test environment with the
+value found for this directory.</p></li>
+</ul>
+<p>For example, for <code class="code docutils literal notranslate"><span class="pre">gnucobol</span></code>, this section looks like:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="n">project</span><span class="o">]</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;gnucobol&quot;</span>
+<span class="n">source_anchors</span> <span class="o">=</span> <span class="o">[</span> <span class="s2">&quot;tests/testsuite.at&quot;</span><span class="o">,</span> <span class="s2">&quot;!&quot;</span> <span class="o">]</span>
+<span class="n">build_anchors</span> <span class="o">=</span> <span class="o">[</span> <span class="s2">&quot;cobc/cobc&quot;</span><span class="o">,</span> <span class="s2">&quot;!&quot;</span> <span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="testsuite-descriptions">
+<span id="id2"></span><h2>Testsuite Descriptions<a class="headerlink" href="#testsuite-descriptions" title="Permalink to this headline"></a></h2>
+<p>A testsuite is described by 4 components:</p>
+<ul class="simple">
+<li><p>its name, used to refer to the testsuite with the <code class="code docutils literal notranslate"><span class="pre">-t</span>
+<span class="pre">&lt;TESTSUITE&gt;</span></code> option (by default, <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> uses the first
+testsuite described in this file).</p></li>
+<li><p>its file name, i.e. the file that contains the macros for the
+tests. The default file name is <code class="code docutils literal notranslate"><span class="pre">tests/testsuite.at</span></code>.</p></li>
+<li><p>its path, i.e. the path in which <cite>m4_include(file)</cite> will search for
+<code class="code docutils literal notranslate"><span class="pre">file</span></code>. The default path is <code class="code docutils literal notranslate"><span class="pre">[</span> <span class="pre">&quot;tests/testsuite.src&quot;</span> <span class="pre">]</span></code>.
+Note that the directory containing the testsuite file name will
+always be added to the path.</p></li>
+<li><p>its environment, i.e. the name of the environment (see next section)
+to use for the tests of this testsuite. The default environment is
+<code class="code docutils literal notranslate"><span class="pre">testsuite</span></code>.</p></li>
+</ul>
+<p>Such a section looks like:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="n">testsuites</span><span class="o">.</span><span class="n">testsuite</span><span class="o">]</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;tests/testsuite.at&quot;</span>
+<span class="n">path</span> <span class="o">=</span> <span class="o">[</span> <span class="s2">&quot;tests/testsuite.src&quot;</span><span class="o">]</span>
+<span class="n">env</span> <span class="o">=</span> <span class="s2">&quot;testsuite&quot;</span>
+</pre></div>
+</div>
+<p>If your project contains several testsuites, you can define a section
+for each of them, with different names, file names or environments for
+example.</p>
+</section>
+<section id="environment-descriptions">
+<h2>Environment Descriptions<a class="headerlink" href="#environment-descriptions" title="Permalink to this headline"></a></h2>
+<p>The environment of a test is a part of shell script, that is added at
+the end of the file <code class="code docutils literal notranslate"><span class="pre">env_autofonce.sh</span></code> in each test directory.</p>
+<p>Before, <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> defines a few environment variables:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">AUTOFONCE_TESTSUITE</span></code>, the name of the testsuite</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">AUTOFONCE_RUN_DIR</span></code>, the directory from which tests are run
+(containing the <code class="code docutils literal notranslate"><span class="pre">_autotest/</span></code> sub-directory)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">AUTOFONCE_SOURCE_DIR</span></code>, the root directory of the project</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">AUTOFONCE_BUILD_DIR</span></code>, the build directory of the project</p></li>
+</ul>
+<p>The goal of the environment part is to use these variables to
+translate them in variables that are used by tests to locate their
+dependencies.</p>
+<p>There are two ways to define environments, for example here, we define
+the environment called <code class="code docutils literal notranslate"><span class="pre">testsuite</span></code>:</p>
+<ul>
+<li><p>inline environment: the environment is specified directly in this
+file:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="n">envs</span><span class="o">]</span>
+<span class="n">testsuite</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">export PATH=${AUTOFONCE_BUILD_DIR}/bin:$PATH</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>outside files: the environment is defined in a project file, that is
+referenced from here:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="n">envs</span><span class="o">]</span>
+<span class="n">testsuite</span> <span class="o">=</span> <span class="s2">&quot;&lt;tests/testsuite.env&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Note that environments can typically called the <code class="code docutils literal notranslate"><span class="pre">atconfig</span></code> and
+<code class="code docutils literal notranslate"><span class="pre">atlocal</span></code> scripts created by GNU Autoconf tools.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="commands.html" class="btn btn-neutral float-left" title="Sub-commands and Arguments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="compat.html" class="btn btn-neutral float-right" title="Compatibility with Autoconf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright OCamlPro SAS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
