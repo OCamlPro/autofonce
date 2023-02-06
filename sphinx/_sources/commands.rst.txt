@@ -110,6 +110,8 @@ Where options are:
 
 * :code:`--failed`   Run only previously failed tests (among selected tests)
 
+* :code:`--failures REASON`   Run failed tests with given failure
+
 * :code:`-i ID` or :code:`--ids ID`   Run only test ID
 
 * :code:`-k KEYWORD` or :code:`--keywords KEYWORD`   Run only tests matching KEYWORD
@@ -179,11 +181,15 @@ Where options are:
 
 * :code:`--apply`   Apply promotion (default is to diff)
 
+* :code:`--auto-run INT`   Promote and run until all tests have been promoted
+
 * :code:`--before ID`   Exec ending at test ID
 
 * :code:`--diff`   Diff promotion (default)
 
 * :code:`--failed`   Run only previously failed tests (among selected tests)
+
+* :code:`--failures REASON`   Run failed tests with given failure
 
 * :code:`--fake .EXT`   Apply promotion to create new files with extension .EXT
 
@@ -246,11 +252,15 @@ Where options are:
 
 * :code:`--after ID`   Exec starting at test ID
 
+* :code:`--auto-promote INT`   Promote and run until all tests have been promoted
+
 * :code:`--before ID`   Exec ending at test ID
 
 * :code:`-e` or :code:`--stop-on-failure`   Stop on first failure
 
 * :code:`--failed`   Run only previously failed tests (among selected tests)
+
+* :code:`--failures REASON`   Run failed tests with given failure
 
 * :code:`-i ID` or :code:`--ids ID`   Run only test ID
 
@@ -261,6 +271,8 @@ Where options are:
 * :code:`-k KEYWORD` or :code:`--keywords KEYWORD`   Run only tests matching KEYWORD
 
 * :code:`--no-clean`   Do not clean _autofonce/ dir on startup
+
+* :code:`--no-comment`   Do not add a comment with the promotion date
 
 * :code:`--print-all`   Print also expected failures
 
