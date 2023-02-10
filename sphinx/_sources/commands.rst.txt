@@ -199,6 +199,8 @@ Where options are:
 
 * :code:`--no-comment`   Do not add a comment with the promotion date
 
+* :code:`--not-exit`   Do not promote exit code
+
 * :code:`-t TESTSUITE` or :code:`--testsuite TESTSUITE`   Name of the testsuite to run (as specified in 'autofonce.toml')
 
 
@@ -273,6 +275,8 @@ Where options are:
 * :code:`--no-clean`   Do not clean _autofonce/ dir on startup
 
 * :code:`--no-comment`   Do not add a comment with the promotion date
+
+* :code:`--not-exit`   Do not promote exit code
 
 * :code:`--print-all`   Print also expected failures
 
