@@ -76,9 +76,10 @@ and schedule_action r action =
   if !Globals.verbose > 1 then Printf.eprintf "schedule_action\n%!";
   match action with
   | AT_SKIP -> Runner_common.test_is_skip r.running_test
-  | AT_FAIL { loc } ->
+  | AT_FAIL ->
       (* TODO: cannot be auto-promoted, of course... *)
-      Runner_common.test_is_failed loc r.running_test "AT_FAIL_IF"
+      let loc = r.running_test.tester_test.test_loc in
+      Runner_common.test_is_failed loc r.running_test "FAIL_IF"
   | AT_CHECK check ->
       schedule_check r check
   | AT_XFAIL_IF { step ; loc ; command } ->
@@ -93,10 +94,14 @@ and schedule_action r action =
       let ter = r.running_test in
       schedule_check r
         ( Runner_common.check_of_AT_FAIL_IF ter step loc command )
-  | AT_COPY { step ; loc ; command ; copy ; _ } ->
+  | AT_COPY { step ; loc ; command ; _ } ->
       let ter = r.running_test in
       schedule_check r (
-        Runner_common.check_of_at_file ~copy ter step loc command )
+        Runner_common.check_of_at_file ~copy:true ter step loc command )
+  | AT_LINK { step ; loc ; command ; _ } ->
+      let ter = r.running_test in
+      schedule_check r (
+        Runner_common.check_of_at_file ~copy:false ter step loc command )
 
   | AT_XFAIL
   | AT_DATA _
@@ -152,7 +157,7 @@ and job_terminated r retcode =
                 let check = cer.checker_check in
                 let ter = cer.checker_tester in
                 let loc = check.check_loc in
-                Runner_common.test_is_failed ~check loc ter failures
+                Runner_common.test_is_failed loc ter failures
           | actions ->
               r.waiting_actions <- actions :: r.waiting_actions;
               schedule_job r

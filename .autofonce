@@ -23,15 +23,11 @@ build_dir_candidates = [ "_build" ]
 #   * 'config': in the directory of the config file
 run_from = "build"
 
-captured_files = [
- "_build/default/autofonce_config.dune-package"
-]
-
 [testsuites]
 # alias = "path-from-topdir"
 [testsuites.testsuite]
 file = "test/testsuite.at"
-path = [ "test/testsuite.src", "test/testsuite.inc"]
+path = [ "test/testsuite.src"]
 env = "testsuite"
 [testsuites.testdir]
 file = "test/testsuite.src"

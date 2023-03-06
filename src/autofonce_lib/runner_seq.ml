@@ -14,21 +14,22 @@ open EzCompat (* for IntMap *)
 
 open Types
 
-exception FAILED of tester * location * string * check option
+exception FAILED of tester * location * string
 exception SKIPPED_FAIL of checker * string
 exception SKIP
 
-let failed_check ?check job s = raise (FAILED (job.checker_tester,
+let failed_check job s = raise (FAILED (job.checker_tester,
                                         job.checker_check.check_loc,
-                                        s,
-                                        check))
+                                        s))
 
-let failed_test ~loc ter s = raise (FAILED (ter, loc, s, None))
+let failed_test ter s = raise (FAILED (ter,
+                                       ter.tester_test.test_loc,
+                                        s))
 
 let rec exec_action_or_check ter action =
   match action with
   | AT_SKIP -> raise SKIP
-  | AT_FAIL { loc } -> failed_test ~loc ter "AT_FAIL_IF"
+  | AT_FAIL -> failed_test ter "AT_FAIL_IF"
   | AT_CHECK check -> exec_check ter check
   | AT_XFAIL_IF { step ; loc ; command } ->
       exec_check ter ( Runner_common.check_of_AT_XFAIL_IF ter step loc command )
@@ -36,9 +37,12 @@ let rec exec_action_or_check ter action =
       exec_check ter ( Runner_common.check_of_AT_SKIP_IF ter step loc command )
   | AT_FAIL_IF { step ; loc ; command } ->
       exec_check ter ( Runner_common.check_of_AT_FAIL_IF ter step loc command )
-  | AT_COPY { step ; loc ; command ; copy ; _ } ->
+  | AT_COPY { step ; loc ; command ; _ } ->
       exec_check ter (
-        Runner_common.check_of_at_file ~copy ter step loc command )
+        Runner_common.check_of_at_file ~copy:true ter step loc command )
+  | AT_LINK { step ; loc ; command ; _ } ->
+      exec_check ter (
+        Runner_common.check_of_at_file ~copy:false ter step loc command )
 
   | AT_XFAIL
   | AT_DATA _
@@ -77,7 +81,7 @@ and exec_check ter check =
               if retcode = 77 then
                 raise (SKIPPED_FAIL (cer, failures))
               else
-                failed_check ~check cer failures
+                failed_check cer failures
           | actions ->
               List.iter (exec_action_or_check ter) actions
         end
@@ -92,8 +96,8 @@ let exec_test state t =
       List.iter (exec_action_or_check ter) t.test_actions;
       Runner_common.test_is_ok ter
     with
-    | FAILED (ter, loc ,s, check) ->
-        Runner_common.test_is_failed ?check loc ter s
+    | FAILED (ter, loc ,s) ->
+        Runner_common.test_is_failed loc ter s
     | SKIPPED_FAIL (job,s) ->
         Runner_common.test_is_skipped_fail job s
     | SKIP ->

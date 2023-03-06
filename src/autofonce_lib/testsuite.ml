@@ -23,6 +23,7 @@ open Types
 open Globals (* toplevel references *)
 
 let testsuite = ref ( None : string option )
+let output = ref None (* full path to results.log *)
 
 let testsuite_file = ref None
 let testsuite_env = ref None (* path to env file *)
@@ -193,11 +194,15 @@ let exec p tc suite =
         Runner_common.print_ntests 5 (List.rev list);
         Printf.printf "\n%!";
   end;
-  if !print_all then begin
-    let buffer = Buffer.contents state.state_buffer in
+  let buffer = Buffer.contents state.state_buffer in
+  let buffer_file = match !output with
+    | None -> Sys.getcwd () // tests_dir // "results.log"
+    | Some output -> output
+  in
+  EzFile.write_file buffer_file buffer;
+  Printf.eprintf "File %S created with failure results\n%!" buffer_file;
+  if !print_all then
     Terminal.printf [ Terminal.magenta ] "%s\n%!" buffer;
-  end ;
-  Logging.log_state_buffer state ;
   List.length state.state_tests_failed
 
 let print_test _c t =
@@ -223,7 +228,7 @@ let args = [
     ~env:(EZCMD.env "AUTOFONCE_TESTSUITE")
     ~docv:"TESTSUITE" "Name of the testsuite to run (as specified in 'autofonce.toml')";
 
-  [ "o" ; "output" ], Arg.String (fun s -> Logging.output := Some s),
+  [ "o" ; "output" ], Arg.String (fun s -> output := Some s),
   EZCMD.info
     ~env:(EZCMD.env "AUTOFONCE_OUTPUT")
     ~docv:"TESTSUITE" "Path of the output file (default: _autofonce/results.log)";

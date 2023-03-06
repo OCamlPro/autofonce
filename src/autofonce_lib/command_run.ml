@@ -48,6 +48,7 @@ let cmd =
   EZCMD.sub
     "run"
     (fun () ->
+       Printexc.record_backtrace true ;
        try
          let (p, tc, suite) = Testsuite.find () in
          let n = Testsuite.exec p tc suite in

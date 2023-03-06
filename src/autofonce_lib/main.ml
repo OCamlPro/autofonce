@@ -25,9 +25,6 @@ module PROGRAM = struct
   let about = "autofonce COMMAND COMMAND-OPTIONS"
   let set_verbosity = set_verbosity
   let get_verbosity = get_verbosity
-
-  (* Use `AUTOFONCE_BACKTRACE=y autofonce run` or
-     `autofonce run -v` to get a full backtrace *)
   let backtrace_var = Some "AUTOFONCE_BACKTRACE"
   let usage = "Modern runner for GNU Autoconf testsuites"
   let version = Version.version
@@ -39,7 +36,6 @@ include PROGRAM
 let commands = [
   Command_init.cmd ;
   Command_list.cmd ;
-  Command_config.cmd ;
   Command_run.cmd ;
   Command_new.cmd ;
   Command_promote.cmd ;

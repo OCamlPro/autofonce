@@ -13,4 +13,3 @@ AT_TESTED([autofonce])
 
 AT_BANNER([Banner for tests])
 m4_include([simple_tests.at])
-m4_include([copy_tests.at])

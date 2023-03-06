@@ -31,12 +31,94 @@ AT_CLEANUP
 #######################################
 
 
-AT_SETUP([AT_ENV in test])
+AT_SETUP([AT_ENV in testsuite.at])
+AT_CHECK([printf "${VAR_EXPORT}"], [0], [Exported var], [])
+AT_CHECK([printf "${VAR_INTERNAL}"], [0], [Internal var], [])
+AT_CLEANUP
+
+
+AT_SETUP([AT_ENV in testsuite.at])
 AT_ENV([VAR_EXPORT='exported var'])
 AT_CHECK([printf "${VAR_EXPORT}"], [0], [exported var], [])
 AT_ENV([VAR_EXPORT='var exported'])
 AT_ENV([VAR_INTERNAL='var internal'])
 AT_CHECK([printf "${VAR_INTERNAL}"], [0], [var internal], [])
+AT_CLEANUP
+
+
+#######################################
+#
+#             AT_COPY
+#
+#######################################
+
+
+AT_SETUP([AT_COPY simple-file.txt])
+AT_COPY([[simple-file.txt]])
+AT_CHECK([cat simple-file.txt], [0], [This
+file
+is
+in
+simple-file.txt
+], [])
+AT_CLEANUP
+
+
+AT_SETUP([AT_COPY dir])
+AT_COPY([dir])
+AT_CHECK([cat dir/file-in-dir.txt], [0], [This
+file
+is
+dir/file-in-dir.txt
+], [])
+AT_CLEANUP
+
+
+AT_SETUP([AT_COPY dir/file-in-dir.txt])
+AT_COPY([dir/file-in-dir.txt])
+AT_CHECK([cat file-in-dir.txt], [0], [This
+file
+is
+dir/file-in-dir.txt
+], [])
+AT_CLEANUP
+
+
+#######################################
+#
+#             AT_LINK
+#
+#######################################
+
+
+AT_SETUP([AT_LINK simple-file.txt])
+AT_LINK([simple-file.txt])
+AT_CHECK([cat simple-file.txt], [0], [This
+file
+is
+in
+simple-file.txt
+], [])
+AT_CLEANUP
+
+
+AT_SETUP([AT_LINK dir])
+AT_LINK([dir])
+AT_CHECK([cat dir/file-in-dir.txt], [0], [This
+file
+is
+dir/file-in-dir.txt
+], [])
+AT_CLEANUP
+
+
+AT_SETUP([AT_LINK dir/file-in-dir.txt])
+AT_LINK([dir/file-in-dir.txt])
+AT_CHECK([cat file-in-dir.txt], [0], [This
+file
+is
+dir/file-in-dir.txt
+], [])
 AT_CLEANUP
 
 

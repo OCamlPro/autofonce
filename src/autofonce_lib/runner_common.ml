@@ -17,9 +17,9 @@ open EzFile.OP
 open Types
 open Globals (* toplevel references *)
 
-module PARSER = Autofonce_core.Parser
-module MISC = Autofonce_misc.Misc
-module CONFIG = Autofonce_config.Project_config
+module Parser = Autofonce_core.Parser
+module Misc = Autofonce_misc.Misc
+module Project_config = Autofonce_config.Project_config
 
 let status_len = 30
 let spaces = String.make 80 ' '
@@ -63,12 +63,12 @@ let tester_dir ter = test_dir ter.tester_test
 
 let test_is_ok ter =
   let test = ter.tester_test in
-  if not !keep_all then MISC.remove_rec ( tester_dir ter ) ;
+  if not !keep_all then Misc.remove_rec ( tester_dir ter ) ;
   let state = ter.tester_state in
   state.state_ntests_ok <- state.state_ntests_ok + 1;
   buffer_test state (
     test_status ter "OK (%s)"
-      ( PARSER.name_of_loc test.test_loc )
+      ( Parser.name_of_loc test.test_loc )
   )
 
 
@@ -76,26 +76,25 @@ let test_is_skipped_fail cer s =
   let ter = cer.checker_tester in
   let state = ter.tester_state in
   let check = cer.checker_check in
-  if not !keep_skipped then MISC.remove_rec ( tester_dir ter ) ;
+  if not !keep_skipped then Misc.remove_rec ( tester_dir ter ) ;
   state.state_tests_failexpected <- ter :: state.state_tests_failexpected ;
   buffer_test state (
     test_status ter "SKIPPED FAIL (%s %s)"
-      ( PARSER.name_of_loc check.check_loc ) s
+      ( Parser.name_of_loc check.check_loc ) s
   )
 
-let test_is_failed loc ter ?check s =
+let test_is_failed loc ter s =
   let state = ter.tester_state in
-  ter.tester_fail_reason <- Some ( loc, s, check );
   if ter.tester_fail_expected then begin
     state.state_tests_failexpected <- ter :: state.state_tests_failexpected ;
-    if not !keep_skipped then MISC.remove_rec ( tester_dir ter ) ;
+    if not !keep_skipped then Misc.remove_rec ( tester_dir ter ) ;
     buffer_test state
       ( test_status ter "EXPECTED FAIL (%s %s)"
-          ( PARSER.name_of_loc loc ) s )
+          ( Parser.name_of_loc loc ) s )
   end else begin
     state.state_tests_failed <- ter :: state.state_tests_failed ;
     let status =
-      test_status ter "FAIL (%s %s)" ( PARSER.name_of_loc loc ) s
+      test_status ter "FAIL (%s %s)" ( Parser.name_of_loc loc ) s
     in
     output state "%s" status;
     buffer_test state status;
@@ -106,9 +105,9 @@ let test_is_skip ter =
   let t = ter.tester_test in
   let state = ter.tester_state in
   state.state_tests_skipped <- ter :: state.state_tests_skipped ;
-  if not !keep_skipped then MISC.remove_rec ( tester_dir ter ) ;
+  if not !keep_skipped then Misc.remove_rec ( tester_dir ter ) ;
   buffer_test state
-    (test_status ter "SKIP (%s)" ( PARSER.name_of_loc t.test_loc ) )
+    (test_status ter "SKIP (%s)" ( Parser.name_of_loc t.test_loc ) )
 
 let exec_action_no_check ter action =
   match action with
@@ -120,12 +119,13 @@ let exec_action_no_check ter action =
   | AT_CAPTURE_FILE file ->
       ter.tester_captured_files <- StringSet.add file ter.tester_captured_files
   | AT_SKIP
-  | AT_FAIL _
+  | AT_FAIL
   | AT_XFAIL_IF _
   | AT_SKIP_IF _
   | AT_FAIL_IF _
   | AT_CHECK _
   | AT_COPY _
+  | AT_LINK _
     ->
       Printf.kprintf failwith "exec_action: %s not implemented"
         ( string_of_action action )
@@ -169,7 +169,7 @@ let check_of_AT_FAIL_IF ter check_step check_loc check_command =
     check_stderr = Ignore ;
     check_test = ter.tester_test;
     check_run_if_pass = [] ;
-    check_run_if_fail = [ AT_FAIL { loc = check_loc } ] ;
+    check_run_if_fail = [ AT_FAIL ] ;
   }
 
 
@@ -226,12 +226,11 @@ let start_test state t =
     tester_renvs = [] ;
     tester_fail_expected = false ;
     tester_captured_files = StringSet.empty ;
-    tester_fail_reason = None ;
   }
   in
   let test_dir = tester_dir ter in
   if Sys.file_exists test_dir then
-    MISC.remove_all test_dir
+    Misc.remove_all test_dir
   else
     Unix.mkdir test_dir 0o755;
 
@@ -307,48 +306,6 @@ let start_check ter check =
     checker_pid ;
   }
 
-let replace str ~by ~s =
-  let re = Re.Posix.compile_pat str in
-  Re.replace_string re ~by s
-
-let subst_env = ref StringMap.empty
-let subst_env var =
-  match StringMap.find var !subst_env with
-  | pair -> pair
-  | exception Not_found ->
-      let pair =
-        match Sys.getenv var with
-        | exception Not_found -> None
-        | str ->
-            let by = Printf.sprintf "${%s}" var in
-            Some (str, by)
-      in
-      subst_env := StringMap.add var pair !subst_env;
-      pair
-
-let read_subst_output ter file =
-  let s = EzFile.read_file file in
-  let t = ter.tester_test in
-  List.fold_left (fun s var ->
-      if var = "AUTOFONCE" then
-        let state = ter.tester_state in
-        let p = state.state_project in
-        let test_dir = tester_dir ter in
-        let s = replace test_dir ~by:"${AUTOFONCE_RUN_DIR}/${TEST_ID}" ~s in
-        let s =
-          if p.project_build_dir <> p.project_source_dir then
-            replace p.project_build_dir ~by:"${AUTOFONCE_BUILD_DIR}" ~s
-          else
-            s
-        in
-        let s = replace p.project_source_dir ~by:"${AUTOFONCE_SOURCE_DIR}" ~s in
-        s
-      else
-        match subst_env var with
-        | None -> s
-        | Some (str, by) -> replace str ~by ~s
-    ) s t.test_subst
-
 let check_failures cer retcode =
   let check = cer.checker_check in
   let ter = cer.checker_tester in
@@ -366,14 +323,11 @@ let check_failures cer retcode =
     | Ignore -> []
     | Content expected ->
         let stdout_file = test_dir // file in
-        let subst_stdout = read_subst_output ter stdout_file in
-        if subst_stdout <> expected then begin
-          let stdout_expected_file = stdout_file ^ ".expected" in
-          EzFile.write_file stdout_expected_file expected ;
-          let stdout_subst_file = stdout_file ^ ".subst" in
-          EzFile.write_file stdout_subst_file subst_stdout ;
-          MISC.command_ "diff -u %s %s > %s.diff"
-            stdout_subst_file stdout_expected_file stdout_file;
+        if EzFile.read_file stdout_file <> expected then begin
+          let stdout_expected = stdout_file ^ ".expected" in
+          EzFile.write_file stdout_expected expected ;
+          Misc.command_ "diff -u %s %s > %s.diff"
+            stdout_file stdout_expected stdout_file;
           [ kind ]
         end else []
   in

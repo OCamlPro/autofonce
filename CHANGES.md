@@ -20,27 +20,14 @@
     check scripts
 * Add `AT_COPY(files)` to copy files from the test source directory to the
     test run directory
-* Add `AT_LINK(files)`, same as `AT_COPY`, but symlink instead of copy
-* Add `AT_COPY_ALL([true|false])`. If true, used before tests, make tests
-  copy all non .at files in their directory as if `AT_COPY` had been used.
-  If false, disable copying files for following tests.
-* Add `AT_LINK_ALL()`, same as `AT_COPY_ALL`, but symlink instead of copy
+* Add `AT_LINK(files)`, same as AT_COPY, but symlink instead of copy
 * Add a testsuite in `test/testsuite.at`
-* Implements `AT_FAIL_IF([shell-cond])`
+* Implements `AT_FAIL_IF`
 * Don't promote failing `AT_CHECK` with `run-if-fail` or `run-if-pass`
 * Exit with non-zero status on failed tests
 * If testsuite location is a directory instead of a file, scan all directoies
-  and sub-directories for files `*.at` containing tests, with copying enabled
-  (`AT_COPY_ALL([true])`).
+  and sub-directories for files `*.at` containing tests.
 * New option `-o LOGFILE` to specify the log file
-* New command `autofonce config` to print the currently read config
-* Add `AT_SUBST(variables)` to replace occurrences of these env variables
-   in the stdout/stderr. A special case is `AUTOFONCE` that replaces
-   `${AUTOFONCE_RUN_DIR}/${TEST_ID}`, `${AUTOFONCE_BUILD_DIR}` and
-   `${AUTOFONCE_SOURCE_DIR}`.
-* Improved version of `results.log`:
-  * Include all files from failed checks and honor captured files
-  * New option `captured_files` in `autofonce.toml` to include some project files
 
 ## v0.7 ( 2023-02-09 )
 

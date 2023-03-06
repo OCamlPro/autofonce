@@ -12,6 +12,8 @@
 
 open Ezcmd.V2
 open EZCMD.TYPES
+open Ez_file.V1
+open EzFile.OP
 
 module Patch_lines = Autofonce_patch.Patch_lines
 module Parser = Autofonce_core.Parser
@@ -66,10 +68,176 @@ let promote p tc suite =
           Printf.bprintf b "AT_KEYWORDS(%s)\n"
             (Parser.m4_escape (String.concat " " list))
     end;
-    Promote.print_actions
-      ~not_exit:!not_exit
-      ~keep_old:false
-      b t.test_actions;
+
+    let rec print_check check =
+      let check_dir = Runner_common.check_dir check in
+      let check_prefix = check_dir // Runner_common.check_prefix check in
+      Printf.bprintf b "%s" ( Parser.m4_escape check.check_command );
+      (* AT_CHECK can be used as a 'if', in which case either
+         run-if-pass or run-if-fail is not empty. Otherwise,
+         the check must pass after promotion.
+      *)
+      if
+        check.check_run_if_pass = [] && check.check_run_if_fail = []
+      then begin
+
+        begin
+          let retcode =
+            if !not_exit then check.check_retcode
+            else
+              match check.check_retcode with
+              | None -> None
+              | Some old_retcode ->
+                  let check_exit = Printf.sprintf "%s.exit" check_prefix in
+                  if Sys.file_exists check_exit then
+                    let s = EzFile.read_file check_exit in
+                    let retcode = int_of_string s in
+                    Some retcode
+                  else
+                    Some old_retcode
+          in
+          match retcode with
+          | None ->
+              Printf.bprintf b ", [ignore]"
+          | Some retcode ->
+              if retcode <> 0 then
+                Printf.bprintf b ", [%d]" retcode
+              else
+                match check.check_stdout, check.check_stderr with
+                | Ignore, Ignore -> ()
+                | _ ->
+                    Printf.bprintf b ", [%d]" retcode;
+        end;
+
+        begin
+          let stdout =
+            match check.check_stdout with
+            | Ignore -> Ignore
+            | Content old_content ->
+                let check_stdout = Printf.sprintf "%s.out" check_prefix in
+                if Sys.file_exists check_stdout then
+                  let s = EzFile.read_file check_stdout in
+                  Content s
+                else
+                  Content old_content
+          in
+          match stdout with
+          | Content old_content ->
+              Printf.bprintf b ", %s" (Parser.m4_escape old_content)
+          | Ignore ->
+              match check.check_stderr with
+              | Ignore -> ()
+              | _ ->
+                  Printf.bprintf b ", [ignore]"
+        end;
+
+        begin
+          let stderr =
+            match check.check_stderr with
+            | Ignore -> Ignore
+            | Content old_content ->
+                let check_stderr = Printf.sprintf "%s.err" check_prefix in
+                if Sys.file_exists check_stderr then
+                  let s = EzFile.read_file check_stderr in
+                  Content s
+                else
+                  Content old_content
+          in
+          match stderr with
+          | Ignore -> ()
+          | Content content ->
+              Printf.bprintf b ", %s" (Parser.m4_escape content)
+        end;
+
+      end else begin (* no promotion of this test, only internal ones *)
+
+        begin
+          match check.check_retcode with
+          | None ->
+              Printf.bprintf b ", [ignore]"
+          | Some retcode ->
+              Printf.bprintf b ", [%d]" retcode;
+        end;
+
+        begin
+          match check.check_stdout with
+          | Ignore ->
+              Printf.bprintf b ", [ignore]"
+          | Content content ->
+              Printf.bprintf b ", %s" (Parser.m4_escape content)
+        end;
+
+        begin
+          match check.check_stderr with
+          | Ignore ->
+              Printf.bprintf b ", [ignore]"
+          | Content content ->
+              Printf.bprintf b ", %s" (Parser.m4_escape content)
+        end;
+
+        begin
+          match check.check_run_if_fail with
+          | [] ->
+              Printf.bprintf b ", []"
+          | actions ->
+              Printf.bprintf b ", [\n";
+              print_actions actions;
+              Printf.bprintf b "]";
+        end;
+
+        begin
+          match check.check_run_if_pass with
+          | [] -> ()
+          | actions ->
+              Printf.bprintf b ", [\n";
+              print_actions actions;
+              Printf.bprintf b "]"
+        end
+      end
+
+    and print_action action =
+      match action with
+      | AT_CLEANUP _ -> Printf.bprintf b "\nAT_CLEANUP";
+      | AT_DATA { file ; content } ->
+          Printf.bprintf b "AT_DATA(%s,%s)\n"
+            ( Parser.m4_escape file )
+            ( Parser.m4_escape content )
+      | AT_ENV string ->
+          Printf.bprintf b "AT_ENV(%s)\n"
+            ( Parser.m4_escape string )
+      | AT_CAPTURE_FILE string ->
+          Printf.bprintf b "AT_CAPTURE_FILE(%s)\n"
+            ( Parser.m4_escape string )
+      | AT_XFAIL ->
+          Printf.bprintf b "AT_XFAIL_IF([true])\n"
+      | AT_SKIP ->
+          Buffer.add_string b "AT_SKIP_IF([true])\n"
+      | AT_FAIL ->
+          Buffer.add_string b "AT_FAIL_IF([true])\n"
+      | AT_XFAIL_IF { command ; _ } ->
+          Printf.bprintf b "AT_XFAIL_IF([%s])\n" ( Parser.m4_escape command )
+      | AT_SKIP_IF { command ; _ } ->
+          Printf.bprintf b "AT_SKIP_IF([%s])\n" ( Parser.m4_escape command )
+      | AT_FAIL_IF { command ; _ } ->
+          Printf.bprintf b "AT_FAIL_IF([%s])\n" ( Parser.m4_escape command )
+      | AT_COPY { files ; _ } ->
+          Printf.bprintf b "AT_COPY([%s])\n"
+            ( String.concat "],["
+                ( List.map Parser.m4_escape files ))
+      | AT_LINK { files ; _ } ->
+          Printf.bprintf b "AT_LINK([%s])\n"
+            ( String.concat "],["
+                ( List.map Parser.m4_escape files ))
+      | AT_CHECK  check ->
+          Buffer.add_string b "AT_CHECK(";
+          print_check check ;
+          Buffer.add_string b ")\n"
+
+    and print_actions actions =
+      List.iter print_action actions
+
+    in
+    print_actions t.test_actions;
 
     let content = Buffer.contents b in
     Patch_lines.replace_block ~file ~line_first ~line_last content

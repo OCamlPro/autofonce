@@ -10,8 +10,6 @@
 (*                                                                        *)
 (**************************************************************************)
 
-open EzCompat
-
 type location = Autofonce_m4.M4Types.location
 
 type check_output =
@@ -39,7 +37,7 @@ and action =
   | AT_CAPTURE_FILE of string
   | AT_XFAIL
   | AT_XFAIL_IF of { step : step ; loc : location ; command : string }
-  | AT_FAIL of { loc : location  }
+  | AT_FAIL
   | AT_FAIL_IF of { step : step ; loc : location ; command : string }
   | AT_SKIP
   | AT_SKIP_IF of { step : step ; loc : location ; command : string }
@@ -49,11 +47,9 @@ and action =
   (* extensions *)
   | AT_ENV of string
   | AT_COPY of { step : step ; loc : location ;
-                 files : string list ;
-                 command : string ;
-                 copy : bool ; (* copy or link ? *)
-                 promote : bool ; (* explicit or implicit ? *)
-               }
+                 files : string list ; command : string }
+  | AT_LINK of { step : step ; loc : location ;
+                 files : string list ; command : string }
 
 and test = { (* variable name is `t` *)
   test_suite : suite ;
@@ -62,7 +58,6 @@ and test = { (* variable name is `t` *)
   test_id : int ;
   test_banner : string ;
   test_env : string ;
-  test_subst : string list ;
   mutable test_keywords : string list ;
   mutable test_actions : action list ;
 }
@@ -89,17 +84,18 @@ let rec string_of_action = function
       Printf.sprintf "AT_CAPTURE_FILE %s" string
   | AT_XFAIL -> "AT_XFAIL_IF([true])"
   | AT_SKIP -> "AT_SKIP_IF([true])"
-  | AT_FAIL _ -> "AT_FAIL_IF([true])"
+  | AT_FAIL -> "AT_FAIL_IF([true])"
   | AT_XFAIL_IF { command ; _ } ->
       Printf.sprintf "AT_XFAIL_IF([%s])" command
   | AT_SKIP_IF { command ; _ } ->
       Printf.sprintf "AT_SKIP_IF([%s])" command
   | AT_FAIL_IF { command ; _ } ->
       Printf.sprintf "AT_FAIL_IF([%s])" command
-  | AT_COPY { files ; copy ; promote ; _ } ->
-      Printf.sprintf "AT_%s%s([%s])"
-        (if copy then "COPY" else "LINK")
-        (if promote then "" else "_ALL")
+  | AT_COPY { files ; _ } ->
+      Printf.sprintf "AT_COPY([%s])"
+        ( String.concat "],[" files )
+  | AT_LINK { files ; _ } ->
+      Printf.sprintf "AT_LINK([%s])"
         ( String.concat "],[" files )
   | AT_CHECK  check ->
       Printf.sprintf "AT_CHECK %s" ( string_of_check check )
