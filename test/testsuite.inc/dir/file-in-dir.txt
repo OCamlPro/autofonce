@@ -1,4 +1,4 @@
 This
-afile
+file
 is
 dir/file-in-dir.txt
