@@ -5,8 +5,8 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sub-commands and Arguments &mdash; autofonce master
- (0dc8415
-) (2023/03/02 20:31) documentation</title>
+ (7a69ff1
+) (2023/03/13 23:02) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
@@ -32,7 +32,7 @@
           </a>
               <div class="version">
                 master
- (0dc8415
+ (7a69ff1
 )
               </div>
 <div role="search">
@@ -50,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Running <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code></a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Sub-commands and Arguments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#autofonce-config">autofonce config</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#autofonce-init">autofonce init</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#autofonce-list">autofonce list</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#autofonce-new">autofonce new</a></li>
@@ -95,7 +96,10 @@
 <li><p><code class="code docutils literal notranslate"><span class="pre">-v</span></code> or <code class="code docutils literal notranslate"><span class="pre">--verbose</span></code>   Increase verbosity level</p></li>
 </ul>
 <p>Overview of sub-commands:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">init</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">config</span>
+  <span class="nc">Print</span> <span class="n">config</span> <span class="k">of</span> <span class="n">the</span> <span class="n">current</span> <span class="n">project</span>
+
+<span class="n">init</span>
   <span class="nc">Initialize</span> <span class="n">project</span> <span class="k">to</span> <span class="n">run</span> <span class="n">the</span> <span class="n">testsuite</span> <span class="k">with</span> <span class="n">autofonce</span>
 
 <span class="kt">list</span>
@@ -111,6 +115,32 @@
   <span class="nc">Run</span> <span class="n">testsuite</span> <span class="k">of</span> <span class="n">the</span> <span class="n">current</span> <span class="n">project</span>
 </pre></div>
 </div>
+<section id="autofonce-config">
+<h2>autofonce config<a class="headerlink" href="#autofonce-config" title="Permalink to this headline"></a></h2>
+<p>Print config of the current project</p>
+<p><strong>DESCRIPTION</strong></p>
+<p>List the tests, with their numeric identifier, their name and their location in the testsuite files.</p>
+<p><strong>USAGE</strong></p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">autofonce</span> <span class="n">config</span> <span class="nc">ID</span> <span class="o">[</span><span class="nc">OPTIONS</span><span class="o">]</span>
+</pre></div>
+</div>
+<p>Where options are:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">ID</span></code>   Exec ending at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-E</span> <span class="pre">TESTSUITE.sh</span></code> or <code class="code docutils literal notranslate"><span class="pre">--env</span> <span class="pre">TESTSUITE.sh</span></code>   Env file for all tests</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-I</span> <span class="pre">DIR</span></code>   Add DIR to search path for tests</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-N</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--not</span> <span class="pre">KEYWORD</span></code>   Skip tests matching KEYWORD</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-T</span> <span class="pre">TESTSUITE.at</span></code> or <code class="code docutils literal notranslate"><span class="pre">--at</span> <span class="pre">TESTSUITE.at</span></code>   Path of the file containing the testsuite</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--after</span> <span class="pre">ID</span></code>   Exec starting at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--before</span> <span class="pre">ID</span></code>   Exec ending at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--failed</span></code>   Run only previously failed tests (among selected tests)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--failures</span> <span class="pre">REASON</span></code>   Run failed tests with given failure</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-i</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-k</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keywords</span> <span class="pre">KEYWORD</span></code>   Run only tests matching KEYWORD</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-o</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--output</span> <span class="pre">TESTSUITE</span></code>   Path of the output file (default: _autofonce/results.log)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">TESTSUITE</span></code>   Name of the testsuite to run (as specified in ‘autofonce.toml’)</p></li>
+</ul>
+</section>
 <section id="autofonce-init">
 <h2>autofonce init<a class="headerlink" href="#autofonce-init" title="Permalink to this headline"></a></h2>
 <p>Initialize project to run the testsuite with autofonce</p>
