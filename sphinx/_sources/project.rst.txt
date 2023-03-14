@@ -4,7 +4,11 @@
 Project Configuration
 =====================
 
-There are actually three parts in the project configuration:
+The project configuration is specified in either the
+:code:`autofonce.toml` file. or the :code:`.autofonce` file (chosen in
+this order).
+
+There are actually three parts in such a project configuration file:
 
 * General variables, such as anchors to detect source and
   build directories
@@ -28,13 +32,13 @@ The general variables are:
 * :code:`project.source_anchors`: a list of files. :code:`autofonce`
   uses this list to try to detect the source directory of the project
   (i.e. the project root or topdir), from where it is run. The source
-  directory is the first directory found that contains the file while
-  moving to upper directories. If no directory is found for the first
-  anchor, the second anchor is used, and so on. Finally, either a
-  :code:`"!"` anchor is used and triggers a failure, or the current
-  directory is used. :code:`autofonce` creates a variable
-  :code:`AUTOFONCE_SOURCE_DIR` before the test environment with the
-  value found for this directory.
+  directory is the first directory found that contains an existing
+  file at the specified path while moving to upper directories. If no
+  directory is found for the first anchor, the second anchor is used,
+  and so on. Finally, either a :code:`"!"` anchor is used and triggers
+  a failure, or the current directory is used. :code:`autofonce`
+  creates a variable :code:`AUTOFONCE_SOURCE_DIR` before the test
+  environment with the value found for this directory.
 
 * :code:`project.build_anchors`: a list of files. :code:`autofonce`
   must always be run from within the build directory or a
@@ -43,12 +47,36 @@ The general variables are:
   :code:`AUTOFONCE_BUILD_DIR` before the test environment with the
   value found for this directory.
 
+* :code:`project.build_dir_candidates`: a list of anchors from where
+  to look for :code:`build_anchors`. By default, :code:`autofonce`
+  uses the current directory and search for build anchors in upper
+  directories.  This option can be used to run :code:`autofonce` from
+  outside the build directory, by trying to detect the location of the
+  build directory. Once one of the :code:`build_dir_candidates` has
+  been found, the directory it points to will be used as the current
+  directory to find the :code:`build_anchors`.
+
+* :code:`project.run_from`: where the :code:`_autofonce/` directory will be
+  created. This option can take 3 values: :code:`"build"` for the
+  build directory, :code:`"source"` for the source directory, and
+  :code:`"config"` for the directory containing the configuration
+  file.
+
+* :code:`project.captured_files`: a list of paths in the source
+  directory. If one of the tests fails, :code:`autofonce` will try to
+  include all these files into the generated
+  :code:`_autofonce/results.log` file. These files should be text
+  files, as `aufofonce` does not use any encoding mechanism.
+
 For example, for :code:`gnucobol`, this section looks like::
 
   [project]
   name = "gnucobol"
   source_anchors = [ "tests/testsuite.at", "!" ]
   build_anchors = [ "cobc/cobc", "!" ]
+  build_dir_candidates = [ "_build" ]
+  run_from = "build"
+  captured_files = [ "_build/atlocal", "_build/atconfig" ]
 
 .. _Testsuite Descriptions:
 
@@ -83,6 +111,17 @@ Such a section looks like::
 If your project contains several testsuites, you can define a section
 for each of them, with different names, file names or environments for
 example.
+
+Note that, if a testsuite is not available in the project
+configuration file, it is possible to specify one directly from the
+command line by providing the following arguments:
+
+* :code:`-T path/to/tests` (mandatory): path to the file or directory
+  containing the testsuite
+* :code:`-E path/to/env.sh` (optional): path to a script that can be
+  used to specify the environment (ran from every test dir)
+* :code:`-I subdir` (optional): path to a subdirectory where included
+  tests should be search in
 
 Environment Descriptions
 ------------------------

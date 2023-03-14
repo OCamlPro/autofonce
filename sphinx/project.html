@@ -5,8 +5,8 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Configuration &mdash; autofonce master
- (7a69ff1
-) (2023/03/13 23:02) documentation</title>
+ (7c29073
+) (2023/03/14 15:14) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
@@ -32,7 +32,7 @@
           </a>
               <div class="version">
                 master
- (7a69ff1
+ (7c29073
 )
               </div>
 <div role="search">
@@ -87,7 +87,10 @@
              
   <section id="project-configuration">
 <span id="id1"></span><h1>Project Configuration<a class="headerlink" href="#project-configuration" title="Permalink to this headline"></a></h1>
-<p>There are actually three parts in the project configuration:</p>
+<p>The project configuration is specified in either the
+<code class="code docutils literal notranslate"><span class="pre">autofonce.toml</span></code> file. or the <code class="code docutils literal notranslate"><span class="pre">.autofonce</span></code> file (chosen in
+this order).</p>
+<p>There are actually three parts in such a project configuration file:</p>
 <ul class="simple">
 <li><p>General variables, such as anchors to detect source and
 build directories</p></li>
@@ -107,25 +110,46 @@ configuration.</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">project.source_anchors</span></code>: a list of files. <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code>
 uses this list to try to detect the source directory of the project
 (i.e. the project root or topdir), from where it is run. The source
-directory is the first directory found that contains the file while
-moving to upper directories. If no directory is found for the first
-anchor, the second anchor is used, and so on. Finally, either a
-<code class="code docutils literal notranslate"><span class="pre">&quot;!&quot;</span></code> anchor is used and triggers a failure, or the current
-directory is used. <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> creates a variable
-<code class="code docutils literal notranslate"><span class="pre">AUTOFONCE_SOURCE_DIR</span></code> before the test environment with the
-value found for this directory.</p></li>
+directory is the first directory found that contains an existing
+file at the specified path while moving to upper directories. If no
+directory is found for the first anchor, the second anchor is used,
+and so on. Finally, either a <code class="code docutils literal notranslate"><span class="pre">&quot;!&quot;</span></code> anchor is used and triggers
+a failure, or the current directory is used. <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code>
+creates a variable <code class="code docutils literal notranslate"><span class="pre">AUTOFONCE_SOURCE_DIR</span></code> before the test
+environment with the value found for this directory.</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">project.build_anchors</span></code>: a list of files. <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code>
 must always be run from within the build directory or a
 sub-directory. It uses this variable similarly to
 <code class="code docutils literal notranslate"><span class="pre">source_anchors</span></code>.  <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> creates a variable
 <code class="code docutils literal notranslate"><span class="pre">AUTOFONCE_BUILD_DIR</span></code> before the test environment with the
 value found for this directory.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">project.build_dir_candidates</span></code>: a list of anchors from where
+to look for <code class="code docutils literal notranslate"><span class="pre">build_anchors</span></code>. By default, <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code>
+uses the current directory and search for build anchors in upper
+directories.  This option can be used to run <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> from
+outside the build directory, by trying to detect the location of the
+build directory. Once one of the <code class="code docutils literal notranslate"><span class="pre">build_dir_candidates</span></code> has
+been found, the directory it points to will be used as the current
+directory to find the <code class="code docutils literal notranslate"><span class="pre">build_anchors</span></code>.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">project.run_from</span></code>: where the <code class="code docutils literal notranslate"><span class="pre">_autofonce/</span></code> directory will be
+created. This option can take 3 values: <code class="code docutils literal notranslate"><span class="pre">&quot;build&quot;</span></code> for the
+build directory, <code class="code docutils literal notranslate"><span class="pre">&quot;source&quot;</span></code> for the source directory, and
+<code class="code docutils literal notranslate"><span class="pre">&quot;config&quot;</span></code> for the directory containing the configuration
+file.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">project.captured_files</span></code>: a list of paths in the source
+directory. If one of the tests fails, <code class="code docutils literal notranslate"><span class="pre">autofonce</span></code> will try to
+include all these files into the generated
+<code class="code docutils literal notranslate"><span class="pre">_autofonce/results.log</span></code> file. These files should be text
+files, as <cite>aufofonce</cite> does not use any encoding mechanism.</p></li>
 </ul>
 <p>For example, for <code class="code docutils literal notranslate"><span class="pre">gnucobol</span></code>, this section looks like:</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="n">project</span><span class="o">]</span>
 <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;gnucobol&quot;</span>
 <span class="n">source_anchors</span> <span class="o">=</span> <span class="o">[</span> <span class="s2">&quot;tests/testsuite.at&quot;</span><span class="o">,</span> <span class="s2">&quot;!&quot;</span> <span class="o">]</span>
 <span class="n">build_anchors</span> <span class="o">=</span> <span class="o">[</span> <span class="s2">&quot;cobc/cobc&quot;</span><span class="o">,</span> <span class="s2">&quot;!&quot;</span> <span class="o">]</span>
+<span class="n">build_dir_candidates</span> <span class="o">=</span> <span class="o">[</span> <span class="s2">&quot;_build&quot;</span> <span class="o">]</span>
+<span class="n">run_from</span> <span class="o">=</span> <span class="s2">&quot;build&quot;</span>
+<span class="n">captured_files</span> <span class="o">=</span> <span class="o">[</span> <span class="s2">&quot;_build/atlocal&quot;</span><span class="o">,</span> <span class="s2">&quot;_build/atconfig&quot;</span> <span class="o">]</span>
 </pre></div>
 </div>
 </section>
@@ -156,6 +180,17 @@ to use for the tests of this testsuite. The default environment is
 <p>If your project contains several testsuites, you can define a section
 for each of them, with different names, file names or environments for
 example.</p>
+<p>Note that, if a testsuite is not available in the project
+configuration file, it is possible to specify one directly from the
+command line by providing the following arguments:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">-T</span> <span class="pre">path/to/tests</span></code> (mandatory): path to the file or directory
+containing the testsuite</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-E</span> <span class="pre">path/to/env.sh</span></code> (optional): path to a script that can be
+used to specify the environment (ran from every test dir)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-I</span> <span class="pre">subdir</span></code> (optional): path to a subdirectory where included
+tests should be search in</p></li>
+</ul>
 </section>
 <section id="environment-descriptions">
 <h2>Environment Descriptions<a class="headerlink" href="#environment-descriptions" title="Permalink to this headline"></a></h2>
