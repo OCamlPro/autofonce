@@ -14,6 +14,7 @@ Welcome to autofonce
    about
    install
    usage
+   format
    commands
    project
    compat
