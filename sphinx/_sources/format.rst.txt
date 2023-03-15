@@ -71,6 +71,57 @@ for any of its macros, but will use the previous naming scheme during
 promotion (i.e. :code:`AT_` for Autoconf Standard macros, and
 :code:`AF_` for its own extension macros).
 
+Escaping within arguments
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Arguments can be parsed using two different passes:
+
+* Most arguments are converted to strings using the two passes
+* As an exception, the *run-if-fail* and *run-if-pass* arguments of
+  :code:`AT_CHECK()` (4th and 5th arguments) go only through the first
+  pass and then their content is interpreted as a list of macros.
+
+The two passes can be described as follows:
+
+* Brackets must always match each-other, i.e. a left bracket must
+  always be matched by a right bracket
+  (:code:`...[...]...`). Quadrigraphs (during the second pass) should
+  be used for isolated brackets.
+
+* During the first pass:
+
+  * Spaces before the first non space character of the argument are
+    skipped
+  * Brackets at the first level are removed: :code:`A[B]C[D]E` becomes
+    :code:`ABCDE`
+  * Other levels of brackets are kept until the second
+    pass::code:`A[B[C]D]E` becomes :code:`AB[C]DE`
+  * Parentheses outside of the first level of brackets must match
+    each-other. A non-matched left parenthesis fails as the argument
+    never terminates, while a non-matched right parenthesis finishes
+    the last argument of the macro.
+  * :code:`#` is interpreted as a simple character and not a comment
+
+* During the second pass:
+
+  * Brackets at the first level are removed: :code:`A[B]C[D]E` becomes
+    :code:`ABCDE`. Since these brackets were formerly the second level
+    of bracket of the first pass, it means that an initial
+    :code:`A[B[C]D]E` argument becomes :code:`ABCDE` after the two
+    passes.
+  * Other levels of brackets are kept
+  * Parenthesis are not interpreted as special characters
+  * The following list of escape sequences (quadrigraphs) are translated:
+
+    * :code:`@<:@` becomes :code:`[`
+    * :code:`@:>@` becomes :code:`]`
+    * :code:`@$|@` becomes :code:`$`
+    * :code:`@%:@` becomes :code:`#`
+    * :code:`@&t@` becomes :code:`` (empty)
+    * :code:`@{:@` becomes :code:`(` (version > 0.8)
+    * :code:`@:}@` becomes :code:`)` (version > 0.8)
+
+
 Toplevel Macros
 ~~~~~~~~~~~~~~~
 

@@ -5,8 +5,8 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Writing Tests for Autofonce &mdash; autofonce master
- (ac6f21a
-) (2023/03/15 18:20) documentation</title>
+ (2c93b78
+) (2023/03/15 23:12) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
@@ -32,7 +32,7 @@
           </a>
               <div class="version">
                 master
- (ac6f21a
+ (2c93b78
 )
               </div>
 <div role="search">
@@ -53,6 +53,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#example-of-a-simple-test">Example of a Simple Test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#structure-of-a-test-suite">Structure of a Test Suite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#test-format-specification">Test Format Specification</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#escaping-within-arguments">Escaping within arguments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#toplevel-macros">Toplevel Macros</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#test-macros">Test Macros</a></li>
 </ul>
@@ -160,6 +161,60 @@ used. However, <code class="code docutils literal notranslate"><span class="pre"
 for any of its macros, but will use the previous naming scheme during
 promotion (i.e. <code class="code docutils literal notranslate"><span class="pre">AT_</span></code> for Autoconf Standard macros, and
 <code class="code docutils literal notranslate"><span class="pre">AF_</span></code> for its own extension macros).</p>
+<section id="escaping-within-arguments">
+<h3>Escaping within arguments<a class="headerlink" href="#escaping-within-arguments" title="Permalink to this headline"></a></h3>
+<p>Arguments can be parsed using two different passes:</p>
+<ul class="simple">
+<li><p>Most arguments are converted to strings using the two passes</p></li>
+<li><p>As an exception, the <em>run-if-fail</em> and <em>run-if-pass</em> arguments of
+<code class="code docutils literal notranslate"><span class="pre">AT_CHECK()</span></code> (4th and 5th arguments) go only through the first
+pass and then their content is interpreted as a list of macros.</p></li>
+</ul>
+<p>The two passes can be described as follows:</p>
+<ul class="simple">
+<li><p>Brackets must always match each-other, i.e. a left bracket must
+always be matched by a right bracket
+(<code class="code docutils literal notranslate"><span class="pre">...[...]...</span></code>). Quadrigraphs (during the second pass) should
+be used for isolated brackets.</p></li>
+<li><p>During the first pass:</p>
+<ul>
+<li><p>Spaces before the first non space character of the argument are
+skipped</p></li>
+<li><p>Brackets at the first level are removed: <code class="code docutils literal notranslate"><span class="pre">A[B]C[D]E</span></code> becomes
+<code class="code docutils literal notranslate"><span class="pre">ABCDE</span></code></p></li>
+<li><p>Other levels of brackets are kept until the second
+pass:<code class="code docutils literal notranslate"><span class="pre">A[B[C]D]E</span></code> becomes <code class="code docutils literal notranslate"><span class="pre">AB[C]DE</span></code></p></li>
+<li><p>Parentheses outside of the first level of brackets must match
+each-other. A non-matched left parenthesis fails as the argument
+never terminates, while a non-matched right parenthesis finishes
+the last argument of the macro.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">#</span></code> is interpreted as a simple character and not a comment</p></li>
+</ul>
+</li>
+<li><p>During the second pass:</p>
+<ul>
+<li><p>Brackets at the first level are removed: <code class="code docutils literal notranslate"><span class="pre">A[B]C[D]E</span></code> becomes
+<code class="code docutils literal notranslate"><span class="pre">ABCDE</span></code>. Since these brackets were formerly the second level
+of bracket of the first pass, it means that an initial
+<code class="code docutils literal notranslate"><span class="pre">A[B[C]D]E</span></code> argument becomes <code class="code docutils literal notranslate"><span class="pre">ABCDE</span></code> after the two
+passes.</p></li>
+<li><p>Other levels of brackets are kept</p></li>
+<li><p>Parenthesis are not interpreted as special characters</p></li>
+<li><p>The following list of escape sequences (quadrigraphs) are translated:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">&#64;&lt;:&#64;</span></code> becomes <code class="code docutils literal notranslate"><span class="pre">[</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">&#64;:&gt;&#64;</span></code> becomes <code class="code docutils literal notranslate"><span class="pre">]</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">&#64;$|&#64;</span></code> becomes <code class="code docutils literal notranslate"><span class="pre">$</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">&#64;%:&#64;</span></code> becomes <code class="code docutils literal notranslate"><span class="pre">#</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">&#64;&amp;t&#64;</span></code> becomes :code:`` (empty)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">&#64;{:&#64;</span></code> becomes <code class="code docutils literal notranslate"><span class="pre">(</span></code> (version &gt; 0.8)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">&#64;:}&#64;</span></code> becomes <code class="code docutils literal notranslate"><span class="pre">)</span></code> (version &gt; 0.8)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
 <section id="toplevel-macros">
 <h3>Toplevel Macros<a class="headerlink" href="#toplevel-macros" title="Permalink to this headline"></a></h3>
 <p>These macros should only be used outside of a test.</p>
