@@ -141,4 +141,18 @@
   )
  )
 
+(package
+ (name autofonce_api)
+ (synopsis "autofonce: modern runner for GNU Autoconf Testsuites")
+ (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
+ (depends
+   (ocaml (>= 4.10.0))
+   (autofonce_lib (= version))
+   ppx_inline_test
+   ppx_expect
+   odoc
+   ocamlformat
+  )
+ )
+
 

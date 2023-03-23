@@ -20,7 +20,7 @@ all: build
 build:
 	./scripts/before.sh build
 	opam exec -- dune build @install
-	./scripts/copy-bin.sh autofonce autofonce_core autofonce_lib autofonce_m4 autofonce_share autofonce_patch autofonce_config autofonce_misc
+	./scripts/copy-bin.sh autofonce autofonce_core autofonce_lib autofonce_m4 autofonce_share autofonce_patch autofonce_config autofonce_misc autofonce_api
 	./scripts/after.sh build
 
 build-deps:
