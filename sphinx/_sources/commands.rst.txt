@@ -51,7 +51,11 @@ Where options are:
 
 * :code:`ID`   Exec ending at test ID
 
+* :code:`-A` or :code:`--match-all`   Run tests matching all keywords instead of only one
+
 * :code:`-E TESTSUITE.sh` or :code:`--env TESTSUITE.sh`   Env file for all tests
+
+* :code:`-F` or :code:`--failed`   Run only previously failed tests (among selected tests)
 
 * :code:`-I DIR`   Add DIR to search path for tests
 
@@ -59,17 +63,15 @@ Where options are:
 
 * :code:`-T TESTSUITE.at` or :code:`--at TESTSUITE.at`   Path of the file containing the testsuite
 
-* :code:`--after ID`   Exec starting at test ID
-
-* :code:`--before ID`   Exec ending at test ID
-
-* :code:`--failed`   Run only previously failed tests (among selected tests)
-
 * :code:`--failures REASON`   Run failed tests with given failure
+
+* :code:`--ge ID` or :code:`--after ID`   Exec starting at test ID
 
 * :code:`-i ID` or :code:`--ids ID`   Run only test ID
 
 * :code:`-k KEYWORD` or :code:`--keywords KEYWORD`   Run only tests matching KEYWORD
+
+* :code:`--le ID` or :code:`--before ID`   Exec ending at test ID
 
 * :code:`-o TESTSUITE` or :code:`--output TESTSUITE`   Path of the output file (default: _autofonce/results.log)
 
@@ -152,7 +154,11 @@ Where options are:
 
 * :code:`ID`   Exec ending at test ID
 
+* :code:`-A` or :code:`--match-all`   Run tests matching all keywords instead of only one
+
 * :code:`-E TESTSUITE.sh` or :code:`--env TESTSUITE.sh`   Env file for all tests
+
+* :code:`-F` or :code:`--failed`   Run only previously failed tests (among selected tests)
 
 * :code:`-I DIR`   Add DIR to search path for tests
 
@@ -160,17 +166,15 @@ Where options are:
 
 * :code:`-T TESTSUITE.at` or :code:`--at TESTSUITE.at`   Path of the file containing the testsuite
 
-* :code:`--after ID`   Exec starting at test ID
-
-* :code:`--before ID`   Exec ending at test ID
-
-* :code:`--failed`   Run only previously failed tests (among selected tests)
-
 * :code:`--failures REASON`   Run failed tests with given failure
+
+* :code:`--ge ID` or :code:`--after ID`   Exec starting at test ID
 
 * :code:`-i ID` or :code:`--ids ID`   Run only test ID
 
 * :code:`-k KEYWORD` or :code:`--keywords KEYWORD`   Run only tests matching KEYWORD
+
+* :code:`--le ID` or :code:`--before ID`   Exec ending at test ID
 
 * :code:`-o TESTSUITE` or :code:`--output TESTSUITE`   Path of the output file (default: _autofonce/results.log)
 
@@ -233,7 +237,11 @@ Where options are:
 
 * :code:`ID`   Exec ending at test ID
 
+* :code:`-A` or :code:`--match-all`   Run tests matching all keywords instead of only one
+
 * :code:`-E TESTSUITE.sh` or :code:`--env TESTSUITE.sh`   Env file for all tests
+
+* :code:`-F` or :code:`--failed`   Run only previously failed tests (among selected tests)
 
 * :code:`-I DIR`   Add DIR to search path for tests
 
@@ -241,27 +249,23 @@ Where options are:
 
 * :code:`-T TESTSUITE.at` or :code:`--at TESTSUITE.at`   Path of the file containing the testsuite
 
-* :code:`--after ID`   Exec starting at test ID
-
 * :code:`--apply`   Apply promotion (default is to diff)
 
 * :code:`--auto-run INT`   Promote and run until all tests have been promoted
 
-* :code:`--before ID`   Exec ending at test ID
-
 * :code:`--diff`   Diff promotion (default)
-
-* :code:`--failed`   Run only previously failed tests (among selected tests)
 
 * :code:`--failures REASON`   Run failed tests with given failure
 
 * :code:`--fake .EXT`   Apply promotion to create new files with extension .EXT
 
+* :code:`--ge ID` or :code:`--after ID`   Exec starting at test ID
+
 * :code:`-i ID` or :code:`--ids ID`   Run only test ID
 
 * :code:`-k KEYWORD` or :code:`--keywords KEYWORD`   Run only tests matching KEYWORD
 
-* :code:`--no-comment`   Do not add a comment with the promotion date
+* :code:`--le ID` or :code:`--before ID`   Exec ending at test ID
 
 * :code:`--not-exit`   Do not promote exit code
 
@@ -314,7 +318,13 @@ Where options are:
 
 * :code:`ID`   Exec ending at test ID
 
+* :code:`-1` or :code:`--j1`   Use Sequential scheduling of tests
+
+* :code:`-A` or :code:`--match-all`   Run tests matching all keywords instead of only one
+
 * :code:`-E TESTSUITE.sh` or :code:`--env TESTSUITE.sh`   Env file for all tests
+
+* :code:`-F` or :code:`--failed`   Run only previously failed tests (among selected tests)
 
 * :code:`-I DIR`   Add DIR to search path for tests
 
@@ -324,29 +334,27 @@ Where options are:
 
 * :code:`-T TESTSUITE.at` or :code:`--at TESTSUITE.at`   Path of the file containing the testsuite
 
-* :code:`--after ID`   Exec starting at test ID
-
 * :code:`--auto-promote INT`   Promote and run until all tests have been promoted
 
-* :code:`--before ID`   Exec ending at test ID
+* :code:`--diff`   Print a diff showing what would be promoted
 
 * :code:`-e` or :code:`--stop-on-failure`   Stop on first failure
 
-* :code:`--failed`   Run only previously failed tests (among selected tests)
-
 * :code:`--failures REASON`   Run failed tests with given failure
+
+* :code:`--ge ID` or :code:`--after ID`   Exec starting at test ID
 
 * :code:`-i ID` or :code:`--ids ID`   Run only test ID
 
 * :code:`-j NJOBS`   Set maximal parallelism
 
-* :code:`--j1`   Use Sequential scheduling of tests
-
 * :code:`-k KEYWORD` or :code:`--keywords KEYWORD`   Run only tests matching KEYWORD
 
-* :code:`--no-clean`   Do not clean _autofonce/ dir on startup
+* :code:`-l` or :code:`--print-seq`   Print results immediately (default is to print a summary at the end)
 
-* :code:`--no-comment`   Do not add a comment with the promotion date
+* :code:`--le ID` or :code:`--before ID`   Exec ending at test ID
+
+* :code:`--no-clean`   Do not clean _autofonce/ dir on startup
 
 * :code:`--not-exit`   Do not promote exit code
 
