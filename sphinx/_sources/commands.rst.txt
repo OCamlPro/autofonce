@@ -255,6 +255,8 @@ Where options are:
 
 * :code:`--diff`   Diff promotion (default)
 
+* :code:`--diff-args ARGS`   Pass these args to the diff command
+
 * :code:`--failures REASON`   Run failed tests with given failure
 
 * :code:`--fake .EXT`   Apply promotion to create new files with extension .EXT
@@ -337,6 +339,8 @@ Where options are:
 * :code:`--auto-promote INT`   Promote and run until all tests have been promoted
 
 * :code:`--diff`   Print a diff showing what would be promoted
+
+* :code:`--diff-args ARGS`   Pass these args to the diff command
 
 * :code:`-e` or :code:`--stop-on-failure`   Stop on first failure
 
