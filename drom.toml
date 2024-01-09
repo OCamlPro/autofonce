@@ -167,3 +167,9 @@ dir = "src/autofonce_config"
 dir = "src/autofonce_misc"
 # edit 'src/autofonce_misc/package.toml' for package-specific options
 
+[[package]]
+dir = "src/ez_win32"
+
+[[package]]
+dir = "src/ez_call"
+

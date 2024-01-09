@@ -11,12 +11,13 @@
 (**************************************************************************)
 
 open Ezcmd.V2
+open Ez_call.V1
 
 module Misc = Autofonce_misc.Misc
 
 let set_verbosity n =
   Globals.verbose := n;
-  Call.debug := !Globals.verbose > 1
+  EzCall.debug := !Globals.verbose > 1
 
 let get_verbosity () = !Globals.verbose
 

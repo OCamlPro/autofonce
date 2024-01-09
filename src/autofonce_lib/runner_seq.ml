@@ -10,6 +10,7 @@
 (*                                                                        *)
 (**************************************************************************)
 
+open Ez_call.V1
 open EzCompat (* for IntMap *)
 
 open Types
@@ -51,7 +52,7 @@ let rec exec_action_or_check ter action =
 
 and exec_check ter check =
   let cer = Runner_common.start_check ter check in
-  let ret_pid, status = Call.wait_pids () in
+  let ret_pid, status = EzCall.wait_pids () in
   let retcode =
     assert (ret_pid = cer.checker_pid );
     let ret_code =

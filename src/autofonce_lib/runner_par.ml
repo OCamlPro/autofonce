@@ -10,6 +10,7 @@
 (*                                                                        *)
 (**************************************************************************)
 
+open Ez_call.V1
 open EzCompat (* for IntMap *)
 
 open Types
@@ -174,7 +175,7 @@ let run s =
     else
     if s.current_jobs > 0 then
       let () = Runner_common.print_status s.state in
-      let pid, status = Call.wait_pids () in
+      let pid, status = EzCall.wait_pids () in
       if !Globals.verbose > 1 then Printf.eprintf "JOB %d finished\n%!" pid;
       let ret_code =
         match status with

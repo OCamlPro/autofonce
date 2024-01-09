@@ -19,3 +19,4 @@ let move_bol () =
     move_bol ()
 
 let isatty = Unix.isatty Unix.stdout
+

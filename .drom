@@ -5,7 +5,7 @@ version:0.9.0
 
 # hash of toml configuration files
 # used for generation of all files
-9135e8353d4b0c8a02717e292d5629ea:.
+ad6902e5ccbcc5fbe567106ef5ef1230:.
 # end context for .
 
 # begin context for .github/workflows/workflow.yml
@@ -45,7 +45,7 @@ ebb31f7006b7740fd3a675e77fb65884:LICENSE.md
 
 # begin context for Makefile
 # file Makefile
-d36a98c0c36c107075608418b4e51339:Makefile
+f171ba6ec26f5773580574003ee20452:Makefile
 # end context for Makefile
 
 # begin context for README.md
@@ -95,7 +95,7 @@ e7379cf9741bb1cd7e4192973c166a04:drom.toml
 
 # begin context for dune-project
 # file dune-project
-c6a46d22f2a1886a27d2bdee4fee14da:dune-project
+4e0809652b6269e5ec0806af2f9e9d48:dune-project
 # end context for dune-project
 
 # begin context for opam/autofonce.opam
@@ -115,7 +115,7 @@ ce7a9679b1a0e59669df0650abf6b007:opam/autofonce_config.opam
 
 # begin context for opam/autofonce_lib.opam
 # file opam/autofonce_lib.opam
-156081c7022b9ba51cb3e865615a6df6:opam/autofonce_lib.opam
+08acbb87711c328094b17341ec0a59ec:opam/autofonce_lib.opam
 # end context for opam/autofonce_lib.opam
 
 # begin context for opam/autofonce_m4.opam
@@ -137,6 +137,16 @@ fea50747b9b9ca3a584fe11eb601c555:opam/autofonce_m4.opam
 # file opam/autofonce_share.opam
 4699a7621c5b480f97f629b141b0c07a:opam/autofonce_share.opam
 # end context for opam/autofonce_share.opam
+
+# begin context for opam/ez_call.opam
+# file opam/ez_call.opam
+0bfa3504647131541ec573a5fc9dc39f:opam/ez_call.opam
+# end context for opam/ez_call.opam
+
+# begin context for opam/ez_win32.opam
+# file opam/ez_win32.opam
+a56eec6bffe72deb75c07a613211a926:opam/ez_win32.opam
+# end context for opam/ez_win32.opam
 
 # begin context for scripts/after.sh
 # file scripts/after.sh
@@ -260,7 +270,7 @@ ab29faf4dd396c0f88290923e94bf125:src/autofonce_config/package.toml
 
 # begin context for src/autofonce_lib/dune
 # file src/autofonce_lib/dune
-bf25c11b54312da2ce0556f631d5ad11:src/autofonce_lib/dune
+9bf64100cd8b33524c080a509e43b551:src/autofonce_lib/dune
 # end context for src/autofonce_lib/dune
 
 # begin context for src/autofonce_lib/index.mld
@@ -367,3 +377,33 @@ b18f683411ed798dcf994356027a475d:src/autofonce_share/dune
 # file src/autofonce_share/version.mlt
 87a437efb9cff469286b6655943731dc:src/autofonce_share/version.mlt
 # end context for src/autofonce_share/version.mlt
+
+# begin context for src/ez_call/dune
+# file src/ez_call/dune
+4baccba8d621400fb0e1e5fe26403cc1:src/ez_call/dune
+# end context for src/ez_call/dune
+
+# begin context for src/ez_call/index.mld
+# file src/ez_call/index.mld
+fd2732e6d2f54a39648e93f6a9b82ed8:src/ez_call/index.mld
+# end context for src/ez_call/index.mld
+
+# begin context for src/ez_call/version.mlt
+# file src/ez_call/version.mlt
+87a437efb9cff469286b6655943731dc:src/ez_call/version.mlt
+# end context for src/ez_call/version.mlt
+
+# begin context for src/ez_win32/dune
+# file src/ez_win32/dune
+6033184906b4bca2bf40ae6446ec1d52:src/ez_win32/dune
+# end context for src/ez_win32/dune
+
+# begin context for src/ez_win32/index.mld
+# file src/ez_win32/index.mld
+46868df19e1f2482b44396985fa74398:src/ez_win32/index.mld
+# end context for src/ez_win32/index.mld
+
+# begin context for src/ez_win32/version.mlt
+# file src/ez_win32/version.mlt
+87a437efb9cff469286b6655943731dc:src/ez_win32/version.mlt
+# end context for src/ez_win32/version.mlt

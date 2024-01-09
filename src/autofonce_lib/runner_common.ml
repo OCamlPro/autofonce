@@ -10,6 +10,7 @@
 (*                                                                        *)
 (**************************************************************************)
 
+open Ez_call.V1
 open EzCompat (* for IntMap *)
 open Ez_file.V1
 open EzFile.OP
@@ -363,7 +364,7 @@ let start_check ter check =
   EzFile.write_file ( test_dir // check_sh ) check_content ;
   Unix.chmod (test_dir // check_sh ) 0o755 ;
   Unix.chdir test_dir ;
-  let checker_pid = Call.create_process
+  let checker_pid = EzCall.create_process_for_shell
       [ "./" ^ check_sh ]
       ~stdout:check_stdout
       ~stderr:check_stderr

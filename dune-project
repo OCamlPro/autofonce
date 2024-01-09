@@ -50,6 +50,7 @@
    (ocplib_stuff ( >= 0.1 ))
    (ez_file ( >= 0.3 ))
    (ez_cmdliner ( >= 0.4.3 ))
+   (ez_call ( >= 0.1 ))
    (autofonce_share (= version))
    (autofonce_patch (= version))
    (autofonce_m4 (= version))
@@ -132,6 +133,35 @@
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
+   (ez_file ( >= 0.3 ))
+   ppx_inline_test
+   ppx_expect
+   odoc
+   ocamlformat
+  )
+ )
+
+(package
+ (name ez_win32)
+ (synopsis "A modern runner for GNU Autoconf Testsuites")
+ (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
+ (depends
+   (ocaml (>= 4.10.0))
+   (ez_file ( >= 0.3 ))
+   ppx_inline_test
+   ppx_expect
+   odoc
+   ocamlformat
+  )
+ )
+
+(package
+ (name ez_call)
+ (synopsis "A modern runner for GNU Autoconf Testsuites")
+ (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
+ (depends
+   (ocaml (>= 4.10.0))
+   (ez_win32 ( >= 0.1 ))
    (ez_file ( >= 0.3 ))
    ppx_inline_test
    ppx_expect
