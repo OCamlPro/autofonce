@@ -67,9 +67,14 @@ let args () =
     [ "no-clean" ], Arg.Unit (fun () -> args.arg_clean_tests_dir <- false),
     EZCMD.info "Do not clean _autofonce/ dir on startup";
 
+    (* This option is not useful I think, and causes a failure in
+       'autofonce rst' because it creates two "--diff" options for
+       'autofonce promote'
+
     [ "diff" ], Arg.Unit (fun () ->
         args.arg_auto_promote <- 1),
       EZCMD.info "Print a diff showing what would be promoted";
+*)
 
     [ "o" ; "output" ], Arg.String (fun s -> args.arg_output <- Some s),
     EZCMD.info

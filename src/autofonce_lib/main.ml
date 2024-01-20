@@ -59,6 +59,26 @@ let main () =
   let common_args = [
   ] in
 
+  (* Check to avoid errors in 'autofonce rst' *)
+  List.iter EZCMD.TYPES.(fun cmd ->
+      let args = cmd.sub_args in
+      let args = List.map (fun (args, _order, _info) ->
+          "--" ^ String.concat " | --" args
+        ) args in
+      let args = List.sort compare args in
+      let rec iter args =
+        match args with
+        | arg1 :: arg2 :: _ when arg1 = arg2 ->
+            Printf.eprintf
+              "ERROR: sub-command %S contains twice option '--%s'\n%!"
+              cmd.sub_name arg1;
+            exit 2
+        | [] -> ()
+        | _ :: args -> iter args
+      in
+      iter args
+    ) commands ;
+
   MAIN.main
     ~on_error: (fun () -> () )
     ~on_exit: (fun () -> () )
