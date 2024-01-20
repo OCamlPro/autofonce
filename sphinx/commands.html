@@ -5,8 +5,8 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sub-commands and Arguments &mdash; autofonce master
- (e982321
-) (2023/07/05 21:44) documentation</title>
+ (2f69a2d
+) (2024/01/20 15:24) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/fixes.css" type="text/css" />
@@ -32,7 +32,7 @@
           </a>
               <div class="version">
                 master
- (e982321
+ (2f69a2d
 )
               </div>
 <div role="search">
@@ -122,24 +122,14 @@
 <p><strong>DESCRIPTION</strong></p>
 <p>List the tests, with their numeric identifier, their name and their location in the testsuite files.</p>
 <p><strong>USAGE</strong></p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">autofonce</span> <span class="n">config</span> <span class="nc">ID</span> <span class="o">[</span><span class="nc">OPTIONS</span><span class="o">]</span>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="n">autofonce</span> <span class="n">config</span> <span class="o">[</span><span class="nc">OPTIONS</span><span class="o">]</span>
 </pre></div>
 </div>
 <p>Where options are:</p>
 <ul class="simple">
-<li><p><code class="code docutils literal notranslate"><span class="pre">ID</span></code>   Exec ending at test ID</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-A</span></code> or <code class="code docutils literal notranslate"><span class="pre">--match-all</span></code>   Run tests matching all keywords instead of only one</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-E</span> <span class="pre">TESTSUITE.sh</span></code> or <code class="code docutils literal notranslate"><span class="pre">--env</span> <span class="pre">TESTSUITE.sh</span></code>   Env file for all tests</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-F</span></code> or <code class="code docutils literal notranslate"><span class="pre">--failed</span></code>   Run only previously failed tests (among selected tests)</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-I</span> <span class="pre">DIR</span></code>   Add DIR to search path for tests</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-N</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--not</span> <span class="pre">KEYWORD</span></code>   Skip tests matching KEYWORD</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-T</span> <span class="pre">TESTSUITE.at</span></code> or <code class="code docutils literal notranslate"><span class="pre">--at</span> <span class="pre">TESTSUITE.at</span></code>   Path of the file containing the testsuite</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">--failures</span> <span class="pre">REASON</span></code>   Run failed tests with given failure</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">--ge</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--after</span> <span class="pre">ID</span></code>   Exec starting at test ID</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-i</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-k</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keywords</span> <span class="pre">KEYWORD</span></code>   Run only tests matching KEYWORD</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">--le</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--before</span> <span class="pre">ID</span></code>   Exec ending at test ID</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-o</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--output</span> <span class="pre">TESTSUITE</span></code>   Path of the output file (default: _autofonce/results.log)</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">TESTSUITE</span></code>   Name of the testsuite to run (as specified in ‘autofonce.toml’)</p></li>
 </ul>
 </section>
@@ -202,7 +192,6 @@ to provide the project name, as it is automatically detected.</p>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-i</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-k</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keywords</span> <span class="pre">KEYWORD</span></code>   Run only tests matching KEYWORD</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--le</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--before</span> <span class="pre">ID</span></code>   Exec ending at test ID</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">-o</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--output</span> <span class="pre">TESTSUITE</span></code>   Path of the output file (default: _autofonce/results.log)</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">TESTSUITE</span></code>   Name of the testsuite to run (as specified in ‘autofonce.toml’)</p></li>
 </ul>
 </section>
@@ -238,24 +227,32 @@ and generates the corresponding autoconf testsuite file.</p>
 <p>Where options are:</p>
 <ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">ID</span></code>   Exec ending at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-1</span></code> or <code class="code docutils literal notranslate"><span class="pre">--j1</span></code>   Use Sequential scheduling of tests</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-A</span></code> or <code class="code docutils literal notranslate"><span class="pre">--match-all</span></code>   Run tests matching all keywords instead of only one</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-E</span> <span class="pre">TESTSUITE.sh</span></code> or <code class="code docutils literal notranslate"><span class="pre">--env</span> <span class="pre">TESTSUITE.sh</span></code>   Env file for all tests</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-F</span></code> or <code class="code docutils literal notranslate"><span class="pre">--failed</span></code>   Run only previously failed tests (among selected tests)</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-I</span> <span class="pre">DIR</span></code>   Add DIR to search path for tests</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-N</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--not</span> <span class="pre">KEYWORD</span></code>   Skip tests matching KEYWORD</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-S</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keep-all</span></code>   Keep all directories of tests</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-T</span> <span class="pre">TESTSUITE.at</span></code> or <code class="code docutils literal notranslate"><span class="pre">--at</span> <span class="pre">TESTSUITE.at</span></code>   Path of the file containing the testsuite</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--apply</span></code>   Apply promotion (default is to diff)</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--auto-run</span> <span class="pre">INT</span></code>   Promote and run until all tests have been promoted</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--diff</span></code>   Diff promotion (default)</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--diff-args</span> <span class="pre">ARGS</span></code>   Pass these args to the diff command</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-e</span></code> or <code class="code docutils literal notranslate"><span class="pre">--stop-on-failure</span></code>   Stop on first failure</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--failures</span> <span class="pre">REASON</span></code>   Run failed tests with given failure</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--fake</span> <span class="pre">.EXT</span></code>   Apply promotion to create new files with extension .EXT</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--ge</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--after</span> <span class="pre">ID</span></code>   Exec starting at test ID</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-i</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--ids</span> <span class="pre">ID</span></code>   Run only test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-j</span> <span class="pre">NJOBS</span></code>   Set maximal parallelism</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-k</span> <span class="pre">KEYWORD</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keywords</span> <span class="pre">KEYWORD</span></code>   Run only tests matching KEYWORD</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-l</span></code> or <code class="code docutils literal notranslate"><span class="pre">--print-seq</span></code>   Print results immediately (default is to print a summary at the end)</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--le</span> <span class="pre">ID</span></code> or <code class="code docutils literal notranslate"><span class="pre">--before</span> <span class="pre">ID</span></code>   Exec ending at test ID</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--no-clean</span></code>   Do not clean _autofonce/ dir on startup</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--not-exit</span></code>   Do not promote exit code</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-o</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--output</span> <span class="pre">TESTSUITE</span></code>   Path of the output file (default: _autofonce/results.log)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">--print-all</span></code>   Print also expected failures</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">-s</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keep-more</span></code>   Keep directories of skipped and expected failed</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-t</span> <span class="pre">TESTSUITE</span></code> or <code class="code docutils literal notranslate"><span class="pre">--testsuite</span> <span class="pre">TESTSUITE</span></code>   Name of the testsuite to run (as specified in ‘autofonce.toml’)</p></li>
 </ul>
 </section>
@@ -293,7 +290,6 @@ and generates the corresponding autoconf testsuite file.</p>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-S</span></code> or <code class="code docutils literal notranslate"><span class="pre">--keep-all</span></code>   Keep all directories of tests</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-T</span> <span class="pre">TESTSUITE.at</span></code> or <code class="code docutils literal notranslate"><span class="pre">--at</span> <span class="pre">TESTSUITE.at</span></code>   Path of the file containing the testsuite</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--auto-promote</span> <span class="pre">INT</span></code>   Promote and run until all tests have been promoted</p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">--diff</span></code>   Print a diff showing what would be promoted</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--diff-args</span> <span class="pre">ARGS</span></code>   Pass these args to the diff command</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">-e</span></code> or <code class="code docutils literal notranslate"><span class="pre">--stop-on-failure</span></code>   Stop on first failure</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">--failures</span> <span class="pre">REASON</span></code>   Run failed tests with given failure</p></li>
