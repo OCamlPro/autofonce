@@ -119,17 +119,11 @@ let print_actions ~not_exit ~keep_old b actions =
       if nargs > 1 then begin
         match stdout with
         | Content content ->
-            if content = "" then
-              match check.check_stderr with
-              | Ignore -> ()
-              | _ ->
-                  Printf.bprintf b ", []"
+            let s = Parser.m4_escape content in
+            if Buffer.length b + String.length s > 80 then
+              Printf.bprintf b ",\n%s" s
             else
-              let s = Parser.m4_escape content in
-              if Buffer.length b + String.length s > 80 then
-                Printf.bprintf b ",\n%s" s
-              else
-                Printf.bprintf b ", %s" s
+              Printf.bprintf b ", %s" s
         | Save_to_file file ->
             assert (file = "stdout" || file = "stderr");
             Printf.bprintf b ", [%s]" file
