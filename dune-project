@@ -14,7 +14,7 @@
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  (depends
    (ocaml (>= 4.10.0))
-   (autofonce_lib (= version))
+   (autofonce_lib (= :version))
    ppx_inline_test
    ppx_expect
    odoc
@@ -30,9 +30,9 @@
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
    (ez_file ( >= 0.3 ))
-   (autofonce_share (= version))
-   (autofonce_misc (= version))
-   (autofonce_m4 (= version))
+   (autofonce_share (= :version))
+   (autofonce_misc (= :version))
+   (autofonce_m4 (= :version))
    (ANSITerminal ( >= 0.8 ))
    ppx_inline_test
    ppx_expect
@@ -51,11 +51,11 @@
    (ez_file ( >= 0.3 ))
    (ez_cmdliner ( >= 0.4.3 ))
    (ez_call ( >= 0.1 ))
-   (autofonce_share (= version))
-   (autofonce_patch (= version))
-   (autofonce_m4 (= version))
-   (autofonce_core (= version))
-   (autofonce_config (= version))
+   (autofonce_share (= :version))
+   (autofonce_patch (= :version))
+   (autofonce_m4 (= :version))
+   (autofonce_core (= :version))
+   (autofonce_config (= :version))
    (ANSITerminal ( >= 0.8 ))
    ppx_inline_test
    ppx_expect
@@ -72,7 +72,7 @@
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
    (ez_file ( >= 0.3 ))
-   (autofonce_misc (= version))
+   (autofonce_misc (= :version))
    ppx_inline_test
    ppx_expect
    odoc
@@ -118,7 +118,7 @@
    (toml ( >= 7.0 ))
    (ocplib_stuff ( >= 0.1 ))
    (ez_file ( >= 0.3 ))
-   (autofonce_misc (= version))
+   (autofonce_misc (= :version))
    ppx_inline_test
    ppx_expect
    odoc
