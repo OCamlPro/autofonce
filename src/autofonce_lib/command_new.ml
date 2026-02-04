@@ -45,7 +45,6 @@ let cmd =
 
       [], Arg.Anons (fun list -> command := list),
       EZCMD.info "List of arguments" ;
-
     ]
   in
   EZCMD.sub
