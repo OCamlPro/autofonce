@@ -99,6 +99,16 @@ let regen_file filename =
   let set name value =
     map := StringMap.add name value !map
   in
+  let rec reset value =
+    if StringMap.mem value !map then begin
+      map := StringMap.remove value !map;
+      reset value
+    end else
+      match StringMap.find value !topmap with
+      | exception Not_found -> ()
+      | v ->
+          map := StringMap.add value v !map
+  in
 
   set "num" "";
   set "exit" "0";
@@ -119,6 +129,7 @@ let regen_file filename =
         | "keywords" ->
             Printf.bprintf b "AT_KEYWORDS(%s)\n\n"
               (Parser.m4_escape (subst lnum value))
+        | "reset" -> reset value
         | "set" ->
             let name, value = EzString.cut_at value ':' in
             let name = String.trim name in
