@@ -62,7 +62,7 @@ let regen_file filename =
         | [] -> var
         | cmd :: cmds ->
             let var = match cmd with
-              | "basename" -> Filename.chop_extension var
+              | "basename" -> Filename.remove_extension var
               | "get" -> get lnum var
               | "read" -> EzFile.read_file (Filename.concat dirname var)
               | "read?" ->
@@ -129,7 +129,9 @@ let regen_file filename =
         | "keywords" ->
             Printf.bprintf b "AT_KEYWORDS(%s)\n\n"
               (Parser.m4_escape (subst lnum value))
-        | "reset" -> reset value
+        | "reset" ->
+            let values = EzString.split value ',' in
+            List.iter reset values
         | "set" ->
             let name, value = EzString.cut_at value ':' in
             let name = String.trim name in
@@ -150,11 +152,17 @@ let regen_file filename =
               (Parser.m4_escape basename)
               (Parser.m4_escape contents);
         | "target" ->
-            let contents = EzFile.read_file (Filename.concat dirname value) in
+            let file1, file2 =
+              let file1, file2 = EzString.cut_at value ':' in
+              let file2 = if file2 = "" then file1 else file2 in
+              file1, file2
+            in
+            let basename = Filename.basename file1 in
+            let contents = EzFile.read_file (Filename.concat dirname file2) in
             Printf.bprintf b "AT_DATA(%s,%s)\n"
-              (Parser.m4_escape (Filename.basename value))
+              (Parser.m4_escape basename)
               (Parser.m4_escape contents);
-            set "target" (Filename.basename value)
+            set "target" basename
         | "check" ->
             set "check" value ;
             let command = subst lnum @@ get lnum value in
