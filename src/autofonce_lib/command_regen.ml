@@ -10,207 +10,138 @@
 (*                                                                        *)
 (**************************************************************************)
 
-open EzCompat
-(* open Ez_win32.V1 *)
 open Ezcmd.V2
-(* open EZCMD.TYPES *)
-open Ez_file.V1
-(* open Ez_call.V1  *)
-open Ez_subst.V2
+open EZCMD.TYPES
 
-module Misc = Autofonce_misc.Misc
+module Patch_lines = Autofonce_patch.Patch_lines
 module Parser = Autofonce_core.Parser
+module Misc = Autofonce_misc.Misc
+open Types
+open Filter
 
-let regen_file filename =
-  let lines = EzFile.read_lines filename in
-  let dirname = Filename.dirname filename in
-  let b = Buffer.create 10000 in
+(* TODO: check why the ignore pattern does not work *)
+let diff args = Patch_lines.Diff { exclude = [ "^# promoted on .*" ]; args }
+let todo = ref (diff None)
+let not_exit = ref false
 
-  let must_cleanup = ref false in
-  let topmap = ref StringMap.empty in
-  let map = ref StringMap.empty in
-
-  let cleanup () =
-    if !must_cleanup then begin
-      Printf.bprintf b "\nAT_CLEANUP\n\n";
-      must_cleanup := false ;
-      map := !topmap ;
-    end else begin
-      topmap := !map
-    end;
-    Printf.bprintf b
-      "\n\n\n#############################################################\n\n";
+let promote ~filter_args ~exec_args p tc suite =
+  filter_args.arg_only_failed <- true ;
+  Patch_lines.reset ();
+  let state = Runner_common.create_state ~exec_args p tc suite in
+  Unix.chdir state.state_run_dir ;
+  (*
+  let comment_line =
+    let t = Unix.gettimeofday () in
+    let tm = Unix.localtime t in
+    Printf.sprintf "# promoted on %04d-%02d-%02dT%02d:%02d"
+      ( 1900 + tm.tm_year )
+      ( 1 + tm.tm_mon )
+      tm.tm_mday
+      tm.tm_hour
+      tm.tm_min
   in
+*)
+  let promote_test t =
 
-  let unescape s =
-    let len = String.length s in
-    if len >=2 && s.[0] = '"' && s.[len-1] = '"' then
-      String.sub s 1 (len-2)
-    else s
-  in
-
-  let get lnum s = try
-      StringMap.find s !map
-    with Not_found ->
-      Misc.error "%s:%d: variable %S not found" filename lnum s
-  in
-
-  let subst lnum s =
-    let brace lnum s =
-      let rec iter var cmds =
-        match cmds with
-        | [] -> var
-        | cmd :: cmds ->
-            let var = match cmd with
-              | "basename" -> Filename.remove_extension var
-              | "get" -> get lnum var
-              | "read" -> EzFile.read_file (Filename.concat dirname var)
-              | "read?" ->
-                  let file = Filename.concat dirname var in
-                  if Sys. file_exists file then EzFile.read_file file
-                  else ""
-              | _ -> Misc.error "Subst: function %%{%s} not defined" cmd
-            in
-            iter var cmds
-      in
-      let s = String.lowercase_ascii s in
-      let list = List.rev @@ EzString.split s ':' in
-      match list with
-      | [] -> Misc.error "Subst: empty string"
-      | var :: "string" :: cmds -> iter var cmds
-      | var :: cmds ->
-          let var =
-            let maybe_not_found, var =
-              let len = String.length var in
-              if len > 0 && var.[0] = '?' then
-                true, String.sub var 1 (len-1)
-              else
-                false, var
-            in
-            try StringMap.find var !map with
-            | _ ->
-                if maybe_not_found then "" else
-                  Misc.error "Subst: variable %%{%s} not defined" var
-          in
-          iter var cmds
+    let rec check actions =
+      match actions with
+      | [] -> false
+      | AF_COMMENT comment ::
+        AT_DATA _ ::
+        _ when EzString.starts_with comment ~prefix:"autofonce.read:"
+        -> true
+      | _ :: actions -> check actions
     in
-    EZ_SUBST.string ~ctxt: lnum ~sep:'%' ~brace s
-  in
-  let set name value =
-    map := StringMap.add name value !map
-  in
-  let rec reset value =
-    if StringMap.mem value !map then begin
-      map := StringMap.remove value !map;
-      reset value
-    end else
-      match StringMap.find value !topmap with
-      | exception Not_found -> ()
-      | v ->
-          map := StringMap.add value v !map
-  in
+    if check t.test_actions then
+      let file = t.test_loc.file in
+      Printf.eprintf "Promoting test %d %s\n%!"
+        t.test_id ( Parser.name_of_loc t.test_loc );
+      let line_first = t.test_loc.line in
+      let line_last =
+        match List.rev t.test_actions with
+        | AT_CLEANUP { loc } :: _ -> loc.line
+        | _ -> Misc.error
+                 "Last test in %s does not end with AT_CLEANUP ?" file
+      in
 
-  set "num" "";
-  set "exit" "0";
-  set "stdout" "";
-  set "stderr" "";
+      let b = Buffer.create 10000 in
 
-  Array.iteri (fun lnum line ->
+      Printf.bprintf b "AT_SETUP(%s)\n" (Parser.m4_escape t.test_name);
 
-      let len = String.length line in
-      if len > 0 && line.[0] <> '#' then
-        let cmd, value = EzString.cut_at line ':' in
-        let value = String.trim value in
-        match cmd with
-        | "test" ->
-            cleanup ();
-            Printf.bprintf b "\n\nAT_SETUP(%s)\n" (Parser.m4_escape value);
-            must_cleanup := true
-        | "keywords" ->
+      begin
+        match t.test_keywords with
+        | [] -> ()
+        | list ->
             Printf.bprintf b "AT_KEYWORDS(%s)\n\n"
-              (Parser.m4_escape (subst lnum value))
-        | "reset" ->
-            let values = EzString.split value ',' in
-            List.iter reset values
-        | "set" ->
-            let name, value = EzString.cut_at value ':' in
-            let name = String.trim name in
-            let value = unescape @@ String.trim value in
-            set name value
-        | "comment" -> Printf.bprintf b "# %s\n" value
-        | "skip" -> Printf.bprintf b "%s"
-                      ( String.make (try int_of_string value with _ -> 1) '\n' )
-        | "data" ->
-            let file1, file2 =
-              let file1, file2 = EzString.cut_at value ':' in
-              let file2 = if file2 = "" then file1 else file2 in
-              file1, file2
-            in
-            let basename = Filename.basename file1 in
-            let contents = EzFile.read_file (Filename.concat dirname file2) in
-            Printf.bprintf b "AT_DATA(%s,%s)\n"
-              (Parser.m4_escape basename)
-              (Parser.m4_escape contents);
-        | "target" ->
-            let file1, file2 =
-              let file1, file2 = EzString.cut_at value ':' in
-              let file2 = if file2 = "" then file1 else file2 in
-              file1, file2
-            in
-            let basename = Filename.basename file1 in
-            let contents = EzFile.read_file (Filename.concat dirname file2) in
-            Printf.bprintf b "AT_DATA(%s,%s)\n"
-              (Parser.m4_escape basename)
-              (Parser.m4_escape contents);
-            set "target" basename
-        | "check" ->
-            set "check" value ;
-            let command = subst lnum @@ get lnum value in
-            let exit = subst lnum @@ get lnum "exit" in
-            let stdout = subst lnum @@ get lnum "stdout" in
-            let stderr = subst lnum @@ get lnum "stderr" in
-            Printf.bprintf b "\nAT_CHECK(%s, %s, %s, %s)\n"
-              (Parser.m4_escape command)
-              (Parser.m4_escape exit)
-              (Parser.m4_escape stdout)
-              (Parser.m4_escape stderr)
-        | "save" ->
+              (Parser.m4_escape (String.concat " " list))
+      end;
+      Promote.print_actions
+        ~not_exit:!not_exit
+        ~keep_old:true
+        t b t.test_actions;
 
-            cleanup ();
-            let output = Filename.concat dirname value in
-            let new_contents = Buffer.contents b in
-            Buffer.clear b;
-            let old_contents = try EzFile.read_file output with _ -> "" in
-            if new_contents <> old_contents then begin
-              EzFile.write_file output new_contents;
-              Printf.eprintf "File %S regenerated\n%!" output
-            end
-        | _ -> Misc.error "Unknown command %S" cmd
-    ) lines
-
-let regen () =
-  let rec iter dirname =
-    let files = Sys.readdir dirname in
-    Array.iter (fun basename ->
-        let filename = Filename.concat dirname basename in
-        if try Sys.is_directory filename with _ -> false then
-          iter filename
-        else
-          let ext = Filename.extension basename in
-          if ext = ".atscript" then
-            regen_file filename
-      ) files
+      let content = Buffer.contents b in
+      Patch_lines.replace_block ~file ~line_first ~line_last content
   in
-  iter "."
+  List.iter promote_test suite.suite_tests;
+  Patch_lines.commit_to_disk ~action:!todo ();
+  ()
+
+let args auto_promote_arg ~exec_args = [
+
+  [ "not-exit" ], Arg.Set not_exit,
+  EZCMD.info "Do not promote exit code" ;
+
+  [ "diff-args" ], Arg.String (fun s -> todo := diff (Some s)),
+  EZCMD.info ~docv:"ARGS" "Pass these args to the diff command" ;
+
+  [ auto_promote_arg ], Arg.Int (fun n ->
+      exec_args.arg_auto_promote <- n ;
+      todo := Apply ;
+    ),
+  EZCMD.info
+    "Promote and run until all tests have been promoted"
+
+]
+
+let action ~filter_args ~exec_args p tc suite =
+  promote ~filter_args ~exec_args p tc suite
 
 let cmd =
-  let args = [] in
-  EZCMD.sub "regen" regen
+  let testsuite_args, get_testsuite_args = Testsuite.args () in
+  let filter_args, get_filter_args = Filter.args () in
+  let runner_args, exec_args = Runner_common.args () in
+  let args =
+    runner_args @
+    testsuite_args @
+    filter_args @
+    args ~exec_args "auto-run" @
+    [
+
+      [ "apply" ], Arg.Unit (fun () -> todo := Apply),
+      EZCMD.info "Apply promotion (default is to diff)" ;
+
+      [ "diff" ], Arg.Unit (fun () -> todo := diff None),
+      EZCMD.info "Diff promotion (default)" ;
+
+      [ "fake" ], Arg.String (fun ext -> todo := Fake ext),
+      EZCMD.info ~docv:".EXT"
+        "Apply promotion to create new files with extension $(docv)" ;
+
+    ]
+  in
+  EZCMD.sub
+    "regen"
+    (fun () ->
+       let filter_args = get_filter_args () in
+       let p, tc, suite = Testsuite.find ( get_testsuite_args () ) in
+       action ~filter_args ~exec_args p tc suite
+    )
     ~args
-    ~doc: "Generate a testsuite"
+    ~doc: "Regen tests from templates"
     ~man:[
       `S "DESCRIPTION";
       `Blocks [
-        `P {|Generates a full testsuite in directory tests/ from a set of data files.|}
+        `P {|.|} ;
       ];
     ]

@@ -187,7 +187,7 @@ let log_failed_tests state msg tests =
       Promote.print_actions
         ~not_exit:false
         ~keep_old:true
-        b1 t.test_actions ;
+        t b1 t.test_actions ;
       let s1 = Buffer.contents b1 in
       let f1 = test_dir // "test.at.expected" in
       EzFile.write_file f1 s1;
@@ -196,7 +196,7 @@ let log_failed_tests state msg tests =
       Promote.print_actions
         ~not_exit:false
         ~keep_old:false
-        b2 t.test_actions ;
+        t b2 t.test_actions ;
       let s2 = Buffer.contents b2 in
       let f2 = test_dir // "test.at.promoted" in
       EzFile.write_file f2 s2;
