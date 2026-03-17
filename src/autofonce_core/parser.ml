@@ -152,7 +152,7 @@ let load_file ~dirs ~keep_files ~path c filename =
               let s = { s with subst } in
               iter_state s macros
 
-          | Comment _ ->
+          | Comment _string ->
               iter_state s macros
 
           | Macro ( ( "AF_SETUP" | "AT_SETUP" ), [ name ]) ->
@@ -170,6 +170,7 @@ let load_file ~dirs ~keep_files ~path c filename =
                 test_banner = s.banner ;
                 test_subst = s.subst ;
                 test_keywords_set = StringSet.empty ;
+                test_regen = false ;
               }
               in
               let steps = ref [0] in

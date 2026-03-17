@@ -10,6 +10,7 @@
 (*                                                                        *)
 (**************************************************************************)
 
+open EzCompat
 open Ez_file.V1
 open EzFile.OP
 
@@ -28,7 +29,7 @@ open Types
 *)
 
 
-let print_actions ~not_exit ~keep_old b actions =
+let print_actions t ~not_exit ~keep_old b actions =
   let rec string_of_check check =
     let b = Buffer.create 1000 in
     Buffer.add_string b "AT_CHECK(";
@@ -243,7 +244,24 @@ let print_actions ~not_exit ~keep_old b actions =
         Printf.bprintf b "\n#%s\n" comment
 
   and print_actions b actions =
-    List.iter ( print_action b ) actions
+    match actions with
+      [] -> ()
+    | AF_COMMENT comment ::
+      AT_DATA { file ; content } ::
+      actions ->
+        let content =
+          match EzString.chop_prefix ~prefix:"autofonce.read:" comment with
+          | None -> content
+          | Some filename ->
+              let dirname = Filename.dirname t.test_loc.file in
+              EzFile.read_file (Filename.concat dirname filename)
+        in
+        print_action b (AF_COMMENT comment);
+        print_action b (AT_DATA { file ; content });
+        print_actions b actions
+    | action :: actions ->
+        print_action b action ;
+        print_actions b actions
 
   in
   print_actions b actions

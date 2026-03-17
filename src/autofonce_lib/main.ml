@@ -43,7 +43,6 @@ let commands = [
   Command_config.cmd ;
   Command_run.cmd ;
   Command_new.cmd ;
-  Command_gen.cmd ;
   Command_regen.cmd ;
   Command_promote.cmd ;
 ]

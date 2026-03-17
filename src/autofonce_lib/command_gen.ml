@@ -10,6 +10,7 @@
 (*                                                                        *)
 (**************************************************************************)
 
+(*
 open Ezcmd.V2
 open EZCMD.TYPES
 open Ez_file.V1
@@ -174,3 +175,4 @@ let cmd =
         `P {|Generates a full testsuite in directory tests/ from a set of data files.|}
       ];
     ]
+*)

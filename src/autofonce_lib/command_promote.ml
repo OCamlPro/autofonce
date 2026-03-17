@@ -67,7 +67,7 @@ let promote ~filter_args ~exec_args p tc suite =
     Promote.print_actions
       ~not_exit:!not_exit
       ~keep_old:false
-      b t.test_actions;
+      t b t.test_actions;
 
     let content = Buffer.contents b in
     Patch_lines.replace_block ~file ~line_first ~line_last content

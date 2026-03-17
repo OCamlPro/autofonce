@@ -66,6 +66,7 @@ and test = { (* variable name is `t` *)
   test_banner : string ;
   test_env : string ;
   test_subst : string list ;
+  test_regen : bool ;
   mutable test_keywords : string list ;
   mutable test_actions : action list ;
   mutable test_keywords_set : StringSet.t ;
