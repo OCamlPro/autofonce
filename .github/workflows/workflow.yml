@@ -18,13 +18,13 @@ jobs:
           - macos-latest
           - windows-latest
         ocaml-compiler:
-          - 4.13.0
+          - 4.14.2
         skip_test:
           - false
 
         include:
           - os: ubuntu-latest
-            ocaml-compiler: 4.10.0
+            ocaml-compiler: 4.13.0
             skip_test: true
 
 
@@ -32,10 +32,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Retrieve opam cache
-        uses: actions/cache@v2
+        uses: actions/cache@v5
         id: cache-opam
         with:
           path: ~/.opam
@@ -44,11 +44,10 @@ jobs:
 #            v2-${{ runner.os }}-opam-${{ matrix.ocaml-compiler }}-
 
       - name: Use OCaml ${{ matrix.ocaml-compiler }}
-        uses: avsm/setup-ocaml@v2
+        uses: avsm/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           opam-pin: false
-          opam-depext: false
 
       - name: Set git user
         run: |
@@ -59,10 +58,13 @@ jobs:
 
       - run: opam pin add . -y --no-action
 
-      - run: opam depext -y autofonce autofonce_core autofonce_lib autofonce_m4 autofonce_share autofonce_patch autofonce_config autofonce_misc
+      # - run: opam depext -y autofonce autofonce_core autofonce_lib autofonce_m4 autofonce_share autofonce_patch autofonce_config autofonce_misc
 #        if: steps.cache-opam.outputs.cache-hit != 'true'
 
       - run: opam install -y opam/*.opam --deps-only --with-test
+        if: matrix.os != 'windows-latest'
+      - run: opam install -y opam\\*.opam --deps-only --with-test
+        if: matrix.os == 'windows-latest'
 #        if: steps.cache-opam.outputs.cache-hit != 'true'
 
 #      - run: opam upgrade --fixup
@@ -80,14 +82,14 @@ jobs:
 
       - name: Upload results.log
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: testsuite-${{ matrix.os }}-${{ matrix.ocaml-compiler }}.log
           path: _build/_autofonce/results.log
 
       - name: Upload _autofonce/
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: autofonce-dir-${{ matrix.os }}-${{ matrix.ocaml-compiler }}
           path: _build/_autofonce
@@ -117,7 +119,7 @@ jobs:
           CLEAN: true
 
       - name: Upload binary
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: autofonce-${{ matrix.os }}-${{ matrix.ocaml-compiler }}
           path: _build/default/src/autofonce/main.exe
