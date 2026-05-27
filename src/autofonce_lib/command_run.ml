@@ -20,12 +20,7 @@ let cmd =
   let args =
     runner_args @
     testsuite_args @
-    filter_args @
-    Command_promote.args ~exec_args "auto-promote" @
-    [
-
-
-    ]
+    filter_args
   in
   EZCMD.sub
     "run"
@@ -34,10 +29,7 @@ let cmd =
          let filter_args = get_filter_args () in
          let (p, tc, suite) = Testsuite.find ( get_testsuite_args () ) in
          let n = Testsuite.exec ~filter_args ~exec_args p tc suite in
-         if n>0 && exec_args.arg_auto_promote > 0 then
-           Command_promote.action ~filter_args ~exec_args p tc suite
-         else
-         if n>0 then exit 1
+         if n > 0 then exit 1
        with
          exn ->
            if Printexc.backtrace_status () then

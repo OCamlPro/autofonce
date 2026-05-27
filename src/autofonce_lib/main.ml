@@ -44,6 +44,7 @@ let commands = [
   Command_run.cmd ;
   Command_new.cmd ;
   Command_regen.cmd ;
+  Command_diff.cmd ;
   Command_promote.cmd ;
 ]
 

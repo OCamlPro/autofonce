@@ -12,6 +12,6 @@
 
 val print_actions :
   Types.test ->
-  not_exit:bool ->
+  ignore_exitcode:bool ->
   keep_old:bool ->
   Buffer.t -> Types.action list -> unit

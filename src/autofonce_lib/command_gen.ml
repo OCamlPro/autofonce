@@ -165,7 +165,7 @@ let cmd =
        Command_regen.regen ();
        Printf.eprintf "1. Use `autofonce init` to initialize autofonce.toml file\n";
        Printf.eprintf "2. Use `autofonce run` to run the generated tests afterwards.\n";
-       Printf.eprintf "3. Fix the tests and run `autofonce run --auto-promote 2` to run and promote tests.\n";
+       Printf.eprintf "3. Fix the tests and run `autofonce promote` to run and promote tests.\n";
     )
     ~args
     ~doc: "Generate a testsuite"

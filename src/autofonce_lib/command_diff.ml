@@ -19,11 +19,11 @@ module Misc = Autofonce_misc.Misc
 open Types
 open Filter
 
+
 (* TODO: check why the ignore pattern does not work *)
 let diff args = Patch_lines.Diff { exclude = [ "^# promoted on .*" ]; args }
 let todo = ref (diff None)
 
-(* TODO: remove code duplication with Command_diff *)
 let patch_action ~filter_args ~exec_args ~action p tc suite =
   filter_args.arg_only_failed <- true ;
   Patch_lines.reset ();
@@ -42,50 +42,41 @@ let patch_action ~filter_args ~exec_args ~action p tc suite =
   in
 *)
   let promote_test t =
-
-    let rec check actions =
-      match actions with
-      | [] -> false
-      | AF_COMMENT comment ::
-        AT_DATA _ ::
-        _ when EzString.starts_with comment ~prefix:"autofonce.read:"
-        -> true
-      | _ :: actions -> check actions
+    let file = t.test_loc.file in
+    Printf.eprintf "Promoting test %d %s\n%!"
+      t.test_id ( Parser.name_of_loc t.test_loc );
+    let line_first = t.test_loc.line in
+    let line_last =
+      match List.rev t.test_actions with
+      | AT_CLEANUP { loc } :: _ -> loc.line
+      | _ -> Misc.error
+               "Last test in %s does not end with AT_CLEANUP ?" file
     in
-    if check t.test_actions then
-      let file = t.test_loc.file in
-      Printf.eprintf "Promoting test %d %s\n%!"
-        t.test_id ( Parser.name_of_loc t.test_loc );
-      let line_first = t.test_loc.line in
-      let line_last =
-        match List.rev t.test_actions with
-        | AT_CLEANUP { loc } :: _ -> loc.line
-        | _ -> Misc.error
-                 "Last test in %s does not end with AT_CLEANUP ?" file
-      in
 
-      let b = Buffer.create 10000 in
+    let b = Buffer.create 10000 in
 
-      Printf.bprintf b "AT_SETUP(%s)\n" (Parser.m4_escape t.test_name);
+    Printf.bprintf b "AT_SETUP(%s)\n" (Parser.m4_escape t.test_name);
 
-      begin
-        match t.test_keywords with
-        | [] -> ()
-        | list ->
-            Printf.bprintf b "AT_KEYWORDS(%s)\n\n"
-              (Parser.m4_escape (String.concat " " list))
-      end;
-      Promote.print_actions
-        ~ignore_exitcode:exec_args.arg_ignore_exitcode
-        ~keep_old:true
-        t b t.test_actions;
+    begin
+      match t.test_keywords with
+      | [] -> ()
+      | list ->
+          Printf.bprintf b "AT_KEYWORDS(%s)\n\n"
+            (Parser.m4_escape (String.concat " " list))
+    end;
+    Promote.print_actions
+      ~ignore_exitcode:exec_args.arg_ignore_exitcode
+      ~keep_old:false
+      t b t.test_actions;
 
-      let content = Buffer.contents b in
-      Patch_lines.replace_block ~file ~line_first ~line_last content
+    let content = Buffer.contents b in
+    Patch_lines.replace_block ~file ~line_first ~line_last content
   in
-  List.iter promote_test suite.suite_tests;
+  Filter.select_tests ~args:filter_args ~state promote_test suite;
+
   Patch_lines.commit_to_disk ~action ();
   ()
+
 
 
 let cmd =
@@ -111,17 +102,18 @@ let cmd =
     ]
   in
   EZCMD.sub
-    "regen"
+    "diff"
     (fun () ->
        let filter_args = get_filter_args () in
        let p, tc, suite = Testsuite.find ( get_testsuite_args () ) in
        patch_action ~filter_args ~exec_args ~action:!todo p tc suite
     )
     ~args
-    ~doc: "Regenerate tests from templates"
+    ~doc: "Display difference between tests results and expected results"
     ~man:[
       `S "DESCRIPTION";
       `Blocks [
-        `P {|.|} ;
+        `P "After an unsucessful testsuite run, use this command to show\
+           the differences between the test results and the expected results." ;
       ];
     ]
