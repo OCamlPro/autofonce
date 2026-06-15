@@ -10,7 +10,9 @@
   * add support for [stdout], [stderr], [expout] and [experr]
 * Add file basename to test keywords, so that it is possible to use it
 as a keyword to select all the test of a file
-* Add --diff-args="..." to use instead of "-u" during promotion display
+* Rename subcommands to reduce confusion: [promote] now corresponds to the 
+old [run --auto-promote=n] and the old promote is renamed into [diff].
+* Add --diff-args="..." to use instead of "-u" during diff display
 
 ## v0.9 ( 2023-06-27 )
 

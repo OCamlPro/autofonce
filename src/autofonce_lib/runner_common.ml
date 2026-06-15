@@ -28,8 +28,7 @@ let args () =
     {
       arg_clean_tests_dir = true ;
       arg_max_jobs = 16 ;
-      arg_auto_promote = 0 ;
-      arg_fake = false ;
+      arg_ignore_exitcode = false;
       arg_print_results = false ;
       arg_subst_env = StringMap.empty ;
       arg_stop_on_first_failure = false ;
@@ -67,15 +66,9 @@ let args () =
     [ "no-clean" ], Arg.Unit (fun () -> args.arg_clean_tests_dir <- false),
     EZCMD.info "Do not clean _autofonce/ dir on startup";
 
-    (* This option is not useful I think, and causes a failure in
-       'autofonce rst' because it creates two "--diff" options for
-       'autofonce promote'
-
-    [ "diff" ], Arg.Unit (fun () ->
-        args.arg_auto_promote <- 1),
-      EZCMD.info "Print a diff showing what would be promoted";
-*)
-
+    [ "ignore-exitcode" ], Arg.Unit (fun () -> args.arg_ignore_exitcode <- true),
+    EZCMD.info "Do not promote or fail for wrong exit code" ;
+    
     [ "o" ; "output" ], Arg.String (fun s -> args.arg_output <- Some s),
     EZCMD.info
       ~env:(EZCMD.env "AUTOFONCE_OUTPUT")

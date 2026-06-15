@@ -19,9 +19,7 @@ include Autofonce_config.Types
 type exec_args = {
   mutable arg_clean_tests_dir : bool ;
   mutable arg_max_jobs : int ;
-  mutable arg_auto_promote : int ;
-
-  mutable arg_fake : bool ;
+  mutable arg_ignore_exitcode : bool ;
   mutable arg_print_results : bool ;
   mutable arg_subst_env : ( string * string ) option StringMap.t ;
   mutable arg_stop_on_first_failure : bool ;

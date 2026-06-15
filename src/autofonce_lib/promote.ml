@@ -29,7 +29,7 @@ open Types
 *)
 
 
-let print_actions t ~not_exit ~keep_old b actions =
+let print_actions t ~ignore_exitcode ~keep_old b actions =
   let rec string_of_check check =
     let b = Buffer.create 1000 in
     Buffer.add_string b "AT_CHECK(";
@@ -47,7 +47,7 @@ let print_actions t ~not_exit ~keep_old b actions =
       (* We can promote these results *)
 
       let retcode =
-        if not_exit || keep_old then check.check_retcode
+        if ignore_exitcode || keep_old then check.check_retcode
         else
           match check.check_retcode with
           | None -> None

@@ -185,7 +185,7 @@ let log_failed_tests state msg tests =
 
       Buffer.reset b1;
       Promote.print_actions
-        ~not_exit:false
+        ~ignore_exitcode:false
         ~keep_old:true
         t b1 t.test_actions ;
       let s1 = Buffer.contents b1 in
@@ -194,7 +194,7 @@ let log_failed_tests state msg tests =
 
       Buffer.reset b2;
       Promote.print_actions
-        ~not_exit:false
+        ~ignore_exitcode:false
         ~keep_old:false
         t b2 t.test_actions ;
       let s2 = Buffer.contents b2 in
