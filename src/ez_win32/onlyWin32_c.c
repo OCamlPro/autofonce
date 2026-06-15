@@ -26,6 +26,7 @@
 #include <caml/alloc.h>
 #include <caml/memory.h>
 #include <caml/signals.h>
+#include <caml/osdeps.h>
 
 #ifndef CAML_UNIXSUPPORT_H
 #include <caml/unixsupport.h>
@@ -37,10 +38,10 @@ static value alloc_process_status(HANDLE pid, int status)
 {
   value res, st;
 
-  st = alloc(1, 0);
+  st = caml_alloc(1, 0);
   Field(st, 0) = Val_int(status);
   Begin_root (st);
-    res = alloc_small(2, 0);
+    res = caml_alloc_small(2, 0);
     Field(res, 0) = Val_long((intnat) pid);
     Field(res, 1) = st;
   End_roots();
@@ -64,10 +65,10 @@ CAMLprim value onlyWin32_waitpids_ml(value ncount_v, value pid_reqs_v)
   for(i=0; i < ncount; i++){
      pid_reqs[i] = (HANDLE) Long_val(Field(pid_reqs_v,i));
   }
-  enter_blocking_section();
+  caml_enter_blocking_section();
   retcode = WaitForMultipleObjects(ncount, pid_reqs, FALSE,INFINITE);
   if (retcode == WAIT_FAILED) err = GetLastError();
-  leave_blocking_section();
+  caml_leave_blocking_section();
   if (err) {
     free(pid_reqs);
     win32_maperr(err);
@@ -107,13 +108,13 @@ value onlyWin32_create_process_chdir_native(value cmd, value cmdline, value env,
 {
   PROCESS_INFORMATION pi;
   STARTUPINFO si;
-  char * exefile, * envp;
+  char_os * exefile, * envp;
   int flags;
   LPCTSTR lpCurrentDirectory = NULL;
 
-  exefile = search_exe_in_path(String_val(cmd));
+  exefile = caml_search_exe_in_path((char_os *) String_val(cmd));
   if (env != Val_int(0)) {
-    envp = String_val(Field(env, 0));
+    envp = (char_os*) String_val(Field(env, 0));
   } else {
     envp = NULL;
   }
