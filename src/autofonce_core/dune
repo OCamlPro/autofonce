@@ -4,7 +4,11 @@
   (name autofonce_core)
   (public_name autofonce_core)
   (wrapped true)
+  ; use field 'dune-libraries' to add libraries without opam deps
   (libraries ocplib_stuff ez_file autofonce_share autofonce_misc autofonce_m4 ANSITerminal )
+  ; use field 'dune-flags' to set this value
+  (flags (:standard))
+  ; use field 'dune-stanzas' to add more stanzas here
   
   
   )
@@ -18,4 +22,5 @@
 (documentation
   (package autofonce_core))
 
+; use field 'dune-trailer' to add more stuff here
 
