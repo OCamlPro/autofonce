@@ -21,12 +21,18 @@ jobs:
           - 4.14.2
         skip_test:
           - false
+        windows-environment:
+          - "msys2"
 
         include:
           - os: ubuntu-latest
             ocaml-compiler: 4.13.0
             skip_test: true
-
+            windows-environment: "msys2"
+          - os: windows-latest
+            ocaml-compiler: 4.14.2
+            skip_test: false
+            windows-environment: "cygwin"
 
     runs-on: ${{ matrix.os }}
 
@@ -44,8 +50,10 @@ jobs:
 #            v2-${{ runner.os }}-opam-${{ matrix.ocaml-compiler }}-
 
       - name: Use OCaml ${{ matrix.ocaml-compiler }}
-        uses: avsm/setup-ocaml@v3
+        uses: ocaml/setup-ocaml@v3
         with:
+          windows-compiler: "mingw"
+          windows-environment: ${{ matrix.windows-environment }}
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           opam-pin: false
 
@@ -61,9 +69,9 @@ jobs:
       # - run: opam depext -y autofonce autofonce_core autofonce_lib autofonce_m4 autofonce_share autofonce_patch autofonce_config autofonce_misc
 #        if: steps.cache-opam.outputs.cache-hit != 'true'
 
-      - run: opam install -y opam/*.opam --deps-only --with-test
+      - run: opam install -y opam/*.opam vendors/**/*.opam --deps-only --with-test
         if: matrix.os != 'windows-latest'
-      - run: opam install -y opam\\*.opam --deps-only --with-test
+      - run: opam install -y opam\\*.opam vendors\\ANSITerminal\\*.opam --deps-only --with-test
         if: matrix.os == 'windows-latest'
 #        if: steps.cache-opam.outputs.cache-hit != 'true'
 
