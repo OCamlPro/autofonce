@@ -3,9 +3,12 @@
   (name main)
   (public_name autofonce)
   (package autofonce)
+  ; use field 'dune-libraries' to add libraries without opam deps
   (libraries autofonce_lib )
+  (flags ((:standard (:include linking.sexp))))
+  ; use field 'dune-stanzas' to add more stanzas here
   
-  (flags (:standard (:include linking.sexp)))
+  
   )
 
 ; Use `static-clibs` to specify static C libs (without lib prefix)
@@ -33,4 +36,5 @@
 (documentation
   (package autofonce))
 
+; use field 'dune-trailer' to add more stuff here
 

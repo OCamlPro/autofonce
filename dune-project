@@ -12,6 +12,10 @@
  (synopsis "A modern runner for GNU Autoconf Testsuites")
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  
+  (sites
+    
+  )
+
  (depends
    (ocaml (>= 4.10.0))
    (autofonce_lib (= :version))
@@ -27,6 +31,10 @@
  (synopsis "A modern runner for GNU Autoconf Testsuites")
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  
+  (sites
+    
+  )
+
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
@@ -47,6 +55,10 @@
  (synopsis "A modern runner for GNU Autoconf Testsuites")
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  
+  (sites
+    
+  )
+
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
@@ -71,6 +83,10 @@
  (synopsis "A modern runner for GNU Autoconf Testsuites")
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  
+  (sites
+    
+  )
+
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
@@ -88,6 +104,10 @@
  (synopsis "A modern runner for GNU Autoconf Testsuites")
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  
+  (sites
+    
+  )
+
  (depends
    (ocaml (>= 4.10.0))
    (crunch ( >= 3.2.0 ))
@@ -103,6 +123,10 @@
  (synopsis "A modern runner for GNU Autoconf Testsuites")
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  
+  (sites
+    
+  )
+
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
@@ -119,6 +143,10 @@
  (synopsis "A modern runner for GNU Autoconf Testsuites")
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  
+  (sites
+    
+  )
+
  (depends
    (ocaml (>= 4.10.0))
    (toml ( >= 7.0 ))
@@ -137,6 +165,10 @@
  (synopsis "A modern runner for GNU Autoconf Testsuites")
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  
+  (sites
+    
+  )
+
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
@@ -153,6 +185,10 @@
  (synopsis "A modern runner for GNU Autoconf Testsuites")
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  
+  (sites
+    
+  )
+
  (depends
    (ocaml (>= 4.10.0))
    (ez_file ( >= 0.3 ))
@@ -168,6 +204,10 @@
  (synopsis "A modern runner for GNU Autoconf Testsuites")
  (description "autofonce is a modern runner for GNU Autoconf Testsuites:\nautofonce has a limited understanding of m4 macros that appear in testsuites\nwritten for the GNU Autoconf testsuites, and can run such tests in a modern\nway.\n")
  
+  (sites
+    
+  )
+
  (depends
    (ocaml (>= 4.10.0))
    (ez_win32 ( >= 0.1 ))
@@ -180,3 +220,7 @@
  )
 
 
+
+; add this in dune-project-trailer if you need it, as it is not used
+; by the most recent versions of dune
+;(allow_approximate_merlin)

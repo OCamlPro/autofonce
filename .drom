@@ -5,7 +5,7 @@ version:0.9.0
 
 # hash of toml configuration files
 # used for generation of all files
-ad6902e5ccbcc5fbe567106ef5ef1230:.
+fb21a3973092788cdaea53aa9b29f866:.
 # end context for .
 
 # begin context for .github/workflows/workflow.yml
@@ -15,7 +15,7 @@ dfda7a1c16827333a055280b0e35103a:.github/workflows/workflow.yml
 
 # begin context for .gitignore
 # file .gitignore
-37244387b68791bb9be12bd2f23eff82:.gitignore
+09378fbc04da053aa4ea914b769dca82:.gitignore
 # end context for .gitignore
 
 # begin context for .ocamlformat
@@ -33,6 +33,16 @@ c8f70450e7d78c0387644864ffe8cbd5:.ocamlformat-ignore
 6048407431b8d9baf725ae5365d4c2f2:.ocp-indent
 # end context for .ocp-indent
 
+# begin context for .vscode/settings.json
+# file .vscode/settings.json
+c3d12805c4eeee16a89bfeee357c8325:.vscode/settings.json
+# end context for .vscode/settings.json
+
+# begin context for .vscode/tasks.json
+# file .vscode/tasks.json
+7884eee2b10cf89cff5d1e466646b046:.vscode/tasks.json
+# end context for .vscode/tasks.json
+
 # begin context for CHANGES.md
 # file CHANGES.md
 8e91843bf2fab19ba5a9af80ae59a425:CHANGES.md
@@ -40,13 +50,18 @@ c8f70450e7d78c0387644864ffe8cbd5:.ocamlformat-ignore
 
 # begin context for LICENSE.md
 # file LICENSE.md
-8052b5592d4b59ee6d3babd35c4fd1f1:LICENSE.md
+2c6d56cb082a67e9cc5172027ee1761a:LICENSE.md
 # end context for LICENSE.md
 
 # begin context for Makefile
 # file Makefile
 f171ba6ec26f5773580574003ee20452:Makefile
 # end context for Makefile
+
+# begin context for Makefile.drom
+# file Makefile.drom
+9241e0481df67cca0b05f37e60856703:Makefile.drom
+# end context for Makefile.drom
 
 # begin context for README.md
 # file README.md
@@ -95,7 +110,7 @@ e7379cf9741bb1cd7e4192973c166a04:drom.toml
 
 # begin context for dune-project
 # file dune-project
-bd6207d2685aff5856de55e7f8602875:dune-project
+9c140374a39e057f810003d1330af170:dune-project
 # end context for dune-project
 
 # begin context for opam/autofonce.opam
@@ -160,12 +175,12 @@ dde037bcd171b218010afd57f9c6e966:opam/ez_call.opam
 
 # begin context for scripts/copy-bin.sh
 # file scripts/copy-bin.sh
-bb3a9d286f0dc64021db4194427263ee:scripts/copy-bin.sh
+7fe4ada2a2fc5a0ebf9a2f483679a0ae:scripts/copy-bin.sh
 # end context for scripts/copy-bin.sh
 
 # begin context for scripts/static-build.sh
 # file scripts/static-build.sh
-0da7cd0466c1b5cdd908106ab41ed4a2:scripts/static-build.sh
+e702b441e86cc1aea4431f4f3a9a47e4:scripts/static-build.sh
 # end context for scripts/static-build.sh
 
 # begin context for sphinx/_static/css/fixes.css
@@ -200,7 +215,7 @@ a8003d9c98ad4496d723fa5bf03fb233:sphinx/index.rst
 
 # begin context for src/autofonce/dune
 # file src/autofonce/dune
-54975270dfa1d706699241521c04d79a:src/autofonce/dune
+bb12fc2b7a1a6e709ea77b19f951aafc:src/autofonce/dune
 # end context for src/autofonce/dune
 
 # begin context for src/autofonce/index.mld
@@ -210,7 +225,7 @@ a8003d9c98ad4496d723fa5bf03fb233:sphinx/index.rst
 
 # begin context for src/autofonce/linking_flags.sh
 # file src/autofonce/linking_flags.sh
-9a3b02ff1d99723e9ee2f3c0e97d7b30:src/autofonce/linking_flags.sh
+9fdfca3cc53df639758ff04fe09d3243:src/autofonce/linking_flags.sh
 # end context for src/autofonce/linking_flags.sh
 
 # begin context for src/autofonce/main.ml
@@ -230,7 +245,7 @@ ed33f77d8445636532309e3b42fcf274:src/autofonce/main.ml
 
 # begin context for src/autofonce_config/dune
 # file src/autofonce_config/dune
-97a200bb61e09bcf72652c0d36655b58:src/autofonce_config/dune
+f95b772c34f6a20ca833bfccc77579a5:src/autofonce_config/dune
 # end context for src/autofonce_config/dune
 
 # begin context for src/autofonce_config/index.mld
@@ -250,7 +265,7 @@ ab29faf4dd396c0f88290923e94bf125:src/autofonce_config/package.toml
 
 # begin context for src/autofonce_core/dune
 # file src/autofonce_core/dune
-68caf8fb7cb5058f3a74234e4f96ef1d:src/autofonce_core/dune
+fef0a60de6af404f8f2b4544b3c9e2b1:src/autofonce_core/dune
 # end context for src/autofonce_core/dune
 
 # begin context for src/autofonce_core/index.mld
@@ -270,7 +285,7 @@ ab29faf4dd396c0f88290923e94bf125:src/autofonce_config/package.toml
 
 # begin context for src/autofonce_lib/dune
 # file src/autofonce_lib/dune
-99e07d8929688cd4b54f2e9d9ea95631:src/autofonce_lib/dune
+4b508925f49463fccfdf3902c1a0b7a0:src/autofonce_lib/dune
 # end context for src/autofonce_lib/dune
 
 # begin context for src/autofonce_lib/index.mld
@@ -295,7 +310,7 @@ f9438b301884482620f92d77cf47f3ad:src/autofonce_lib/index.mld
 
 # begin context for src/autofonce_m4/dune
 # file src/autofonce_m4/dune
-93b88e009ede2b8b59358cbccc9e2b6f:src/autofonce_m4/dune
+58aabf47afe1f32312735a698c0c8bb0:src/autofonce_m4/dune
 # end context for src/autofonce_m4/dune
 
 # begin context for src/autofonce_m4/index.mld
@@ -315,7 +330,7 @@ cbb25753456aae3afca195dbbaab1caa:src/autofonce_m4/package.toml
 
 # begin context for src/autofonce_misc/dune
 # file src/autofonce_misc/dune
-5950f80a328e302c2c9376400903d9df:src/autofonce_misc/dune
+fe7ce04bc869b44dfa07a44426083575:src/autofonce_misc/dune
 # end context for src/autofonce_misc/dune
 
 # begin context for src/autofonce_misc/index.mld
@@ -335,7 +350,7 @@ cbb25753456aae3afca195dbbaab1caa:src/autofonce_m4/package.toml
 
 # begin context for src/autofonce_patch/dune
 # file src/autofonce_patch/dune
-e0a4ae525fae2c667a193ff7ce3f1c67:src/autofonce_patch/dune
+45b284a2b6c2664853a175c7204eda82:src/autofonce_patch/dune
 # end context for src/autofonce_patch/dune
 
 # begin context for src/autofonce_patch/index.mld
@@ -355,7 +370,7 @@ febf37b0aca006a410c9b3863a256776:src/autofonce_patch/package.toml
 
 # begin context for src/autofonce_share/dune
 # file src/autofonce_share/dune
-4bddccead9570bfa578d63b1de6edc3c:src/autofonce_share/dune
+292754abcb758955f3945f685d321f08:src/autofonce_share/dune
 # end context for src/autofonce_share/dune
 
 # begin context for src/autofonce_share/index.mld
@@ -380,7 +395,7 @@ febf37b0aca006a410c9b3863a256776:src/autofonce_patch/package.toml
 
 # begin context for src/ez_call/dune
 # file src/ez_call/dune
-684e5a445c9b8bcda7ac1463aa4bc2a4:src/ez_call/dune
+a71df1cb0ebc5794edd35ef71693f95c:src/ez_call/dune
 # end context for src/ez_call/dune
 
 # begin context for src/ez_call/index.mld
@@ -395,7 +410,7 @@ fd2732e6d2f54a39648e93f6a9b82ed8:src/ez_call/index.mld
 
 # begin context for src/ez_win32/dune
 # file src/ez_win32/dune
-f427313caec89ea0504e3dc8fdfaaed9:src/ez_win32/dune
+77be9ab7b581846c659520374dde865a:src/ez_win32/dune
 # end context for src/ez_win32/dune
 
 # begin context for src/ez_win32/index.mld

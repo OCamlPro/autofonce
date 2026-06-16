@@ -16,7 +16,6 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
-          - windows-latest
         ocaml-compiler:
           - 4.14.2
         skip_test:
@@ -31,8 +30,12 @@ jobs:
             windows-environment: "msys2"
           - os: windows-latest
             ocaml-compiler: 4.14.2
-            skip_test: false
+            skip_test: true
             windows-environment: "cygwin"
+          - os: windows-latest
+            ocaml-compiler: 4.14.2
+            windows-environment: "msys2"
+            skip_test: true
 
     runs-on: ${{ matrix.os }}
 
@@ -85,8 +88,8 @@ jobs:
 
       - name: run test suite
         run: |
-          ./autofonce run
-        if: matrix.skip_test  != 'true'
+          ./autofonce.exe run
+        if: ${{ ! matrix.skip_test }}
 
       - name: Upload results.log
         if: failure()

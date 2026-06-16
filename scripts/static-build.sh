@@ -9,8 +9,10 @@ cd $(dirname "$0")/..
 
 set -o pipefail
 
+# Use `docker-alpine-image` field to replace ocamlpro/ocaml:4.13
+# and `docker-alpine-packages` to add more apk packages
 git ls-files -z | xargs -0 tar c | \
-  docker run --rm -i \
+docker run --rm -i \
     ocamlpro/ocaml:4.12 \
     sh -uexc \
       'tar x >&2 &&
