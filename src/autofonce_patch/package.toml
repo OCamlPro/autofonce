@@ -48,6 +48,7 @@ skip = ["main.ml"]
 [dependencies]
 ez_file = ">=0.3"
 ocplib_stuff = ">=0.1"
+autofonce_misc = "version"
 
 # package tools dependencies
 [tools]

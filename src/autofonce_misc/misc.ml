@@ -39,6 +39,9 @@ let remove_rec dir = command "rm -rf %s" dir
 
 let remove_all dir = command "rm -rf %s/*" dir
 
+let getcwd () =
+  Slashifier.slashify @@ Sys.getcwd ()
+
 let find_file ?from file =
   let rec iter dirname =
     let filename = dirname // file in
@@ -50,7 +53,7 @@ let find_file ?from file =
         iter newdir
   in
   let from = match from with
-    | None -> Sys.getcwd ()
+    | None -> getcwd ()
     | Some dir -> dir
   in
   iter from
@@ -67,3 +70,27 @@ let find_in_path path name =
           else try_dir rem
     in
     try_dir path
+
+let with_open open_channel close_channel filename f =
+  let ic = open_channel filename in
+  try
+    let x = f ic in
+    close_channel ic;
+    x
+  with exn ->
+    close_channel ic;
+    raise exn
+
+let with_in filename f = with_open open_in close_in filename f
+
+let with_out filename f = with_open open_out close_out filename f
+
+let read_file filename =
+  if Sys.win32
+  then with_in filename FileChannel.read_file
+  else EzFile.read_file filename
+
+let write_file filename contents =
+  if Sys.win32
+  then with_out filename (fun oc -> FileChannel.write_file oc contents)
+  else EzFile.write_file filename contents

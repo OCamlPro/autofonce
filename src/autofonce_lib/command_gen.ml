@@ -72,7 +72,7 @@ let cmd =
 
        let files = List.map (fun file ->
            let basename = Filename.basename file in
-           let content = EzFile.read_file file in
+           let content = Misc.read_file file in
            EzFile.write_file (Filename.concat files_dir basename) content;
            basename
          ) !files
@@ -80,7 +80,7 @@ let cmd =
 
        let data = List.map (fun file ->
            let basename = Filename.basename file in
-           let content = EzFile.read_file file in
+           let content = Misc.read_file file in
            EzFile.write_file (Filename.concat shared_dir basename) content;
            basename
          ) (List.rev !data)

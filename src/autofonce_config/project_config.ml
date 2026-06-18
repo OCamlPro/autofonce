@@ -27,7 +27,7 @@ let get_string ~prefix ~file table suffix =
 
 let find_dir_by_anchor ?cwd anchors =
   let cwd = match cwd with
-    | None -> Sys.getcwd ()
+    | None -> Misc.getcwd ()
     | Some cwd -> cwd in
 
   let rec iter anchors =
@@ -113,7 +113,7 @@ let parse_table
               | dir -> dir
         in
         iter ~fail:false
-          ( Sys.getcwd () ::
+          ( Misc.getcwd () ::
             (List.map (fun s -> project_source_dir // s) project_build_dir_candidates))
   in
   let project_envs =
@@ -133,7 +133,7 @@ let parse_table
                  let file = String.sub env_value 1 (len-1) in
                  let filename = project_source_dir // file in
                  let env_content = try
-                     EzFile.read_file filename
+                     Misc.read_file filename
                    with _ ->
                      Misc.error "envs.%s references unexistent file %s"
                        env_name file
@@ -352,4 +352,4 @@ let to_string p =
   Buffer.contents b
 
 let to_file p =
-  EzFile.write_file p.project_file ( to_string p )
+  Misc.write_file p.project_file ( to_string p )

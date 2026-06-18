@@ -5,7 +5,7 @@ version:0.9.0
 
 # hash of toml configuration files
 # used for generation of all files
-fb21a3973092788cdaea53aa9b29f866:.
+04c786a5eccd6389b33e8ab34ad45066:.
 # end context for .
 
 # begin context for .github/workflows/workflow.yml
@@ -110,7 +110,7 @@ e7379cf9741bb1cd7e4192973c166a04:drom.toml
 
 # begin context for dune-project
 # file dune-project
-9c140374a39e057f810003d1330af170:dune-project
+554f2619d49ac1946c64fd59973212a9:dune-project
 # end context for dune-project
 
 # begin context for opam/autofonce.opam
@@ -130,7 +130,7 @@ c184d15d1dd010e3af6b4cc2d07f6ba1:opam/autofonce_core.opam
 
 # begin context for opam/autofonce_lib.opam
 # file opam/autofonce_lib.opam
-6d2b005a279a96bec81fb147b915d4de:opam/autofonce_lib.opam
+99d4d8d5b36ac2d5f9e4fea0036ee5f7:opam/autofonce_lib.opam
 # end context for opam/autofonce_lib.opam
 
 # begin context for opam/autofonce_m4.opam

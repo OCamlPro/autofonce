@@ -179,7 +179,7 @@ let test_is_skip ter =
 let exec_action_no_check ter action =
   match action with
   | AT_DATA { file ; content } ->
-      EzFile.write_file ( tester_dir ter // file ) content
+      MISC.write_file ( tester_dir ter // file ) content
   | AT_CLEANUP _ -> ()
   | AF_COMMENT _ -> ()
   | AT_XFAIL -> ter.tester_fail_expected <- true
@@ -302,7 +302,7 @@ let start_test state t =
   else
     Unix.mkdir test_dir 0o755;
 
-  EzFile.write_file ( test_dir // Autofonce_config.Globals.env_autofonce_sh ) @@
+  MISC.write_file ( test_dir // Autofonce_config.Globals.env_autofonce_sh ) @@
   Printf.sprintf {|#!/bin/sh
 # name of testsuite in 'autofonce.toml'
 AUTOFONCE_TESTSUITE="%s"
@@ -359,7 +359,7 @@ let start_check ter check =
       check.check_command
   in
   let test_dir = tester_dir ter in
-  EzFile.write_file ( test_dir // check_sh ) check_content ;
+  MISC.write_file ( test_dir // check_sh ) check_content ;
   Unix.chmod (test_dir // check_sh ) 0o755 ;
   Unix.chdir test_dir ;
   let checker_pid = EzCall.create_process_for_shell
@@ -394,7 +394,7 @@ let subst_env state var =
       pair
 
 let read_subst_output ter file =
-  let s = EzFile.read_file file in
+  let s = MISC.read_file file in
   let t = ter.tester_test in
   let state = ter.tester_state in
   List.fold_left (fun s var ->
@@ -436,9 +436,9 @@ let check_failures cer retcode =
         let subst_stdout = read_subst_output ter stdout_file in
         if subst_stdout <> expected then begin
           let stdout_expected_file = stdout_file ^ ".expected" in
-          EzFile.write_file stdout_expected_file expected ;
+          MISC.write_file stdout_expected_file expected ;
           let stdout_subst_file = stdout_file ^ ".subst" in
-          EzFile.write_file stdout_subst_file subst_stdout ;
+          MISC.write_file stdout_subst_file subst_stdout ;
           MISC.command_ "diff -u %s %s > %s.diff"
             stdout_subst_file stdout_expected_file stdout_file;
           [ kind ]
@@ -446,17 +446,18 @@ let check_failures cer retcode =
     | Save_to_file target ->
         let stdout_file = test_dir // file in
         let target_file = test_dir // target in
-        let content = EzFile.read_file stdout_file in
-        EzFile.write_file target_file content;
+        let content = MISC.read_file stdout_file in
+        MISC.write_file target_file content;
         []
     | Diff_with_file expected ->
         let stdout_file = test_dir // file in
-        let stdout_content = EzFile.read_file stdout_file in
+        let stdout_content = MISC.read_file stdout_file in
         let expected_file = test_dir // expected in
-        let expected_content = EzFile.read_file expected_file in
+        let expected_content = MISC.read_file expected_file in
         if expected_content <> stdout_content then begin
+          assert (if true then false else false);
           let stdout_expected_file = stdout_file ^ ".expected" in
-          EzFile.write_file stdout_expected_file expected_content ;
+          MISC.write_file stdout_expected_file expected_content ;
           MISC.command_ "diff -u %s %s > %s.diff"
             stdout_file stdout_expected_file stdout_file;
           [ kind ]
@@ -469,8 +470,8 @@ let check_failures cer retcode =
         if retcode <> expected then begin
           let check_exit = Printf.sprintf "%s.exit" check_prefix in
           let check_exit = test_dir // check_exit in
-          EzFile.write_file check_exit (string_of_int retcode);
-          EzFile.write_file (check_exit ^ ".expected")
+          MISC.write_file check_exit (string_of_int retcode);
+          MISC.write_file (check_exit ^ ".expected")
             (string_of_int expected);
           [ "exitcode" ]
         end else []
