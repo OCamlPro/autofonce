@@ -92,7 +92,7 @@ let find args =
               {
                 env_name = "";
                 env_kind = Env_file testsuite_env ;
-                env_content = MISC.read_file testsuite_env ;
+                env_content = EzFile.read_text_file testsuite_env ;
               }
         in
         let config_name = match args.arg_testsuite with

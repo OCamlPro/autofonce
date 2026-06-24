@@ -81,7 +81,7 @@ let commit_to_disk ?(action=Diff { exclude=[]; args=None }) ?(backup="~") () =
           "Discarding inconsistent changes demanded on file %s\n%!"
           file
       else
-        let old_content = MISC.read_file file in
+        let old_content = EzFile.read_text_file file in
         let lines = EzString.split old_content '\n' in
         let new_lines = ref [] in
         let rec iter num lines actions =
@@ -121,11 +121,11 @@ let commit_to_disk ?(action=Diff { exclude=[]; args=None }) ?(backup="~") () =
         match action with
         | Fake ext ->
             let file = file ^ ext in
-            MISC.write_file file content;
+            EzFile.write_text_file file content;
             Printf.eprintf "File %S updated\n%!" file
         | Apply ->
             let new_file = file ^ ".new" in
-            MISC.write_file new_file content;
+            EzFile.write_text_file new_file content;
             Sys.rename file (file ^ backup);
             Sys.rename new_file file;
             Printf.eprintf "File %S updated\n%!" file
@@ -139,8 +139,8 @@ let commit_to_disk ?(action=Diff { exclude=[]; args=None }) ?(backup="~") () =
             let basename = Filename.basename file in
             let file_a = "a" // basename in
             let file_b = "b" // basename in
-            MISC.write_file file_a old_content ;
-            MISC.write_file file_b content ;
+            EzFile.write_text_file file_a old_content ;
+            EzFile.write_text_file file_b content ;
             let cmd = Printf.sprintf
                 "diff %s %s %s %s"
                 (match args with

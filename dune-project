@@ -125,7 +125,7 @@
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
-   (ez_file ( >= 0.3 ))
+   (ez_file ( >= 0.5 ))
    (autofonce_misc (= :version))
    ppx_inline_test
    ppx_expect
@@ -146,7 +146,7 @@
    (ocaml (>= 4.10.0))
    (toml ( >= 7.0 ))
    (ocplib_stuff ( >= 0.1 ))
-   (ez_file ( >= 0.3 ))
+   (ez_file ( >= 0.5 ))
    (autofonce_misc (= :version))
    ppx_inline_test
    ppx_expect
@@ -166,7 +166,7 @@
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
-   (ez_file ( >= 0.3 ))
+   (ez_file ( >= 0.4 ))
    ppx_inline_test
    ppx_expect
    odoc

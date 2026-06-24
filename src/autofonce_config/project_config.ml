@@ -133,7 +133,7 @@ let parse_table
                  let file = String.sub env_value 1 (len-1) in
                  let filename = project_source_dir // file in
                  let env_content = try
-                     Misc.read_file filename
+                     EzFile.read_text_file filename
                    with _ ->
                      Misc.error "envs.%s references unexistent file %s"
                        env_name file
@@ -352,4 +352,4 @@ let to_string p =
   Buffer.contents b
 
 let to_file p =
-  Misc.write_file p.project_file ( to_string p )
+  EzFile.write_text_file p.project_file ( to_string p )

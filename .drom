@@ -5,7 +5,7 @@ version:0.9.0
 
 # hash of toml configuration files
 # used for generation of all files
-e52de0ba6f4bbf9a101f085ab40cce84:.
+841e453345a88541c858fbc9d22ade48:.
 # end context for .
 
 # begin context for .github/workflows/workflow.yml
@@ -110,7 +110,7 @@ e7379cf9741bb1cd7e4192973c166a04:drom.toml
 
 # begin context for dune-project
 # file dune-project
-0604a7b18644ef2a90953b602d8d16ff:dune-project
+c5dc562fc2ab5d376342c413b9b53f9d:dune-project
 # end context for dune-project
 
 # begin context for opam/autofonce.opam
@@ -120,7 +120,7 @@ e7379cf9741bb1cd7e4192973c166a04:drom.toml
 
 # begin context for opam/autofonce_config.opam
 # file opam/autofonce_config.opam
-beb338201942f01aa47dfb20c88db0e5:opam/autofonce_config.opam
+fc611def0483ea8523478cb585da5eeb:opam/autofonce_config.opam
 # end context for opam/autofonce_config.opam
 
 # begin context for opam/autofonce_core.opam
@@ -140,12 +140,12 @@ beb338201942f01aa47dfb20c88db0e5:opam/autofonce_config.opam
 
 # begin context for opam/autofonce_misc.opam
 # file opam/autofonce_misc.opam
-fbff990abb93dea0771964bcce6dd6f4:opam/autofonce_misc.opam
+7759551cc48fc6e1f70a8528ab40d86f:opam/autofonce_misc.opam
 # end context for opam/autofonce_misc.opam
 
 # begin context for opam/autofonce_patch.opam
 # file opam/autofonce_patch.opam
-9c30582781e70280b3e250bfca7b5e1f:opam/autofonce_patch.opam
+08b0c9ce406db005c2d43a5e2746c256:opam/autofonce_patch.opam
 # end context for opam/autofonce_patch.opam
 
 # begin context for opam/autofonce_share.opam

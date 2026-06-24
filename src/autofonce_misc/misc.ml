@@ -70,7 +70,3 @@ let find_in_path path name =
           else try_dir rem
     in
     try_dir path
-
-let read_file = EzFile.read_text_file
-
-let write_file = EzFile.write_text_file
