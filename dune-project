@@ -22,7 +22,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -46,7 +45,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -74,7 +72,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -95,7 +92,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -114,7 +110,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -135,7 +130,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -157,7 +151,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -177,7 +170,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -196,7 +188,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -216,7 +207,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
