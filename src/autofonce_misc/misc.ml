@@ -39,6 +39,9 @@ let remove_rec dir = command "rm -rf %s" dir
 
 let remove_all dir = command "rm -rf %s/*" dir
 
+let getcwd () =
+  Slashifier.slashify @@ Sys.getcwd ()
+
 let find_file ?from file =
   let rec iter dirname =
     let filename = dirname // file in
@@ -50,7 +53,7 @@ let find_file ?from file =
         iter newdir
   in
   let from = match from with
-    | None -> Sys.getcwd ()
+    | None -> getcwd ()
     | Some dir -> dir
   in
   iter from

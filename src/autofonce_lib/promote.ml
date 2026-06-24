@@ -16,7 +16,6 @@ open EzFile.OP
 
 module Patch_lines = Autofonce_patch.Patch_lines
 module Parser = Autofonce_core.Parser
-module Misc = Autofonce_misc.Misc
 open Types
 
 (* TODO: Currently, we don't handle the use of `expout` and `experr`
@@ -54,7 +53,7 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
           | Some old_retcode ->
               let check_exit = Printf.sprintf "%s.exit" check_prefix in
               if Sys.file_exists check_exit then
-                let s = EzFile.read_file check_exit in
+                let s = EzFile.read_text_file check_exit in
                 let retcode = int_of_string s in
                 Some retcode
               else
@@ -69,7 +68,7 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
               let check_stdout =
                 Printf.sprintf "%s.out.subst" check_prefix in
               if Sys.file_exists check_stdout then
-                let s = EzFile.read_file check_stdout in
+                let s = EzFile.read_text_file check_stdout in
                 Content s
               else
                 Content old_content
@@ -86,7 +85,7 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
               let check_stderr =
                 Printf.sprintf "%s.err.subst" check_prefix in
               if Sys.file_exists check_stderr then
-                let s = EzFile.read_file check_stderr in
+                let s = EzFile.read_text_file check_stderr in
                 Content s
               else
                 Content old_content
@@ -254,7 +253,7 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
           | None -> content
           | Some filename ->
               let dirname = Filename.dirname t.test_loc.file in
-              EzFile.read_file (Filename.concat dirname filename)
+              EzFile.read_text_file (Filename.concat dirname filename)
         in
         print_action b (AF_COMMENT comment);
         print_action b (AT_DATA { file ; content });

@@ -12,6 +12,7 @@
 
 open Ezcmd.V2
 open Ez_call.V1
+open Ez_file.V1
 
 module Misc = Autofonce_misc.Misc
 
@@ -50,8 +51,9 @@ let commands = [
 
 let main () =
 
+  Slashifier.enable ();
   begin
-    try ignore ( Sys.getcwd () )
+    try ignore ( Misc.getcwd () )
     with _ ->
       Printf.eprintf "Current directory does not exist anymore. Move back up.\n%!";
       exit 2

@@ -13,6 +13,8 @@
 open Ez_file.V1
 open EzFile.OP
 
+module MISC = Autofonce_misc.Misc
+
 type action =
   | Apply (* really apply to file *)
   | Fake of string  (* generate files with EXTENSION instead of former
@@ -70,7 +72,7 @@ let commit_to_disk ?(action=Diff { exclude=[]; args=None }) ?(backup="~") () =
   Sys.remove tmp_dir ;
   let tmp_dir_a = tmp_dir // "a" in
   let tmp_dir_b = tmp_dir // "b" in
-  let cwd = Sys.getcwd () in
+  let cwd = MISC.getcwd () in
   Hashtbl.iter (fun file actions ->
       let actions = List.sort compare_actions !actions in
       let inconsistent = check_consistency actions in
@@ -79,7 +81,7 @@ let commit_to_disk ?(action=Diff { exclude=[]; args=None }) ?(backup="~") () =
           "Discarding inconsistent changes demanded on file %s\n%!"
           file
       else
-        let old_content = EzFile.read_file file in
+        let old_content = EzFile.read_text_file file in
         let lines = EzString.split old_content '\n' in
         let new_lines = ref [] in
         let rec iter num lines actions =
@@ -119,11 +121,11 @@ let commit_to_disk ?(action=Diff { exclude=[]; args=None }) ?(backup="~") () =
         match action with
         | Fake ext ->
             let file = file ^ ext in
-            EzFile.write_file file content;
+            EzFile.write_text_file file content;
             Printf.eprintf "File %S updated\n%!" file
         | Apply ->
             let new_file = file ^ ".new" in
-            EzFile.write_file new_file content;
+            EzFile.write_text_file new_file content;
             Sys.rename file (file ^ backup);
             Sys.rename new_file file;
             Printf.eprintf "File %S updated\n%!" file
@@ -137,8 +139,8 @@ let commit_to_disk ?(action=Diff { exclude=[]; args=None }) ?(backup="~") () =
             let basename = Filename.basename file in
             let file_a = "a" // basename in
             let file_b = "b" // basename in
-            EzFile.write_file file_a old_content ;
-            EzFile.write_file file_b content ;
+            EzFile.write_text_file file_a old_content ;
+            EzFile.write_text_file file_b content ;
             let cmd = Printf.sprintf
                 "diff %s %s %s %s"
                 (match args with

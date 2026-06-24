@@ -52,7 +52,7 @@ let cmd =
     (fun () ->
 
        let files = List.map (fun file ->
-           let content = EzFile.read_file file in
+           let content = EzFile.read_text_file file in
            (file, content)
          ) !files
        in
@@ -66,8 +66,8 @@ let cmd =
        let stderr = EzCall.tmpfile () in
        let pid = EzCall.create_process ~stdout ~stderr command in
        let retcode = Unix.uninterrupted_waitpid pid in
-       let stdout_content = EzFile.read_file stdout in
-       let stderr_content = EzFile.read_file stderr in
+       let stdout_content = EzFile.read_text_file stdout in
+       let stderr_content = EzFile.read_text_file stderr in
        Sys.remove stdout;
        Sys.remove stderr;
        let b = Buffer.create 10000 in
@@ -117,7 +117,7 @@ let cmd =
        match !output with
        | None -> Printf.printf "%s%!" s
        | Some file ->
-           EzFile.write_file file s
+           EzFile.write_text_file file s
     )
     ~args
     ~doc: "Create a new test by running a command"

@@ -41,8 +41,6 @@ skip = ["@test", "tests", "CHANGES.md", ".github/workflows/workflow.yml", "sphin
 [dependencies]
 
 # project-wide tools dependencies (not for package-specific deps)
-[tools.ocamlformat]
-for-test = true
 [tools.odoc]
 for-doc = true
 [tools.ppx_expect]

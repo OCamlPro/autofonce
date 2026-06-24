@@ -47,7 +47,7 @@ skip = ["main.ml"]
 #   base-unix = { libname = "unix", version = ">=base" } 
 [dependencies]
 autofonce_misc = "version"
-ez_file = ">=0.3"
+ez_file = ">=0.5"
 ocplib_stuff = ">=0.1"
 toml = ">=7.0"
 

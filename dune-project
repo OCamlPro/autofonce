@@ -22,7 +22,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -46,7 +45,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -62,7 +60,7 @@
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
-   (ez_file ( >= 0.3 ))
+   (ez_file ( >= 0.5 ))
    (ez_cmdliner ( >= 0.4.3 ))
    (ez_call ( >= 0.1 ))
    (autofonce_share (= :version))
@@ -74,7 +72,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -95,7 +92,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -114,7 +110,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -130,11 +125,11 @@
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
-   (ez_file ( >= 0.3 ))
+   (ez_file ( >= 0.5 ))
+   (autofonce_misc (= :version))
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -151,12 +146,11 @@
    (ocaml (>= 4.10.0))
    (toml ( >= 7.0 ))
    (ocplib_stuff ( >= 0.1 ))
-   (ez_file ( >= 0.3 ))
+   (ez_file ( >= 0.5 ))
    (autofonce_misc (= :version))
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -172,11 +166,10 @@
  (depends
    (ocaml (>= 4.10.0))
    (ocplib_stuff ( >= 0.1 ))
-   (ez_file ( >= 0.3 ))
+   (ez_file ( >= 0.4 ))
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -195,7 +188,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 
@@ -215,7 +207,6 @@
    ppx_inline_test
    ppx_expect
    odoc
-   ocamlformat
   )
  )
 

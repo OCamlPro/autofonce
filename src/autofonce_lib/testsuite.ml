@@ -63,7 +63,7 @@ let read p tc =
 let find args =
 
   begin
-    if not ( Sys.file_exists ( Sys.getcwd () )) then
+    if not ( Sys.file_exists ( MISC.getcwd () )) then
       MISC.error "Current directory does not exist anymore. Move back up.\n%!";
   end ;
 
@@ -92,7 +92,7 @@ let find args =
               {
                 env_name = "";
                 env_kind = Env_file testsuite_env ;
-                env_content = EzFile.read_file testsuite_env ;
+                env_content = EzFile.read_text_file testsuite_env ;
               }
         in
         let config_name = match args.arg_testsuite with
@@ -149,11 +149,11 @@ let exec ~filter_args ~exec_args p tc suite =
 
   if not ( Sys.file_exists tests_dir ) then begin
     Runner_common.output state "Creating testing directory %s\n%!"
-      (Sys.getcwd () // tests_dir);
+      (MISC.getcwd () // tests_dir);
     Unix.mkdir tests_dir 0o755;
   end else begin
     Runner_common.output state "Using testing directory %s\n%!"
-      (Sys.getcwd () // tests_dir);
+      (MISC.getcwd () // tests_dir);
   end;
 
   if state.state_args.arg_max_jobs = 1 then

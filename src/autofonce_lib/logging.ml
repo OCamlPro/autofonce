@@ -94,7 +94,7 @@ let log_checks ?failed_check state ter =
         let filename = check_dir // file in
         if Sys.file_exists filename then begin
           log_header ~indent:6 state "File %s" file;
-          match EzFile.read_file filename with
+          match EzFile.read_text_file filename with
           | exception exn ->
               Printf.bprintf b "Exception while reading %S:\n  %s\n"
                 filename ( Printexc.to_string exn )
@@ -149,7 +149,7 @@ let log_captured_files ?indent ?dir state msg files =
   List.iter (fun file ->
       log_header ?indent state "%s: captured file %S" msg file ;
       let filename = dir // file in
-      match EzFile.read_file filename with
+      match EzFile.read_text_file filename with
       | exception exn ->
           Printf.bprintf b "Exception while reading %S:\n  %s\n"
             filename ( Printexc.to_string exn )
@@ -190,7 +190,7 @@ let log_failed_tests state msg tests =
         t b1 t.test_actions ;
       let s1 = Buffer.contents b1 in
       let f1 = test_dir // "test.at.expected" in
-      EzFile.write_file f1 s1;
+      EzFile.write_text_file f1 s1;
 
       Buffer.reset b2;
       Promote.print_actions
@@ -199,12 +199,12 @@ let log_failed_tests state msg tests =
         t b2 t.test_actions ;
       let s2 = Buffer.contents b2 in
       let f2 = test_dir // "test.at.promoted" in
-      EzFile.write_file f2 s2;
+      EzFile.write_text_file f2 s2;
 
       let test_at_diff = test_dir // "test.at.diff" in
       MISC.command_ "diff -u %s %s > %s"
         f1 f2 test_at_diff ;
-      let diff = EzFile.read_file test_at_diff in
+      let diff = EzFile.read_text_file test_at_diff in
 
       log_header ~indent:2 state "Expected test:";
       Printf.bprintf state.state_buffer "%s\n" s1;
@@ -239,9 +239,9 @@ let log_state_buffer state =
   let buffer_file = match state.state_args.arg_output with
     | None ->
         let tests_dir = Autofonce_config.Globals.tests_dir in
-        Sys.getcwd () // tests_dir // "results.log"
+        MISC.getcwd () // tests_dir // "results.log"
     | Some output -> output
   in
   let buffer = Buffer.contents state.state_buffer in
-  EzFile.write_file buffer_file buffer;
+  EzFile.write_text_file buffer_file buffer;
   Printf.eprintf "File %S created with failure results\n%!" buffer_file;
