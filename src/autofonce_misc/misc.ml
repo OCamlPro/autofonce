@@ -71,26 +71,6 @@ let find_in_path path name =
     in
     try_dir path
 
-let with_open open_channel close_channel filename f =
-  let ic = open_channel filename in
-  try
-    let x = f ic in
-    close_channel ic;
-    x
-  with exn ->
-    close_channel ic;
-    raise exn
+let read_file = EzFile.read_text_file
 
-let with_in filename f = with_open open_in close_in filename f
-
-let with_out filename f = with_open open_out close_out filename f
-
-let read_file filename =
-  if Sys.win32
-  then with_in filename FileChannel.read_file
-  else EzFile.read_file filename
-
-let write_file filename contents =
-  if Sys.win32
-  then with_out filename (fun oc -> FileChannel.write_file oc contents)
-  else EzFile.write_file filename contents
+let write_file = EzFile.write_text_file
