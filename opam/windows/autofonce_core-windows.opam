@@ -2,7 +2,7 @@
 # Do not modify, or add to the `skip` field of `drom.toml`.
 opam-version: "2.0"
 name: "autofonce_core"
-version: "0.9"
+version: "1.0"
 license: "GPL-3.0-only"
 synopsis: "A modern runner for GNU Autoconf Testsuites"
 description: """\
@@ -41,7 +41,7 @@ install: [
 ]
 depends: [
   "ocaml" {>= "4.10.0"}
-  "dune" {>= "2.7.0"}
+  "dune" {>= "2.8.0"}
   "ocplib_stuff-windows" {>= "0.1"}
   "ez_file-windows" {>= "0.3"}
   "autofonce_share-windows" {= version}
@@ -51,6 +51,5 @@ depends: [
   "ppx_inline_test" {with-test}
   "ppx_expect" {with-test}
   "odoc" {with-doc}
-  "ocamlformat" {with-test}
 ]
 # Content of `opam-trailer` field:
