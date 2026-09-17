@@ -24,13 +24,13 @@ val exec :
   filter_args:Filter.args ->
   exec_args:Types.exec_args ->
   Types.project_config ->
-  Types.testsuite_config -> Types.suite -> int
+  Types.suites -> int
 
-val find : args ->
-  Types.project_config * Types.testsuite_config * Types.suite
+val find : args -> Types.project_config * Types.suites
 
-val print : filter_args:Filter.args -> Types.suite -> unit
+val print : filter_args:Filter.args ->  Types.suites -> unit
 
 val read :
   Types.project_config -> Types.testsuite_config ->
-  Types.project_config * Types.testsuite_config * Types.suite
+  Types.suite * Types.testsuite_config
+  

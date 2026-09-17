@@ -58,7 +58,7 @@ let read p tc =
     ) tc.config_path in
   Printf.eprintf "Loading tests from file %S\n%!" testsuite_file ;
   let suite = PARSER.read ~path testsuite_file in
-  p, tc, suite
+  suite, tc
 
 let find args =
 
@@ -111,7 +111,7 @@ let find args =
         }
   in
   Printf.eprintf "Project description loaded from %s\n%!" p.project_file;
-  let tc =
+  let tcs =
     match args.arg_testsuite with
     | None ->
         begin
@@ -119,7 +119,15 @@ let find args =
           | [] -> MISC.error
                     "Project does not define any testsuite in %s!\n"
                     p.project_file
-          | tc :: _ -> tc
+          | tcs ->
+              List.filter (fun tc ->
+                  let testsuite_file = p.project_source_dir // tc.config_file in
+                  let keep = Sys.file_exists testsuite_file in
+                  if not keep then
+                    Printf.eprintf "Discarding inexistent testsuite %S\n"
+                      tc.config_name;
+                  keep
+                ) tcs
         end
     | Some testsuite ->
         let rec iter testsuites =
@@ -128,18 +136,20 @@ let find args =
               MISC.error "Testsuite %S not found among testsuites in %s\n%!"
                 testsuite p.project_file
           | tc :: testsuites ->
-              if tc.config_name = testsuite then tc else
+              if tc.config_name = testsuite then
+                [ tc ]
+              else
                 iter testsuites
         in
         iter p.project_testsuites
   in
-  read p tc
+  p, List.map (fun tc -> read p tc) tcs
 
-let exec ~filter_args ~exec_args p tc suite =
+let exec ~filter_args ~exec_args p suites =
   MISC.set_signal_handle Sys.sigint (fun _ -> exit 2);
   MISC.set_signal_handle Sys.sigterm (fun _ -> exit 2);
 
-  let state = Runner_common.create_state ~exec_args p tc suite in
+  let state = Runner_common.create_state ~exec_args p suites in
   (* we are now in state_run_dir, i.e. before _autofonce/ *)
 
   let tests_dir = Autofonce_config.Globals.tests_dir in
@@ -165,19 +175,17 @@ let exec ~filter_args ~exec_args p tc suite =
   Printf.printf "Results:\n%!"; Terminal.erase Eol;
   Terminal.printf [] "* %d checks performed\n%!" state.state_nchecks ;
   let style =
-    if state.state_tests_failed <> [] then [ Terminal.red ]
+    if state.state_ntests_failed > 0 then [ Terminal.red ]
     else [ Terminal.green ]
   in
   Terminal.printf style
     "* %d / %d tests executed successfully\n%!"
     state.state_ntests_ok state.state_ntests_ran ;
-  begin match state.state_tests_failed with
-    | [] -> ()
-    | list ->
-        let nb = List.length list in
-        Terminal.printf [ Terminal.red ] "* %d tests failed:" nb;
-        Runner_common.print_ntests 10 (List.rev list);
-        Printf.printf "\n%!";
+  begin if state.state_ntests_failed > 0 then
+      let nb = state.state_ntests_failed in
+      Terminal.printf [ Terminal.red ] "* %d tests failed:" nb;
+      Runner_common.print_ntests 10 (List.rev state.state_tests_failed);
+      Printf.printf "\n%!";
   end;
   begin match state.state_tests_skipped with
     | [] -> ()
@@ -200,23 +208,24 @@ let exec ~filter_args ~exec_args p tc suite =
     Terminal.printf [ Terminal.magenta ] "%s\n%!" buffer;
   end ;
   Logging.log_state_buffer state ;
-  List.length state.state_tests_failed
+  state.state_ntests_failed
 
-let print_test _c t =
-  Printf.printf "%04d %-50s %s\n%!" t.test_id t.test_name
+let print_test t tc =
+  let test_name = Types.long_test_name t tc in
+  Printf.printf "%04d %-50s %s\n%!" t.test_id test_name
     ( PARSER.name_of_loc t.test_loc );
   ()
 
-let print ~filter_args c =
+let print ~filter_args suites =
   let current_banner = ref "" in
   Filter.select_tests  ~args:filter_args
-    (fun t ->
+    (fun t tc ->
        if t.test_banner <> !current_banner then begin
          Printf.eprintf "\n%s\n\n%!" t.test_banner;
          current_banner := t.test_banner
        end;
-       print_test c t;
-    ) c
+       print_test t tc
+    ) suites
 
 let args () =
   let args = {

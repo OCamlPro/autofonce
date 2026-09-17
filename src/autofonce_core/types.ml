@@ -38,6 +38,7 @@ type check = { (* variable name is `check` *)
 
 and action =
   | AT_DATA of { file:string ; content: string }
+  | AF_DATA_FILE of { file:string ; dir : string ; content_file: string }
   | AT_CAPTURE_FILE of string
   | AT_XFAIL
   | AT_XFAIL_IF of { step : step ; loc : location ; command : string }
@@ -89,7 +90,10 @@ let string_of_location = Autofonce_m4.M4Printer.string_of_location
 
 let rec string_of_action = function
   | AT_DATA { file ; content } ->
-      Printf.sprintf "AT_DATA ( file=%S, content=%S )" file content
+      Printf.sprintf "AT_DATA ( file=%S, content=%s )" file content
+  | AF_DATA_FILE { file ; dir ; content_file } ->
+      Printf.sprintf "AF_DATA_FILE ( file=%S, dir=%s, content_file=%s )"
+        file dir content_file
   | AT_CAPTURE_FILE string ->
       Printf.sprintf "AT_CAPTURE_FILE %s" string
   | AT_XFAIL -> "AT_XFAIL_IF([true])"

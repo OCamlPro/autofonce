@@ -81,20 +81,22 @@ let status_len = 30
 let spaces = String.make 80 ' '
 
 let test_status ter fmt =
-  let t = ter.tester_test in
   Printf.kprintf (fun s ->
+      let t = ter.tester_test in
+      let tc = ter.tester_config in
       let len = String.length s in
       let status_len = if len > status_len then len else status_len in
       let test_id = Printf.sprintf "%04d" t.test_id in
       let id_len = String.length test_id in
       let max_name_len = 79 - 2 - status_len - id_len in
       let max_name_len = if max_name_len < 0 then 0 else max_name_len in
-      let len = String.length t.test_name in
+      let test_name = Types.long_test_name t tc in
+      let len = String.length test_name in
       let test_name =
         if len > max_name_len then
-          String.sub t.test_name 0 max_name_len
+          String.sub test_name 0 max_name_len
         else
-          t.test_name ^ String.sub spaces 0 (max_name_len - len)
+          test_name ^ String.sub spaces 0 (max_name_len - len)
       in
       Printf.sprintf "%s %s %s" test_id test_name s
     ) fmt
@@ -160,6 +162,7 @@ let test_is_failed loc ter ?check s =
           ( PARSER.name_of_loc loc ) s )
   end else begin
     state.state_tests_failed <- ter :: state.state_tests_failed ;
+    state.state_ntests_failed <- state.state_ntests_failed + 1;
     let status =
       test_status ter "FAIL (%s %s)" ( PARSER.name_of_loc loc ) s
     in
@@ -180,6 +183,10 @@ let exec_action_no_check ter action =
   match action with
   | AT_DATA { file ; content } ->
       EzFile.write_text_file ( tester_dir ter // file ) content
+  | AF_DATA_FILE { file ; dir ; content_file } ->
+      let dst_file = tester_dir ter // file in
+      if Sys.file_exists dst_file then Unix.unlink dst_file;
+      Unix.link ( dir // content_file ) dst_file
   | AT_CLEANUP _ -> ()
   | AF_COMMENT _ -> ()
   | AT_XFAIL -> ter.tester_fail_expected <- true
@@ -271,18 +278,18 @@ let print_status state =
     Terminal.move_bol ();
     Terminal.erase Eol;
     Terminal.printf [] " %d / %d" state.state_ntests_ran state.state_ntests;
-    if state.state_tests_failed <> [] then begin
+    if state.state_ntests_failed > 0 then begin
       Terminal.printf [ Terminal.red ]
-        " %d fails:%!" (List.length state.state_tests_failed);
-      print_ntests 3 state.state_tests_failed;
+        " %d fails:%!" state.state_ntests_failed;
+      (* print_ntests 2 state.state_tests_failed; *)
     end;
     Terminal.printf [] " %s" state.state_status;
     Printf.printf "%!";
     state.state_status_printed <- true
   end
 
-let start_test state t =
-  let c = state.state_suite in
+let start_test state t  cg =
+  let c = t.test_suite in
   state.state_ntests_ran <- state.state_ntests_ran + 1;
   state.state_status_printed <- false ;
   print_status state;
@@ -290,6 +297,7 @@ let start_test state t =
     tester_test = t ;
     tester_state = state ;
     tester_suite = c ;
+    tester_config = cg ;
     tester_renvs = [] ;
     tester_fail_expected = false ;
     tester_captured_files = StringSet.empty ;
@@ -319,11 +327,11 @@ AUTOFONCE_BUILD_DIR="%s"
 # test env by AF_ENV
 %s
 |}
-    state.state_config.config_name
+    cg.config_name
     state.state_run_dir
     state.state_project.project_source_dir
     state.state_project.project_build_dir
-    state.state_config.config_env.env_content
+    cg.config_env.env_content
     t.test_env
   ;
   Unix.chmod ( test_dir // Autofonce_config.Globals.env_autofonce_sh ) 0o755;
@@ -481,13 +489,17 @@ let check_failures cer retcode =
   @
   compare check.check_stderr check_stderr "stderr"
 
-let create_state ~exec_args p tc suite =
+let create_state ~exec_args p suites =
   let state_run_dir = p.project_run_dir in
   Unix.chdir state_run_dir;
+  let ntests = ref 0 in
+  List.iter (fun (suite,_tc) ->
+      ntests := !ntests + suite.suite_ntests ;
+    ) suites;
   {
     state_args = exec_args ;
-    state_suite = suite ;
-    state_config = tc ;
+    state_suites = suites ;
+
     state_project = p ;
     state_run_dir ;
     state_status = "";
@@ -495,10 +507,11 @@ let create_state ~exec_args p tc suite =
     state_ntests_ran = 0 ;
     state_ntests_ok = 0 ;
     state_tests_failed = [] ;
+    state_ntests_failed = 0 ;
     state_tests_skipped = [] ;
     state_tests_failexpected = [] ;
     state_buffer = Buffer.create 10000;
-    state_ntests = suite.suite_ntests ;
+    state_ntests = !ntests ;
     state_nchecks = 0;
     state_status_printed = false ;
   }

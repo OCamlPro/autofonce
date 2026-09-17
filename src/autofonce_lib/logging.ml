@@ -123,6 +123,7 @@ let log_checks ?failed_check state ter =
     | AF_COMMENT _
     | AF_COPY _
     | AT_DATA _
+    | AF_DATA_FILE _
     | AF_ENV _
     | AT_CAPTURE_FILE _
     | AT_XFAIL
@@ -164,6 +165,7 @@ let log_failed_tests state msg tests =
   let b = state.state_buffer in
   List.iter (fun ter ->
       let t = ter.tester_test in
+      let tc = ter.tester_config in
       let test_dir = Runner_common.tester_dir ter in
 
       let (reason, failed_check) =
@@ -171,8 +173,9 @@ let log_failed_tests state msg tests =
         | None -> assert false
         | Some (_loc, reason, check ) -> reason, check
       in
-      log_header state "%s %04d %s (%s %s)"
-        msg t.test_id t.test_name
+      log_header state "%s %s %04d %s (%s %s)"
+        msg ter.tester_config.config_name t.test_id
+        (Types.long_test_name t tc)
         (PARSER.name_of_loc t.test_loc) reason;
 
       begin

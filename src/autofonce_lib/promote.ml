@@ -14,8 +14,9 @@ open EzCompat
 open Ez_file.V1
 open EzFile.OP
 
-module Patch_lines = Autofonce_patch.Patch_lines
-module Parser = Autofonce_core.Parser
+module PATCH_LINES = Autofonce_patch.Patch_lines
+module PARSER = Autofonce_core.Parser
+
 open Types
 
 (* TODO: Currently, we don't handle the use of `expout` and `experr`
@@ -34,7 +35,7 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
     Buffer.add_string b "AT_CHECK(";
     let check_dir = Runner_common.check_dir check in
     let check_prefix = check_dir // Runner_common.check_prefix check in
-    Printf.bprintf b "%s" ( Parser.m4_escape check.check_command );
+    Printf.bprintf b "%s" ( PARSER.m4_escape check.check_command );
     (* AT_CHECK can be used as a 'if', in which case either
        run-if-pass or run-if-fail is not empty. Otherwise,
        the check must pass after promotion.
@@ -119,7 +120,7 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
       if nargs > 1 then begin
         match stdout with
         | Content content ->
-            let s = Parser.m4_escape content in
+            let s = PARSER.m4_escape content in
             if Buffer.length b + String.length s > 80 then
               Printf.bprintf b ",\n%s" s
             else
@@ -146,7 +147,7 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
             Printf.bprintf b ", [%s]" file
         | Content "" -> ()
         | Content content ->
-            let s = Parser.m4_escape content in
+            let s = PARSER.m4_escape content in
             if Buffer.length b + String.length s > 80 then
               Printf.bprintf b ",\n%s" s
             else
@@ -174,7 +175,7 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
             assert (file = "expout" || file = "experr");
             Printf.bprintf b ", [%s]" file
         | Content content ->
-            let s = Parser.m4_escape content in
+            let s = PARSER.m4_escape content in
             if Buffer.length b + String.length s > 80 then
               Printf.bprintf b ",\n%s" s
             else
@@ -211,14 +212,18 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
     | AT_CLEANUP _ -> Printf.bprintf b "\nAT_CLEANUP";
     | AT_DATA { file ; content } ->
         Printf.bprintf b "AT_DATA(%s, %s)\n"
-          ( Parser.m4_escape file )
-          ( Parser.m4_escape content )
+          ( PARSER.m4_escape file )
+          ( PARSER.m4_escape content )
+    | AF_DATA_FILE { file ; dir=_; content_file } ->
+        Printf.bprintf b "AF_DATA_FILE(%s, %s)\n"
+          ( PARSER.m4_escape file )
+          ( PARSER.m4_escape content_file )
     | AF_ENV string ->
         Printf.bprintf b "AT_ENV(%s)\n"
-          ( Parser.m4_escape string )
+          ( PARSER.m4_escape string )
     | AT_CAPTURE_FILE string ->
         Printf.bprintf b "AT_CAPTURE_FILE(%s)\n"
-          ( Parser.m4_escape string )
+          ( PARSER.m4_escape string )
     | AT_XFAIL ->
         Printf.bprintf b "AT_XFAIL_IF([true])\n"
     | AT_SKIP ->
@@ -226,17 +231,17 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
     | AT_FAIL _ ->
         Buffer.add_string b "AT_FAIL_IF([true])\n"
     | AT_XFAIL_IF { command ; _ } ->
-        Printf.bprintf b "AT_XFAIL_IF([%s])\n" ( Parser.m4_escape command )
+        Printf.bprintf b "AT_XFAIL_IF([%s])\n" ( PARSER.m4_escape command )
     | AT_SKIP_IF { command ; _ } ->
-        Printf.bprintf b "AT_SKIP_IF([%s])\n" ( Parser.m4_escape command )
+        Printf.bprintf b "AT_SKIP_IF([%s])\n" ( PARSER.m4_escape command )
     | AT_FAIL_IF { command ; _ } ->
-        Printf.bprintf b "AT_FAIL_IF([%s])\n" ( Parser.m4_escape command )
+        Printf.bprintf b "AT_FAIL_IF([%s])\n" ( PARSER.m4_escape command )
     | AF_COPY { files ; copy ; promote ; _ } ->
         if promote then
           Printf.bprintf b "AF_%s([%s])\n"
             (if copy then "COPY" else "LINK")
             ( String.concat "], ["
-                ( List.map Parser.m4_escape files ))
+                ( List.map PARSER.m4_escape files ))
     | AT_CHECK check ->
         Printf.bprintf b "\n%s\n" ( string_of_check check )
     | AF_COMMENT comment ->
