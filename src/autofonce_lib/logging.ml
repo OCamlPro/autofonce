@@ -123,7 +123,8 @@ let log_checks ?failed_check state ter =
     | AF_COMMENT _
     | AF_COPY _
     | AT_DATA _
-    | AF_DATA_FILE _
+    | AF_DATA_COPY _
+    | AF_DATA_LINK _
     | AF_ENV _
     | AT_CAPTURE_FILE _
     | AT_XFAIL

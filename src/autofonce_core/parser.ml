@@ -293,11 +293,17 @@ let load_file ~dirs ~keep_files ~path c filename =
           let content = M4Parser.to_string content in
           AT_DATA  { file ; content }
 
-      | Macro ( ( "AF_DATA_FILE" ) , [ file ; content_file]) ->
+      | Macro ( ( "AF_DATA_COPY" ) , [ file ; content_file]) ->
           let file = M4Parser.to_string file in
           let content_file = M4Parser.to_string content_file in
           let dir = Filename.dirname macro.loc.file in
-          AF_DATA_FILE  { file ; dir ; content_file }
+          AF_DATA_COPY  { file ; dir ; content_file }
+
+      | Macro ( ( "AF_DATA_LINK" ) , [ file ; content_file]) ->
+          let file = M4Parser.to_string file in
+          let content_file = M4Parser.to_string content_file in
+          let dir = Filename.dirname macro.loc.file in
+          AF_DATA_LINK  { file ; dir ; content_file }
 
       | Macro ( ( "AF_CAPTURE_FILE" | "AT_CAPTURE_FILE" ) , [ file ] ) ->
           let file = M4Parser.to_string file in

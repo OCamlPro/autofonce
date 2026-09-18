@@ -183,7 +183,12 @@ let exec_action_no_check ter action =
   match action with
   | AT_DATA { file ; content } ->
       EzFile.write_text_file ( tester_dir ter // file ) content
-  | AF_DATA_FILE { file ; dir ; content_file } ->
+  | AF_DATA_COPY { file ; dir ; content_file } ->
+      let dst_file = tester_dir ter // file in
+      if Sys.file_exists dst_file then Unix.unlink dst_file;
+      let content = EzFile.read_file ( dir // content_file ) in
+      EzFile.write_file dst_file content
+  | AF_DATA_LINK { file ; dir ; content_file } ->
       let dst_file = tester_dir ter // file in
       if Sys.file_exists dst_file then Unix.unlink dst_file;
       Unix.link ( dir // content_file ) dst_file

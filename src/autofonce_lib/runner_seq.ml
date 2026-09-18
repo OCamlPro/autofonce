@@ -44,7 +44,8 @@ let rec exec_action_or_check ter action =
   | AF_COMMENT _
   | AT_XFAIL
   | AT_DATA _
-  | AF_DATA_FILE _
+  | AF_DATA_COPY _
+  | AF_DATA_LINK _
   | AT_CAPTURE_FILE _
   | AT_CLEANUP _
   | AF_ENV _

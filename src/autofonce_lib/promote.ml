@@ -214,8 +214,12 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
         Printf.bprintf b "AT_DATA(%s, %s)\n"
           ( PARSER.m4_escape file )
           ( PARSER.m4_escape content )
-    | AF_DATA_FILE { file ; dir=_; content_file } ->
-        Printf.bprintf b "AF_DATA_FILE(%s, %s)\n"
+    | AF_DATA_COPY { file ; dir=_; content_file } ->
+        Printf.bprintf b "AF_DATA_COPY(%s, %s)\n"
+          ( PARSER.m4_escape file )
+          ( PARSER.m4_escape content_file )
+    | AF_DATA_LINK { file ; dir=_; content_file } ->
+        Printf.bprintf b "AF_DATA_LINK(%s, %s)\n"
           ( PARSER.m4_escape file )
           ( PARSER.m4_escape content_file )
     | AF_ENV string ->
