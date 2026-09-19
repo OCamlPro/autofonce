@@ -188,18 +188,18 @@ let log_failed_tests state msg tests =
       end;
 
       Buffer.reset b1;
-      Promote.print_actions
-        ~ignore_exitcode:false
-        ~keep_old:true
-        t b1 t.test_actions ;
+      let o = Promote.{
+        ignore_exitcode = false ;
+        keep_old = true ;
+        only_successful = false ;
+      } in
+      Promote.print_actions o t b1 t.test_actions ;
       let s1 = Buffer.contents b1 in
       let f1 = test_dir // "test.at.expected" in
       EzFile.write_text_file f1 s1;
 
       Buffer.reset b2;
-      Promote.print_actions
-        ~ignore_exitcode:false
-        ~keep_old:false
+      Promote.print_actions { o with keep_old = false }
         t b2 t.test_actions ;
       let s2 = Buffer.contents b2 in
       let f2 = test_dir // "test.at.promoted" in

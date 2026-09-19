@@ -15,6 +15,7 @@ open Ezcmd.V2
 open EZCMD.TYPES
 open Ez_file.V1
 open EzFile.OP
+open Ez_call.V1
 
 module MISC = Autofonce_misc.Misc
 module PARSER = Autofonce_core.Parser
@@ -26,6 +27,8 @@ type args = {
   mutable arg_testsuite_file : string option ;
   mutable arg_testsuite_env : string option ;  (* path to env file *)
   mutable arg_testsuite_path : string list ;
+  mutable arg_testsuite_keywords : string list ;
+  mutable arg_testsuite_level : int ;
 }
 
 (* returns run_dir and project_config *)
@@ -101,6 +104,9 @@ let find args =
         in
         let t = {
           config_name ;
+          config_desc = "";
+          config_level = 0;
+          config_keywords = [];
           config_file ;
           config_path = List.rev args.arg_testsuite_path ;
           config_env = env ;
@@ -122,6 +128,16 @@ let find args =
           | tcs ->
               List.filter (fun tc ->
                   let testsuite_file = p.project_source_dir // tc.config_file in
+                  if tc.config_level > args.arg_testsuite_level then
+                    false
+                  else
+                  if match args.arg_testsuite_keywords with
+                    | [] -> false
+                    | kws ->
+                        List.exists (fun kw ->
+                            not (List.mem kw tc.config_keywords)) kws
+                  then false
+                  else
                   let keep = Sys.file_exists testsuite_file in
                   if not keep then
                     Printf.eprintf "Discarding inexistent testsuite %S\n"
@@ -151,6 +167,19 @@ let exec ~filter_args ~exec_args p suites =
 
   let state = Runner_common.create_state ~exec_args p suites in
   (* we are now in state_run_dir, i.e. before _autofonce/ *)
+
+  begin
+    match p.project_checker with
+    | None -> ()
+    | Some checker ->
+        EzCall.command "%s/%s" p.project_source_dir checker
+          ~on_error:(fun _s retcode ->
+              Printf.eprintf
+                "Error: testsuite checker %s returned error code %d\n%!"
+                checker retcode ;
+              exit 2
+            )
+  end;
 
   let tests_dir = Autofonce_config.Globals.tests_dir in
   if exec_args.arg_clean_tests_dir && not filter_args.Filter.arg_filter &&
@@ -233,6 +262,8 @@ let args () =
     arg_testsuite_file = None ;
     arg_testsuite_env = None ;
     arg_testsuite_path = [] ;
+    arg_testsuite_keywords = [] ;
+    arg_testsuite_level = 2;
   } in
   let get_args () = args in
   [
@@ -255,5 +286,14 @@ let args () =
     EZCMD.info
       ~docv:"DIR" "Add DIR to search path for tests" ;
 
+    [ "K"; "ts-keywords" ], Arg.String (fun s ->
+        args.arg_testsuite_keywords <- s :: args.arg_testsuite_keywords),
+    EZCMD.info
+      ~docv:"KW" "Keyword to select a matching testsuite";
+
+    [ "L"; "ts-level" ], Arg.Int (fun level ->
+        args.arg_testsuite_level <- level),
+    EZCMD.info
+      ~docv:"LEVEL" "Maximal level of testsuite to run";
   ],
   get_args

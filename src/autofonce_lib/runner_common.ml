@@ -36,6 +36,7 @@ let args () =
       arg_keep_skipped = false ;
       arg_keep_all = false ;
       arg_output = None ;
+      arg_only_successful = false ;
     }
   in
   [
@@ -66,13 +67,20 @@ let args () =
     [ "no-clean" ], Arg.Unit (fun () -> args.arg_clean_tests_dir <- false),
     EZCMD.info "Do not clean _autofonce/ dir on startup";
 
-    [ "ignore-exitcode" ], Arg.Unit (fun () -> args.arg_ignore_exitcode <- true),
+    [ "ignore-exitcode" ], Arg.Unit (fun () ->
+        args.arg_ignore_exitcode <- true),
     EZCMD.info "Do not promote or fail for wrong exit code" ;
+
+    [ "only-successful" ], Arg.Unit (fun () ->
+        args.arg_only_successful <- true),
+    EZCMD.info "Promote only failed checks for commands with \
+                successful exit status" ;
 
     [ "o" ; "output" ], Arg.String (fun s -> args.arg_output <- Some s),
     EZCMD.info
       ~env:(EZCMD.env "AUTOFONCE_OUTPUT")
-      ~docv:"TESTSUITE" "Path of the output file (default: _autofonce/results.log)";
+      ~docv:"TESTSUITE"
+      "Path of the output file (default: _autofonce/results.log)";
 
   ] ,
   args

@@ -27,7 +27,7 @@ type exec_args = {
   mutable arg_keep_skipped : bool ;
   mutable arg_keep_all : bool ;
   mutable arg_output : string option ; (* full path to results.log *)
-
+  mutable arg_only_successful : bool ;
 }
 
 (* imperative context, these values are meaningless at the end of

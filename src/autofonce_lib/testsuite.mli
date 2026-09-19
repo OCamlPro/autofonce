@@ -15,6 +15,8 @@ type args = {
   mutable arg_testsuite_file : string option ;
   mutable arg_testsuite_env : string option ;  (* path to env file *)
   mutable arg_testsuite_path : string list ;
+  mutable arg_testsuite_keywords : string list ;
+  mutable arg_testsuite_level : int ;
 }
 
 val args : unit ->

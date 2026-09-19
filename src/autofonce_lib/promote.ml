@@ -28,8 +28,14 @@ open Types
    `AT_CHECK`, so that the user can use it if he wants.
 *)
 
+type promote_options = {
+  ignore_exitcode : bool ;
+  keep_old : bool ;
+  (* Only update iff the new exitcode is 0 *)
+  only_successful : bool ;
+}
 
-let print_actions t ~ignore_exitcode ~keep_old b actions =
+let print_actions o t b actions =
   let rec string_of_check check =
     let b = Buffer.create 1000 in
     Buffer.add_string b "AT_CHECK(";
@@ -46,19 +52,33 @@ let print_actions t ~ignore_exitcode ~keep_old b actions =
     then begin
       (* We can promote these results *)
 
+      let new_retcode =
+        let check_exit = Printf.sprintf "%s.exit" check_prefix in
+        if Sys.file_exists check_exit then
+          let s = EzFile.read_text_file check_exit in
+          let retcode = int_of_string s in
+          Some retcode
+        else
+          None
+      in
+      let keep_old =
+        match o.only_successful, new_retcode with
+        | false, _ -> o.keep_old
+        | true, Some 0 -> o.keep_old
+        | true, _ ->
+            (* ignore failed tests if only-successful is set *)
+            true
+      in
+
       let retcode =
-        if ignore_exitcode || keep_old then check.check_retcode
+        if o.ignore_exitcode || keep_old then check.check_retcode
         else
           match check.check_retcode with
           | None -> None
           | Some old_retcode ->
-              let check_exit = Printf.sprintf "%s.exit" check_prefix in
-              if Sys.file_exists check_exit then
-                let s = EzFile.read_text_file check_exit in
-                let retcode = int_of_string s in
-                Some retcode
-              else
-                Some old_retcode
+              match new_retcode with
+              | Some _ -> new_retcode
+              | None -> Some old_retcode
       in
 
       let stdout =
