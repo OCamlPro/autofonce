@@ -76,8 +76,11 @@ let patch_action ~filter_args ~exec_args ~action p suites =
               (Parser.m4_escape (String.concat " " list))
       end;
       Promote.print_actions
-        ~ignore_exitcode:exec_args.arg_ignore_exitcode
-        ~keep_old:true
+        {
+          ignore_exitcode = exec_args.arg_ignore_exitcode ;
+          keep_old = true ;
+          only_successful = false ;
+        }
         t b t.test_actions;
 
       let content = Buffer.contents b in
