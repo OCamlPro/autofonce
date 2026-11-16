@@ -55,7 +55,7 @@ let print_actions o t b actions =
       let new_retcode =
         let check_exit = Printf.sprintf "%s.exit" check_prefix in
         if Sys.file_exists check_exit then
-          let s = EzFile.read_text_file check_exit in
+          let s = Globals.read_text_file_partial check_exit in
           let retcode = int_of_string s in
           Some retcode
         else
@@ -89,7 +89,7 @@ let print_actions o t b actions =
               let check_stdout =
                 Printf.sprintf "%s.out.subst" check_prefix in
               if Sys.file_exists check_stdout then
-                let s = EzFile.read_text_file check_stdout in
+                let s = Globals.read_text_file_partial check_stdout in
                 Content s
               else
                 Content old_content
@@ -106,7 +106,7 @@ let print_actions o t b actions =
               let check_stderr =
                 Printf.sprintf "%s.err.subst" check_prefix in
               if Sys.file_exists check_stderr then
-                let s = EzFile.read_text_file check_stderr in
+                let s = Globals.read_text_file_partial check_stderr in
                 Content s
               else
                 Content old_content
@@ -282,7 +282,7 @@ let print_actions o t b actions =
           | None -> content
           | Some filename ->
               let dirname = Filename.dirname t.test_loc.file in
-              EzFile.read_text_file (Filename.concat dirname filename)
+              Globals.read_text_file_partial (Filename.concat dirname filename)
         in
         print_action b (AF_COMMENT comment);
         print_action b (AT_DATA { file ; content });
