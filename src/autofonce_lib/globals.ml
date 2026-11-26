@@ -21,7 +21,9 @@ let read_text_file_partial filename =
   let size = st.Unix.st_size in
   let overflow = size > max_file_size in
   let size = if overflow then max_file_size else size in
-  let ic = open_in filename in
+  (* binary mode: in text mode on Windows, CRLF conversion makes us read
+     fewer bytes than [st_size], raising End_of_file *)
+  let ic = open_in_bin filename in
   let bytes = Bytes.create size in
   really_input ic bytes 0 size;
   close_in ic;
