@@ -1,4 +1,29 @@
 
+## Next
+
+* The default number of parallel jobs (`-j`) is now the number of
+  processors instead of 16, and can be set with `AUTOFONCE_JOBS`
+* New option `--timeout SECONDS` (`AUTOFONCE_TIMEOUT`) to set the
+  wall-clock timeout of checks (default: 30s, 0 to disable). GNU timeout
+  is not required anymore: without it, no timeout is used
+* New option `--cpu-timeout SECONDS` (`AUTOFONCE_CPU_TIMEOUT`) to limit
+  the CPU time of each process of a check (`ulimit -t`), which is mostly
+  independent of the load of the machine. Without `--timeout`, the
+  wall-clock timeout is then 10 times the CPU timeout
+* New macro `AF_TIMEOUT(N)` to multiply the timeouts of the next checks
+  by `N` (`0` disables them). At toplevel, it applies to the next tests
+  of the file, like `AF_ENV`
+* Checks killed by a timeout fail with reason `timeout` (also usable
+  with `--failures`), and are not promoted
+* At the end, list the checks that used more than 50% of one of their
+  timeouts (`--timeout-warning PERCENT`, 0 to disable), to help adding
+  `AF_TIMEOUT` where needed
+* Fix `autofonce init` generating an invalid `autofonce.toml` when it
+  contains non-ASCII characters
+* Fix reading of files on Windows (CRLF conversion)
+* Fix build dirs found from `build_dir_candidates` containing `..`, that
+  were not normalized, breaking `AT_SUBST([AUTOFONCE])` substitutions
+
 ## 1.0
 
 * Cleanup interface of autofonce_lib:

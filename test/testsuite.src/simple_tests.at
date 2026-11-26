@@ -162,3 +162,24 @@ AT_CHECK([true])   # SUCCESS
 AT_CLEANUP
 
 
+
+
+#######################################
+#
+#             AF_TIMEOUT
+#
+#######################################
+
+
+AF_TIMEOUT([2])
+AT_SETUP([AF_TIMEOUT at toplevel])
+AT_CHECK([true])
+AT_CLEANUP
+
+
+AT_SETUP([AF_TIMEOUT in test])
+AF_TIMEOUT([0])
+AT_CHECK([true])
+AF_TIMEOUT([3])
+AT_CHECK([printf "ok"], [0], [ok])
+AT_CLEANUP

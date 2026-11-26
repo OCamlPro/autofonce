@@ -15,7 +15,9 @@ build_anchors = [ "default" ]
 # paths in project sources that are good candidates to
 #   be tested as build dirs. Useful to run autofonce
 #   from outside the build directory
-build_dir_candidates = [ "_build" ]
+# "../../_build" is the build dir of SuperBOL Studio, where autofonce
+#   is vendored in src/autofonce/ with a copy of this file and tests
+build_dir_candidates = [ "_build", "../../_build" ]
 
 # where the _autofonce/ dir should be created:
 #   * 'build': in the build directory
@@ -45,5 +47,6 @@ testsuite = """
 # 'testsuite' env content
 # Purpose it to translate AUTOFONCE_ variables to the
 # variables expected by the project testsuite
+export TESTSUITE_SRC="$AUTOFONCE_SOURCE_DIR/test/testsuite.src"
 """
 
